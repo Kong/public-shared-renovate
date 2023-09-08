@@ -2,7 +2,7 @@
 
 Shared Renovate configs available to both public and private repositories.
 
-**IMPORTANT**: Encrypted NPM tokens **must not** be added to configs in this repository. If your config needs an encrypted token, it **must** be private and reside in the [shared-renovate repository](https://github.com/Kong/shared-renovate).
+**IMPORTANT**: Encrypted NPM tokens **must not** be added to configs in this repository. If your repository config needs an encrypted token, the repo **must** be private and the config **must** reside in the [`shared-renovate` repository](https://github.com/Kong/shared-renovate).
 
 ## Usage
 
