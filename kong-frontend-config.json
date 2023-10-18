@@ -23,6 +23,7 @@
     "every weekday"
   ],
   "minimumReleaseAge": "14 days",
+  "updateNotScheduled": false,
   "packageRules": [
     {
       "automerge": true,
