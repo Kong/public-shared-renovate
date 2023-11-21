@@ -45,6 +45,10 @@
         "^@kong-ui\/",
         "^@kong-ui-public\/"
       ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "minimumReleaseAge": "2 hours",
       "schedule": ["every weekday"]
     },
