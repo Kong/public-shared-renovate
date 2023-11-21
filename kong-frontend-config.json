@@ -39,7 +39,6 @@
       "automerge": true,
       "groupName": "all kong scoped dependencies",
       "groupSlug": "all-kong-scopes",
-      "matchCurrentVersion": "!/^0/",
       "matchPackagePatterns": [
         "^@kong\/",
         "^@kong-ui\/",
