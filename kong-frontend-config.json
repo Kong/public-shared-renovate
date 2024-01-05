@@ -22,6 +22,7 @@
   "automergeSchedule": ["every weekday"],
   "minimumReleaseAge": "14 days",
   "updateNotScheduled": false,
+  "rebaseWhen": "auto",
   "packageRules": [
     {
       "automerge": true,
