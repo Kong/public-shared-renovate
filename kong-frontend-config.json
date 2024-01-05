@@ -22,7 +22,7 @@
   "automergeSchedule": ["every weekday"],
   "minimumReleaseAge": "14 days",
   "updateNotScheduled": false,
-  "rebaseWhen": "auto",
+  "rebaseWhen": "behind-base-branch",
   "packageRules": [
     {
       "automerge": true,
