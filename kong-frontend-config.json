@@ -37,6 +37,24 @@
     },
     {
       "automerge": true,
+      "groupName": "all non-major peerDependencies with stable version",
+      "groupSlug": "all-minor-patch-peer",
+      "matchCurrentVersion": "!/^0/",
+      "matchDepTypes": [
+        "peerDependencies"
+      ],
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "rangeStrategy": "widen",
+      "minimumReleaseAge": "10 days"
+    },
+    {
+      "automerge": true,
       "groupName": "all kong scoped dependencies",
       "groupSlug": "all-kong-scopes",
       "matchPackagePatterns": [
