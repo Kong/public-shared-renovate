@@ -19,7 +19,9 @@
     "before 5am every weekday"
   ],
   "timezone": "America/New_York",
-  "automergeSchedule": ["every weekday"],
+  "automergeSchedule": [
+    "every weekday"
+  ],
   "minimumReleaseAge": "14 days",
   "updateNotScheduled": false,
   "packageRules": [
@@ -28,7 +30,9 @@
       "groupName": "all non-major dependencies with stable version",
       "groupSlug": "all-minor-patch",
       "matchCurrentVersion": "!/^0/",
-      "matchPackagePatterns": ["*"],
+      "matchPackagePatterns": [
+        "*"
+      ],
       "matchUpdateTypes": [
         "minor",
         "patch"
@@ -37,11 +41,41 @@
     },
     {
       "automerge": true,
-      "groupName": "all kong scoped dependencies",
-      "groupSlug": "all-kong-scopes",
+      "groupName": "all @kong scoped dependencies",
+      "groupSlug": "all-kong-scoped-deps",
       "matchPackagePatterns": [
-        "^@kong\/",
-        "^@kong-ui\/",
+        "^@kong\/"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "2 hours",
+      "schedule": [
+        "every weekday"
+      ]
+    },
+    {
+      "automerge": true,
+      "groupName": "all @kong-ui scoped dependencies",
+      "groupSlug": "all-kong-ui-scoped-deps",
+      "matchPackagePatterns": [
+        "^@kong-ui\/"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "2 hours",
+      "schedule": [
+        "every weekday"
+      ]
+    },
+    {
+      "automerge": true,
+      "groupName": "all @kong-ui-public scoped dependencies",
+      "groupSlug": "all-kong-ui-public-scoped-deps",
+      "matchPackagePatterns": [
         "^@kong-ui-public\/"
       ],
       "matchUpdateTypes": [
@@ -49,7 +83,9 @@
         "patch"
       ],
       "minimumReleaseAge": "2 hours",
-      "schedule": ["every weekday"]
+      "schedule": [
+        "every weekday"
+      ]
     },
     {
       "matchPackageNames": [
