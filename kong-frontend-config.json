@@ -86,12 +86,6 @@
       "schedule": [
         "every weekday"
       ]
-    },
-    {
-      "matchPackageNames": [
-        "@kong/kongponents"
-      ],
-      "enabled": false
     }
   ]
 }
