@@ -30,7 +30,7 @@
       "groupName": "all non-major dependencies with stable version",
       "groupSlug": "all-minor-patch",
       "matchCurrentVersion": "!/^0/",
-      "matchPackagePatterns": [
+      "matchPackageNames": [
         "*"
       ],
       "matchUpdateTypes": [
@@ -43,7 +43,7 @@
       "automerge": true,
       "groupName": "all @kong scoped dependencies",
       "groupSlug": "all-kong-scoped-deps",
-      "matchPackagePatterns": [
+      "matchPackageNames": [
         "^@kong\/"
       ],
       "matchUpdateTypes": [
@@ -59,7 +59,7 @@
       "automerge": true,
       "groupName": "all @kong-ui scoped dependencies",
       "groupSlug": "all-kong-ui-scoped-deps",
-      "matchPackagePatterns": [
+      "matchPackageNames": [
         "^@kong-ui\/"
       ],
       "matchUpdateTypes": [
@@ -75,7 +75,7 @@
       "automerge": true,
       "groupName": "all @kong-ui-public scoped dependencies",
       "groupSlug": "all-kong-ui-public-scoped-deps",
-      "matchPackagePatterns": [
+      "matchPackageNames": [
         "^@kong-ui-public\/"
       ],
       "matchUpdateTypes": [
