@@ -86,6 +86,15 @@
       "schedule": [
         "every weekday"
       ]
+    },
+    {
+      "groupName": "ignored dependencies",
+      "groupSlug": "all-kong-ui-ignored-dependencies",
+      "matchPackageNames": [
+        "inquirer",
+        "@types/inquirer"
+      ],
+      "enabled": false
     }
   ]
 }
