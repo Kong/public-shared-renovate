@@ -44,7 +44,7 @@
       "groupName": "all @kong scoped dependencies",
       "groupSlug": "all-kong-scoped-deps",
       "matchPackageNames": [
-        "^@kong\/"
+        "@kong/**"
       ],
       "matchUpdateTypes": [
         "minor",
@@ -60,7 +60,7 @@
       "groupName": "all @kong-ui scoped dependencies",
       "groupSlug": "all-kong-ui-scoped-deps",
       "matchPackageNames": [
-        "^@kong-ui\/"
+        "@kong-ui/**"
       ],
       "matchUpdateTypes": [
         "minor",
@@ -76,7 +76,7 @@
       "groupName": "all @kong-ui-public scoped dependencies",
       "groupSlug": "all-kong-ui-public-scoped-deps",
       "matchPackageNames": [
-        "^@kong-ui-public\/"
+        "@kong-ui-public/**"
       ],
       "matchUpdateTypes": [
         "minor",
