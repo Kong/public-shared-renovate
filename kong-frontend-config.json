@@ -37,7 +37,7 @@
         "minor",
         "patch"
       ],
-      "minimumReleaseAge": "10 days"
+      "minimumReleaseAge": "12 days"
     },
     {
       "automerge": true,
@@ -83,6 +83,20 @@
         "patch"
       ],
       "minimumReleaseAge": "2 hours",
+      "schedule": [
+        "every weekday"
+      ]
+    },
+    {
+      "automerge": true,
+      "groupName": "eslint",
+      "groupSlug": "eslint",
+      "matchPackageNames": ["/eslint/"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "12 days",
       "schedule": [
         "every weekday"
       ]
