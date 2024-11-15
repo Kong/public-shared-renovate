@@ -33,10 +33,7 @@
       "matchPackageNames": [
         "*"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchUpdateTypes": ["minor", "patch"],
       "minimumReleaseAge": "12 days"
     },
     {
@@ -46,10 +43,7 @@
       "matchPackageNames": [
         "@kong/**"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchUpdateTypes": ["minor", "patch"],
       "minimumReleaseAge": "2 hours",
       "schedule": [
         "every monday"
@@ -62,10 +56,7 @@
       "matchPackageNames": [
         "@kong-ui/**"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchUpdateTypes": ["minor", "patch"],
       "minimumReleaseAge": "2 hours",
       "schedule": [
         "every weekday"
@@ -78,10 +69,7 @@
       "matchPackageNames": [
         "@kong-ui-public/**"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchUpdateTypes": ["minor", "patch"],
       "minimumReleaseAge": "2 hours",
       "schedule": [
         "every weekday"
@@ -89,13 +77,41 @@
     },
     {
       "automerge": true,
+      "groupName": "all minor and patch updates for @kong scoped dependencies with unstable version",
+      "groupSlug": "kong-unstable-patch",
+      "matchPackageNames": ["@kong/**"],
+      "matchCurrentVersion": "<1.0.0",
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "all minor and patch updates for @kong-ui scoped dependencies with unstable version",
+      "groupSlug": "kong-unstable-patch",
+      "matchPackageNames": [
+        "@kong-ui/**"
+      ],
+      "matchCurrentVersion": "<1.0.0",
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "all minor and patch updates for @kong-ui-public scoped dependencies with unstable version",
+      "groupSlug": "kong-unstable-patch",
+      "matchPackageNames": [
+        "@kong-ui-public/**"
+      ],
+      "matchCurrentVersion": "<1.0.0",
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "automerge": true,
       "groupName": "eslint",
       "groupSlug": "eslint",
       "matchPackageNames": ["/eslint/"],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchUpdateTypes": ["minor", "patch"],
       "minimumReleaseAge": "12 days",
       "schedule": [
         "every weekday"
