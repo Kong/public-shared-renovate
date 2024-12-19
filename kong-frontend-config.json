@@ -108,6 +108,16 @@
     },
     {
       "automerge": true,
+      "groupName": "all non-major github actions with stable version",
+      "groupSlug": "all-minor-patch-github-actions",
+      "matchCurrentVersion": "!/^v0/",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "automerge": true,
       "groupName": "eslint",
       "groupSlug": "eslint",
       "matchPackageNames": ["/eslint/"],
