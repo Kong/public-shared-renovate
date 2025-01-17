@@ -11,7 +11,7 @@ To use the latest add the below line to the top to your `renovate-config.json` f
 ```json
 {
   "extends": [
-    "github>Kong/public-shared-renovate:kong-frontend-config.json"
+    "github>Kong/public-shared-renovate:kong-frontend-config"
   ]
 }
 ```
@@ -21,7 +21,7 @@ To use a specific tag add the below line to the top of your `renovate-config.jso
 ```json
 {
   "extends": [
-    "github>Kong/public-shared-renovate:kong-frontend-config.json#0.0.1"
+    "github>Kong/public-shared-renovate:kong-frontend-config#0.0.1"
   ]
 }
 ```

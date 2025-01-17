@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Preset designed for backend projects, it runs updates before 5am on weekdays, applies best practices, and uses shared configurations for GitHub Actions and Go dependencies. Automerge is disabled, git sign-off is required, a 'dependencies' label is added to PRs, and 'chore' is used as the semantic commit type for all updates",
+  "schedule": "before 5am every weekday",
+  "extends": [
+    "config:best-practices",
+    ":automergeDisabled",
+    ":gitSignOff",
+    ":label(dependencies)",
+    ":semanticCommitTypeAll(chore)",
+    "local>Kong/public-shared-renovate:github-actions",
+    "local>Kong/public-shared-renovate:go"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "This preset consists of common configuration for updating GitHub Actions. It adds a custom manager to update 'Kong/public-shared-actions/*' dependencies, which is why it disables the default 'github-actions' manager for these. It also includes rules for dependencies like 'slsa-framework/slsa-github-generator' and extends presets for pinning GitHub Action digests to semver versions",
+  "extends": [
+    "helpers:pinGitHubActionDigests",
+    "helpers:pinGitHubActionDigestsToSemver"
+  ],
+  "customManagers": [
+    {
+      "description": "This custom manager updates 'Kong/public-shared-actions' in YAML files located in '.github/', 'workflow-templates', or similar directories. The 'fileMatch' patterns match workflows and actions, aligning with the expressions used by the 'github-actions' manager (https://docs.renovatebot.com/modules/manager/github-actions/). It identifies dependencies with or without digests (e.g., '@v2.8.0' or '@digest # v2.8.0')",
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$",
+        "(^|/)action\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "(?<packageName>Kong\\/public-shared-actions\\/(?<depName>[^\\s@]+))@(?:(?<currentDigest>[^\\s]+) # )?v(?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "github-tags",
+      "extractVersionTemplate": "^(?:@{{{depName}}}@|v)(?<version>[0-9\\.]+)$",
+      "autoReplaceStringTemplate": "{{{packageName}}}@{{#if newDigest}}{{{newDigest}}} # {{/if}}v{{{newVersion}}}",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Manage Kong/public-shared-actions updates using the custom manager, so disable the default GitHub Actions manager for these",
+      "matchPackageNames": ["Kong/public-shared-actions"],
+      "matchManagers": ["github-actions"],
+      "enabled": false
+    },
+    {
+      "description": "SLSA-GitHub-Generator cannot be pinned by digest More info: https://github.com/slsa-framework/slsa-github-generator/blob/main/RENOVATE.md",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["slsa-framework/slsa-github-generator"],
+      "pinDigests": false
+    }
+  ]
+}
