@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "This preset consists of common configuration for updating GitHub Actions. It adds a custom manager to update 'Kong/public-shared-actions/*' dependencies, which is why it disables the default 'github-actions' manager for these. It also includes rules for dependencies like 'slsa-framework/slsa-github-generator' and extends presets for pinning GitHub Action digests to semver versions",
+  "description": "This preset consists of common configuration for updating GitHub Actions. It adds custom manager to update github-action dependencies for specific repositories. It also includes rules for dependencies like 'slsa-framework/slsa-github-generator' and extends presets for pinning GitHub Action digests to semver versions",
   "extends": [
     "helpers:pinGitHubActionDigests",
     "helpers:pinGitHubActionDigestsToSemver"
