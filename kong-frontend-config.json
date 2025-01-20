@@ -5,8 +5,7 @@
     ":semanticCommits",
     ":automergeRequireAllStatusChecks",
     ":automergePatch",
-    ":automergeMinor",
-    "local>Kong/public-shared-renovate:github-actions"
+    ":automergeMinor"
   ],
   "dependencyDashboard": true,
   "rangeStrategy": "bump",
