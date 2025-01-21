@@ -1,0 +1,43 @@
+// code: language=jsonc
+{
+  /*
+    Renovate (bot) config file.
+    see also: https://docs.renovatebot.com/configuration-options/
+  */
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  // https://docs.renovatebot.com/config-presets/
+  "extends": [
+    // https://docs.renovatebot.com/presets-config/#configbest-practices
+    "config:best-practices",
+    // https://docs.renovatebot.com/presets-default/#rebasestaleprs
+    ":rebaseStalePrs",
+    // https://docs.renovatebot.com/configuration-options/#dependencydashboard
+    ":disableDependencyDashboard"
+  ],
+  "configMigration": true,
+  // renovate only reads the config file from the default branch by default
+  // set to "merge" to cause it to also read from config files on baseBranches
+  //
+  // this could be a useful way for us to have separate renovate policy for
+  // different release branches
+  //
+  "useBaseBranchConfig": "merge",
+  "baseBranches": [
+    "/^next\\/.*\\.x/",
+    "/^release\\/.*\\.x\\.x/",
+    "$default"
+  ],
+  "labels": [
+    "dependencies",
+    "chore",
+    "renovate",
+    "skip-changelog",
+    "skip-pr-template-validation"
+  ],
+  "branchConcurrentLimit": 1,
+  "prConcurrentLimit": 5,
+  "enabledManagers": [
+    "github-actions"
+  ],
+  "draftPR": true
+}
