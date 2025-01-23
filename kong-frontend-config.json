@@ -136,6 +136,18 @@
         "@types/inquirer"
       ],
       "enabled": false
+    },
+    {
+      "groupName": "pnpm engines range",
+      "groupSlug": "pnpm-engines",
+      "matchPackageNames": [
+        "pnpm"
+      ],
+      "matchDepTypes": [
+        "engines"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
     }
   ]
 }
