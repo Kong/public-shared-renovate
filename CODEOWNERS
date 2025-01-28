@@ -8,8 +8,8 @@
 
 /kong-frontend-config.json @baumac @adamdehaven @ValeryG
 
-/github-actions.json @bartsmykla @baumac
+/github-actions.json @bartsmykla @baumac @slonka @lukidzi
 
-/backend.json @bartsmykla @baumac
+/backend.json @bartsmykla @baumac @slonka @lukidzi
 
-/go.json @bartsmykla @baumac
+/go.json @bartsmykla @baumac @slonka @lukidzi
