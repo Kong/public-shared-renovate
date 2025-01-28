@@ -6,7 +6,10 @@
     "group:kubernetes",
     "group:pulumi"
   ],
-  "postUpdateOptions": ["gomodMassage", "gomodTidy"],
+  "postUpdateOptions": [
+    "gomodTidy",
+    "gomodUpdateImportPaths"
+  ],
   "packageRules": [
     {
       "groupName": "google.golang.org/genproto/googleapis/*",
