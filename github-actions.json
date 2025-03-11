@@ -34,6 +34,34 @@
       "matchManagers": ["github-actions"],
       "matchPackageNames": ["slsa-framework/slsa-github-generator"],
       "pinDigests": false
+    },
+    {
+      "description": "Disable digest updates because regular version updates already handle them. Our custom regex manager manages these updates, and without this rule, Renovate would try to create two PRs, one for the digest and one for the regular version (major, minor, patch)",
+      "matchUpdateTypes": "digest",
+      "enabled": false
+    },
+    {
+      "description": "Ensure commit and PR titles use the full package name for better clarity. Prevent lowercase conversion of the package name to keep `Kong` correctly capitalized. Set commit actions to use lowercase (e.g., `update`, `pin`, `replace`, `roll back`). Also update the PR body table to reflect the full name and include a link to the source code",
+      "matchManagers": ["regex"],
+      "matchPackageNames": ["Kong/public-shared-actions/**"],
+      "commitMessageTopic": "{{{packageName}}}",
+      "commitMessageLowerCase": "never",
+      "commitMessageAction": "update",
+      "pin": {
+        "commitMessageAction": "pin"
+      },
+      "pinDigest": {
+        "commitMessageAction": "pin"
+      },
+      "replacement": {
+        "commitMessageAction": "replace"
+      },
+      "rollback": {
+        "commitMessageAction": "roll back"
+      },
+      "prBodyDefinitions": {
+        "Package": "[{{{packageName}}}]({{{sourceUrl}}}) ([source]({{{sourceUrl}}}/tree/{{#if newVersion}}%40{{{depName}}}%40{{{newVersion}}}{{else}}{{#if newDigest}}{{{newDigest}}}{{else}}main{{/if}}{{/if}}/{{{depName}}}))"
+      }
     }
   ]
 }
