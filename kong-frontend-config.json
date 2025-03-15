@@ -27,6 +27,15 @@
   "updateNotScheduled": false,
   "packageRules": [
     {
+      "matchPackageNames": [
+        "tj-actions/changed-files"
+      ],
+      "matchDatasources": [
+        "github-actions"
+      ],
+      "allowedVersions": "4edd678ac3f81e2dc578756871e4d00c19191daf"
+    },
+    {
       "automerge": true,
       "groupName": "all non-major dependencies with stable version",
       "groupSlug": "all-minor-patch",

@@ -24,6 +24,15 @@
   ],
   "packageRules": [
     {
+      "matchPackageNames": [
+        "tj-actions/changed-files"
+      ],
+      "matchDatasources": [
+        "github-actions"
+      ],
+      "allowedVersions": "4edd678ac3f81e2dc578756871e4d00c19191daf"
+    },
+    {
       "description": "Manage Kong/public-shared-actions updates using the custom manager, so disable the default GitHub Actions manager for these",
       "matchPackageNames": ["Kong/public-shared-actions"],
       "matchManagers": ["github-actions"],

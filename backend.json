@@ -10,5 +10,16 @@
     ":semanticCommitTypeAll(chore)",
     "local>Kong/public-shared-renovate:github-actions",
     "local>Kong/public-shared-renovate:go"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "tj-actions/changed-files"
+      ],
+      "matchDatasources": [
+        "github-actions"
+      ],
+      "allowedVersions": "4edd678ac3f81e2dc578756871e4d00c19191daf"
+    }
   ]
 }
