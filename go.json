@@ -18,7 +18,7 @@
       "matchDatasources": [
         "github-actions"
       ],
-      "allowedVersions": "4edd678ac3f81e2dc578756871e4d00c19191daf"
+      "enabled": false
     },
     {
       "groupName": "google.golang.org/genproto/googleapis/*",
