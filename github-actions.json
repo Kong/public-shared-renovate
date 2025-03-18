@@ -55,7 +55,7 @@
       "matchPackageNames": ["Kong/public-shared-actions/**"],
       "commitMessageTopic": "{{{packageName}}}",
       "commitMessageLowerCase": "never",
-      "commitMessageAction": "update",
+      "commitMessageAction": "bump",
       "pin": {
         "commitMessageAction": "pin"
       },

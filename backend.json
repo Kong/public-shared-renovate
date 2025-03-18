@@ -11,6 +11,7 @@
     "local>Kong/public-shared-renovate:github-actions",
     "local>Kong/public-shared-renovate:go"
   ],
+  "commitMessageAction": "bump",
   "packageRules": [
     {
       "matchPackageNames": [
@@ -20,6 +21,14 @@
         "github-actions"
       ],
       "enabled": false
+    },
+    {
+      "description": "Use 'from ... to ...' notation for version or digest changes across all dependencies, mirroring Dependabot's commit message style so existing automation (e.g., changelog generation) remains unaffected",
+      "matchPackageNames": [
+        "**"
+      ],
+      "commitMessageTopic": "{{{depName}}}",
+      "commitMessageExtra": "{{#if (or isMajor isMinor isPatch (and isPinDigest currentDigestShort))}}from {{#if isPinDigest}}{{{currentDigestShort}}}{{else}}{{#if isSingleVersion}}{{currentVersion}}{{else}}{{#if currentValue}}{{{currentValue}}}{{else}}{{{currentDigestShort}}}{{/if}}{{/if}}{{/if}} {{/if}}to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isSingleVersion}}{{newVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}"
     }
   ]
 }
