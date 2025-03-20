@@ -12,6 +12,7 @@
     "local>Kong/public-shared-renovate:go"
   ],
   "commitMessageAction": "bump",
+  "prBodyTemplate": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}{{{controls}}}",
   "packageRules": [
     {
       "matchPackageNames": [
