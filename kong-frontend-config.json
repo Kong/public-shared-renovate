@@ -36,6 +36,15 @@
       "enabled": false
     },
     {
+      "matchPackageNames": [
+        "Kong/kong-api-tests"
+      ],
+      "matchDatasources": [
+        "github-actions"
+      ],
+      "enabled": false
+    },
+    {
       "automerge": true,
       "groupName": "all non-major dependencies with stable version",
       "groupSlug": "all-minor-patch",
