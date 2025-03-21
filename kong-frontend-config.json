@@ -28,16 +28,9 @@
   "packageRules": [
     {
       "matchPackageNames": [
-        "tj-actions/changed-files"
-      ],
-      "matchDatasources": [
-        "github-actions"
-      ],
-      "enabled": false
-    },
-    {
-      "matchPackageNames": [
-        "Kong/kong-api-tests"
+        "tj-actions/changed-files",
+        "Kong/kong-api-tests",
+        "the-actions-org/workflow-dispatch"
       ],
       "matchDatasources": [
         "github-actions"
