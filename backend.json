@@ -4,6 +4,7 @@
   "schedule": [
     "before 4am on monday"
   ],
+  "prHourlyLimit": 15,
   "extends": [
     "config:best-practices",
     ":automergeDisabled",
