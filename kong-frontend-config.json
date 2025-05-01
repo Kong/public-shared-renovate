@@ -111,6 +111,20 @@
     },
     {
       "automerge": true,
+      "groupName": "minor and patch updates for konnect analytics dependencies",
+      "groupSlug": "konnect-analytics",
+      "matchPackageNames": [
+        "@kong-ui-public/analytics-*",
+        "@kong-ui-public/dashboard-renderer",
+        "@kong-ui-public/metric-cards",
+        "@kong-ui/konnect-analytics-bridge",
+        "@kong-ui/timeframe-selector"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "2 hours"
+    },
+    {
+      "automerge": true,
       "groupName": "all non-major github actions with stable version",
       "groupSlug": "all-minor-patch-github-actions",
       "matchCurrentVersion": "!/^v0/",
