@@ -45,7 +45,9 @@
       "pinDigests": false
     },
     {
-      "description": "Disable digest updates because regular version updates already handle them. Our custom regex manager manages these updates, and without this rule, Renovate would try to create two PRs, one for the digest and one for the regular version (major, minor, patch)",
+      "description": "Disable digest updates only for actions that are versioned (i.e., have a tag), to avoid duplicate PRs—one for the digest and one for the version. Digest updates remain enabled for actions pinned solely by digest (e.g., to track master/main), which are not covered by our versioning rules",
+      "matchCurrentValue": "/^[^\\.]+\\./",
+      "matchDepTypes": ["action"],
       "matchUpdateTypes": "digest",
       "enabled": false
     },
