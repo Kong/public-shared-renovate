@@ -11,28 +11,19 @@
     ":gitSignOff",
     ":label(dependencies)",
     ":semanticCommitTypeAll(chore)",
-    "local>Kong/public-shared-renovate:github-actions",
-    "local>Kong/public-shared-renovate:go"
+    "Kong/public-shared-renovate:github-actions",
+    "Kong/public-shared-renovate:go"
   ],
   "commitMessageAction": "bump",
   "prBodyTemplate": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}{{{controls}}}",
   "packageRules": [
     {
-      "matchPackageNames": [
-        "tj-actions/changed-files"
-      ],
-      "matchDatasources": [
-        "github-actions"
-      ],
-      "enabled": false
-    },
-    {
-      "description": "Use 'from ... to ...' notation for version or digest changes across all dependencies, mirroring Dependabot's commit message style so existing automation (e.g., changelog generation) remains unaffected",
+      "description": "Use 'from ... to ...' notation for a version or digest changes across all dependencies, mirroring Dependabot's commit message style so existing automation (e.g., changelog generation) remains unaffected",
       "matchPackageNames": [
         "**"
       ],
       "commitMessageTopic": "{{{depName}}}",
-      "commitMessageExtra": "{{#if (or isMajor isMinor isPatch (and isPinDigest currentDigestShort))}}from {{#if isPinDigest}}{{{currentDigestShort}}}{{else}}{{#if isSingleVersion}}{{currentVersion}}{{else}}{{#if currentValue}}{{{currentValue}}}{{else}}{{{currentDigestShort}}}{{/if}}{{/if}}{{/if}} {{/if}}to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isSingleVersion}}{{newVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}"
+      "commitMessageExtra": "{{#if (or (and (or isMajor isMinor isPatch) (or (and isSingleVersion currentVersion) currentValue currentDigestShort)) (and (equals updateType 'digest') currentDigestShort))}}from {{#if (equals updateType 'digest')}}{{{currentDigestShort}}}{{else}}{{#if isSingleVersion}}{{currentVersion}}{{else}}{{#if currentValue}}{{{currentValue}}}{{else}}{{{currentDigestShort}}}{{/if}}{{/if}}{{/if}} {{/if}}to {{#if (or isPinDigest (equals updateType 'digest'))}}{{{newDigestShort}}}{{else}}{{#if isSingleVersion}}{{newVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}"
     }
   ]
 }
