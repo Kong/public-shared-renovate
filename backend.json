@@ -22,7 +22,7 @@
       "matchPackageNames": [
         "**"
       ],
-      "commitMessageTopic": "{{{depName}}}",
+      "commitMessageTopic": "{{{depName}}}{{#if (and (equals updateType 'digest') (equals currentValue newValue) newValue)}}:{{{newValue}}}{{/if}}",
       "commitMessageExtra": "{{#if (or (and (or isMajor isMinor isPatch) (or (and isSingleVersion currentVersion) currentValue currentDigestShort)) (and (equals updateType 'digest') currentDigestShort))}}from {{#if (equals updateType 'digest')}}{{{currentDigestShort}}}{{else}}{{#if isSingleVersion}}{{currentVersion}}{{else}}{{#if currentValue}}{{{currentValue}}}{{else}}{{{currentDigestShort}}}{{/if}}{{/if}}{{/if}} {{/if}}to {{#if (or isPinDigest (equals updateType 'digest'))}}{{{newDigestShort}}}{{else}}{{#if isSingleVersion}}{{newVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}"
     }
   ]
