@@ -169,6 +169,22 @@
     },
     {
       "automerge": true,
+      "groupName": "playwright dependencies with stable version",
+      "groupSlug": "playwright-minor-patch",
+      "matchCurrentVersion": "!/^0/",
+      "matchPackageNames": [
+        "playwright",
+        "playwright-core",
+        "@playwright/*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "14 days"
+    },
+    {
+      "automerge": true,
       "groupName": "cypress dependencies with stable version",
       "groupSlug": "cypress-minor-patch",
       "matchCurrentVersion": "!/^0/",
