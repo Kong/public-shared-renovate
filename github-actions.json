@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "This preset consists of common configuration for updating GitHub Actions. It adds custom manager to update github-action dependencies for specific repositories. It also includes rules for dependencies like 'slsa-framework/slsa-github-generator' and extends presets for pinning GitHub Action digests to semver versions",
+  "description": "This preset consists of a common configuration for updating GitHub Actions. It adds a custom manager to update github-action dependencies for specific repositories. It also includes rules for dependencies like 'slsa-framework/slsa-github-generator' and extends presets for pinning GitHub Action digests to semver versions",
   "extends": [
     "helpers:pinGitHubActionDigests",
     "helpers:pinGitHubActionDigestsToSemver"
@@ -14,7 +14,7 @@
         "/(^|/)action\\.ya?ml$/"
       ],
       "matchStrings": [
-        "(?<packageName>Kong\\/(?:public-shared-actions|shared-actions\\/actions)\\/(?<depName>[^\\s@]+))@(?:(?<currentDigest>\\w+)\\s*#\\s*)?v?(?<currentValue>(?:\\d+(?:\\.\\d)+|\\w+))"
+        "(?<packageName>Kong\\/public-shared-actions\\/(?<depName>[^\\s@]+))@(?:(?<currentDigest>\\w+)\\s*#\\s*)?v?(?<currentValue>(?:\\d+(?:\\.\\d)+|\\w+))"
       ],
       "datasourceTemplate": "github-tags",
       "extractVersionTemplate": "^(?:@?{{{depName}}}[@_]|v)(?<version>[0-9\\.]+)$",
@@ -30,12 +30,12 @@
     },
     {
       "description": "Manage Kong/public-shared-actions updates using the custom manager, so disable the default GitHub Actions manager for these",
-      "matchPackageNames": ["/^Kong\\/(?:public-)?shared-actions/"],
+      "matchPackageNames": ["Kong/public-shared-actions"],
       "matchManagers": ["github-actions"],
       "enabled": false
     },
     {
-      "description": "SLSA-GitHub-Generator cannot be pinned by digest More info: https://github.com/slsa-framework/slsa-github-generator/blob/main/RENOVATE.md",
+      "description": "Digest cannot pin SLSA-GitHub-Generator More info: https://github.com/slsa-framework/slsa-github-generator/blob/main/RENOVATE.md",
       "matchManagers": ["github-actions"],
       "matchPackageNames": ["slsa-framework/slsa-github-generator"],
       "pinDigests": false
@@ -49,7 +49,7 @@
     {
       "description": "Ensure commit and PR titles use the full package name for better clarity. Prevent lowercase conversion of the package name to keep `Kong` correctly capitalized. Set commit actions to use lowercase (e.g., `update`, `pin`, `replace`, `roll back`). Also update the PR body table to reflect the full name and include a link to the source code",
       "matchManagers": ["regex"],
-      "matchPackageNames": ["/^Kong\\/(?:public-)?shared-actions\\//"],
+      "matchPackageNames": ["Kong/public-shared-actions/**"],
       "commitMessageTopic": "{{{packageName}}}",
       "commitMessageLowerCase": "never",
       "commitMessageAction": "bump",
