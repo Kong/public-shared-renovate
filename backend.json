@@ -15,9 +15,9 @@
     "config:best-practices",
     "schedule:earlyMondays",
     ":automergeDisabled",
+    ":disableRateLimiting",
     ":gitSignOff",
     ":label(dependencies)",
-    ":prHourlyLimitNone",
     ":semanticCommitTypeAll(chore)",
     "Kong/public-shared-renovate:github-actions",
     "Kong/public-shared-renovate:go"
