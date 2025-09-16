@@ -1,9 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "This preset consists of common configuration for updating GitHub Actions. It adds custom manager to update github-action dependencies for specific repositories. It also includes rules for dependencies like 'slsa-framework/slsa-github-generator' and extends presets for pinning GitHub Action digests to semver versions",
+  "description": [
+    " This preset provides a shared configuration for updating GitHub Actions. It adds a custom",
+    " manager to handle action dependencies in selected repositories and includes general policy",
+    " rules (such as digest pinning behavior). It also extends presets that map digests to semver",
+    " versions"
+  ],
   "extends": [
     "helpers:pinGitHubActionDigests",
-    "helpers:pinGitHubActionDigestsToSemver"
+    "helpers:pinGitHubActionDigestsToSemver",
+    "Kong/public-shared-renovate:github-actions-changed-files"
   ],
   "customManagers": [
     {
@@ -25,7 +31,7 @@
         "   - Versions support 1–4 numeric sections and optional prerelease/build parts with",
         "     hyphens/dots; an optional leading 'v' is allowed",
         "",
-        " Version extraction (extractVersionTemplate) — examples",
+        " Version extraction (extractVersionTemplate) - examples",
         "   - @security-actions/sca@1.2.3",
         "   - @security-actions/scan-rust@v4.5.6",
         "   - security-actions/semgrep@7.8.9.10",
@@ -34,7 +40,7 @@
         "   - scan-rust@v0.1.2",
         "   - a/b/c/d/e/lua-lint@v3.4.5.6-abc.foo",
         "",
-        " matchStrings — examples of full matches",
+        " matchStrings - examples of full matches",
         "   # VALID",
         "   - Kong/public-shared-actions/security-actions/sca@1.2.3",
         "   - Kong/public-shared-actions/security-actions/sca@1.2.3.4 # foo",
@@ -84,34 +90,44 @@
   ],
   "packageRules": [
     {
-      "matchPackageNames": [
-        "tj-actions/changed-files"
+      "description": [
+        " Manage Kong/public-shared-actions updates using the custom manager, so disable the default",
+        " GitHub Actions manager for these"
       ],
-      "matchDatasources": [
-        "github-actions"
-      ],
-      "enabled": false
-    },
-    {
-      "description": "Manage Kong/public-shared-actions updates using the custom manager, so disable the default GitHub Actions manager for these",
       "matchPackageNames": ["Kong/public-shared-actions"],
       "matchManagers": ["github-actions"],
       "enabled": false
     },
     {
-      "description": "SLSA-GitHub-Generator cannot be pinned by digest More info: https://github.com/slsa-framework/slsa-github-generator/blob/main/RENOVATE.md",
+      "description": [
+        " Do not pin SLSA-GitHub-Generator by digest. The project publishes versioned tags and",
+        " explicitly recommends disabling digest pinning for Renovate so updates track tags only.",
+        " Pinning to a commit SHA can break provenance and reusability expectations of the generator",
+        " and will fight with the upstream release /tag workflow",
+        " More info: https://github.com/slsa-framework/slsa-github-generator/blob/main/RENOVATE.md"
+      ],
       "matchManagers": ["github-actions"],
       "matchPackageNames": ["slsa-framework/slsa-github-generator"],
       "pinDigests": false
     },
     {
-      "description": "Disable digest updates only for actions that are versioned (i.e., have a tag), to avoid duplicate PRs—one for the digest and one for the version. Digest updates remain enabled for actions pinned solely by digest (e.g., to track master/main), which are not covered by our versioning rules",
+      "description": [
+        " Disable digest updates only for actions that are versioned (i.e., have a tag), to avoid",
+        " duplicate PRs-one for the digest and one for the version. Digest updates remain enabled",
+        " for actions pinned solely by digest (e.g., to track master/main), which are not covered",
+        " by our versioning rules"
+      ],
       "matchCurrentValue": "/^[^.]+\\./",
       "matchUpdateTypes": "digest",
       "enabled": false
     },
     {
-      "description": "Ensure commit and PR titles use the full package name for better clarity. Prevent lowercase conversion of the package name to keep `Kong` correctly capitalized. Set commit actions to use lowercase (e.g., `update`, `pin`, `replace`, `roll back`). Also update the PR body table to reflect the full name and include a link to the source code",
+      "description": [
+        " Ensure commit and PR titles use the full package name for better clarity. Prevent",
+        " lowercase conversion of the package name to keep `Kong` correctly capitalized. Set commit",
+        " actions to use lowercase (e.g., `update`, `pin`, `replace`, `roll back`). Also update",
+        " the PR body table to reflect the full name and include a link to the source code"
+      ],
       "matchManagers": ["regex"],
       "matchPackageNames": ["Kong/public-shared-actions/**"],
       "commitMessageTopic": "{{{packageName}}}",

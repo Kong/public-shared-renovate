@@ -1,22 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "This preset enables Renovate to detect and update tool versions declared in Makefiles",
-  "customManagers": [
-    {
-      "description": [
-        "Custom regex manager to update tools defined in Makefiles. Dependencies must follow a naming format like TOOL_NAME_VERSION and be preceded by a Renovate comment in this format: `# renovate: datasource=<source> depName=<name> [versioning=<type>] [registryUrl=<url>]`",
-        "Example:",
-        "# renovate: datasource=github-releases depName=cli/cli",
-        "GH_CLI_VERSION ?= 2.42.1"
-      ],
-      "customType": "regex",
-      "fileMatch": [
-        "(?:^|\\/)(?:Makefile|[^\\/]+\\.mk)$"
-      ],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( registryUrl=(?<registryUrl>.*?))?\\s.*?_VERSION\\s?[:\\?]?=\\s?(?<currentValue>.*)\\s"
-      ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
-    }
+  "description": [
+    " [DEPRECATED]",
+    " This preset has been replaced by Renovate's official preset 'customManagers:makefileVersions'",
+    " Please update your configuration to extend directly from 'customManagers:makefileVersions'"
+  ],
+  "extends": [
+    "customManagers:makefileVersions"
   ]
 }

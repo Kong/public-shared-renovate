@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Shared preset that blocks automatic updates for 'tj-actions/changed-files' and requires",
+    " manual bumps. We currently do not trust automated updates of this dependency and want a human",
+    " to review, test, and consciously approve each version change. Renovate PRs are disabled",
+    " on purpose; maintainers should update it manually when deemed safe and appropriate",
+    " Context: prior malicious release: https://github.com/advisories/ghsa-mrrh-fwg8-r2c3"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["tj-actions/changed-files"],
+      "matchDatasources": ["github-actions"],
+      "enabled": false
+    }
+  ]
+}

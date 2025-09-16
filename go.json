@@ -1,25 +1,21 @@
 {
-  "description": "Designed for Go projects, this preset enables the 'gomod' manager and ensures 'gomodMassage' and 'gomodTidy' are run after updates. It contains common manager configurations and groups for Go modules updates to simplify dependency management",
+  "description": [
+    " This preset targets Go repositories. It enables the 'gomod' manager, runs 'gomodTidy' and",
+    " 'gomodUpdateImportPaths' after updates, and provides common manager settings and update",
+    " groups to simplify module maintenance"
+  ],
   "extends": [
     ":gomod",
     "group:goOpenapi",
     "group:kubernetes",
-    "group:pulumi"
+    "group:pulumi",
+    "Kong/public-shared-renovate:github-actions-changed-files"
   ],
   "postUpdateOptions": [
     "gomodTidy",
     "gomodUpdateImportPaths"
   ],
   "packageRules": [
-    {
-      "matchPackageNames": [
-        "tj-actions/changed-files"
-      ],
-      "matchDatasources": [
-        "github-actions"
-      ],
-      "enabled": false
-    },
     {
       "groupName": "google.golang.org/genproto/googleapis/*",
       "groupSlug": "genproto-googleapis",

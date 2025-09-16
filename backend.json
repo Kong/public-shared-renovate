@@ -1,15 +1,23 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Preset designed for backend projects, it runs updates before 5am on weekdays, applies best practices, and uses shared configurations for GitHub Actions and Go dependencies. Automerge is disabled, git sign-off is required, a 'dependencies' label is added to PRs, and 'chore' is used as the semantic commit type for all updates",
-  "schedule": [
-    "before 4am on monday"
+  "description": [
+    " This preset targets backend repositories. It schedules dependency updates for early Monday",
+    " mornings, applies the Renovate best practices and extends shared presets for GitHub Actions and",
+    " Go modules. Automerge is disabled, git sign-off is required, a 'dependencies' label is added",
+    " to PRs, and 'chore' is used as the semantic commit type",
+    "",
+    " PR hourly limits are removed to prevent updates from queueing for a full week. When limits are",
+    " set and more updates than the configured 'prHourlyLimit' are generated during the early-Monday",
+    " window, the rate-limited ones wait until the next scheduled window (the following Monday). If",
+    " teams prefer limits, they can set project-specific values in their local Renovate config"
   ],
-  "prHourlyLimit": 15,
   "extends": [
     "config:best-practices",
+    "schedule:earlyMondays",
     ":automergeDisabled",
     ":gitSignOff",
     ":label(dependencies)",
+    ":prHourlyLimitNone",
     ":semanticCommitTypeAll(chore)",
     "Kong/public-shared-renovate:github-actions",
     "Kong/public-shared-renovate:go"
@@ -18,10 +26,12 @@
   "prBodyTemplate": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}{{{controls}}}",
   "packageRules": [
     {
-      "description": "Use 'from ... to ...' notation for a version or digest changes across all dependencies, mirroring Dependabot's commit message style so existing automation (e.g., changelog generation) remains unaffected",
-      "matchPackageNames": [
-        "**"
+      "description": [
+        " Standardize commit messages to use 'from ... to ...' notation for version and digest",
+        " changes across all dependencies. This mirrors Dependabot's style so downstream automation",
+        " (e.g., changelog generation) remains compatible"
       ],
+      "matchPackageNames": ["**"],
       "commitMessageTopic": "{{{depName}}}{{#if (and (equals updateType 'digest') (equals currentValue newValue) newValue)}}:{{{newValue}}}{{/if}}",
       "commitMessageExtra": "{{#if (or (and (or isMajor isMinor isPatch) (or (and isSingleVersion currentVersion) currentValue currentDigestShort)) (and (equals updateType 'digest') currentDigestShort))}}from {{#if (equals updateType 'digest')}}{{{currentDigestShort}}}{{else}}{{#if isSingleVersion}}{{currentVersion}}{{else}}{{#if currentValue}}{{{currentValue}}}{{else}}{{{currentDigestShort}}}{{/if}}{{/if}}{{/if}} {{/if}}to {{#if (or isPinDigest (equals updateType 'digest'))}}{{{newDigestShort}}}{{else}}{{#if isSingleVersion}}{{newVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}"
     }
