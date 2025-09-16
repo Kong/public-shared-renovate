@@ -74,11 +74,11 @@
         "/(^|/)action\\.ya?ml$/"
       ],
       "matchStrings": [
-        "(?<packageName>Kong\\/public-shared-actions\\/(?:[0-9A-Za-z._-]*\\/)*(?<depName>[^\\s@]+))@(?:(?<currentDigest>[0-9A-Fa-f]{7,40})[\\t ]*#[\\t ]*)?v?(?<currentValue>(?:[0-9]+(?:\\.[0-9]+){0,3}(?:-[0-9A-Za-z.-]+)?|[0-9A-Fa-f]{7,40}))(:?$|\\s)"
+        "(?<packageName>Kong\\/public-shared-actions\\/(?:[0-9A-Za-z._-]*\\/)*(?<depName>[^\\s@]+))@(?:(?<currentDigest>[0-9A-Fa-f]{7,40})[\\t ]*#[\\t ]*)?v?(?<currentValue>(?:[0-9]+(?:\\.[0-9]+){0,3}(?:-[0-9A-Za-z.-]+)?|[0-9A-Fa-f]{7,40}))(?<indentation>\\s|$)"
       ],
       "datasourceTemplate": "github-tags",
       "extractVersionTemplate": "^@?(?:[0-9A-Za-z._-]*\\/)*{{{depName}}}[@_](?<version>v?(?:[0-9]+(?:\\.[0-9]+){0,3}(?:-[0-9A-Za-z.-]+)?))$",
-      "autoReplaceStringTemplate": "{{{packageName}}}@{{#if newDigest}}{{{newDigest}}} # {{{prettyNewVersion}}}{{else}}{{{newVersion}}}{{/if}}",
+      "autoReplaceStringTemplate": "{{{packageName}}}@{{#if newDigest}}{{{newDigest}}} # {{{prettyNewVersion}}}{{else}}{{{newValue}}}{{/if}}{{{indentation}}}",
       "versioningTemplate": "semver-coerced"
     }
   ],
