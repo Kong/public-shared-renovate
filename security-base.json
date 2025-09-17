@@ -1,0 +1,48 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Base security preset for Renovate shared across Kong repositories. It serves as the central",
+    " place for baseline settings and conventions related to security such as how security-related",
+    " updates and alerts are handled across projects",
+    "",
+    " This preset is intentionally parameterless and contains only common, non-routing behavior.",
+    " Use the 'security-extended' preset if you want to add labels and automatically request",
+    " reviewers"
+  ],
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "description": [
+      " Documenting non-default settings for vulnerability alerts",
+      " commitMessageSuffix: set to empty to remove Renovate's default '[SECURITY]' suffix",
+      "   from PR titles. Rationale: some teams use release notes or changelog generators that",
+      "   expect standard dependency update PR titles without extra suffixes; keeping titles clean",
+      "   avoids misclassification and keeps tooling output consistent across repositories",
+      " Other keys here mirror Renovate defaults and are included explicitly for clarity"
+    ],
+    "branchTopic": "{{{datasource}}}-{{{depNameSanitized}}}-vulnerability",
+    "commitMessageSuffix": "",
+    "dependencyDashboardApproval": false,
+    "enabled": true,
+    "groupName": null,
+    "minimumReleaseAge": null,
+    "prCreation": "immediate",
+    "rangeStrategy": "update-lockfile",
+    "schedule": [],
+    "vulnerabilityFixStrategy": "lowest"
+  },
+  "packageRules": [
+    {
+      "description": [
+        " Treat GitHub Actions under 'Kong/public-shared-actions/security/**' as security-related.",
+        " Create PRs immediately to prioritize security workflows; no labels or reviewers are added",
+        " at this base level (dynamic labeling/assignment can be added via the 'security' preset)"
+      ],
+      "matchPackageNames": ["Kong/public-shared-actions/security/**"],
+      "dependencyDashboardApproval": false,
+      "groupName": null,
+      "minimumReleaseAge": null,
+      "prCreation": "immediate",
+      "schedule": []
+    }
+  ]
+}

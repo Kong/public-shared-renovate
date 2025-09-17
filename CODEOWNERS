@@ -10,10 +10,16 @@
 
 /github-actions.json @bartsmykla @baumac @slonka @lukidzi
 
+/github-actions-changed-files.json  @bartsmykla @baumac @slonka @lukidzi
+
 /backend.json @bartsmykla @baumac @slonka @lukidzi
 
 /go.json @bartsmykla @baumac @slonka @lukidzi
 
 /makefile.json @bartsmykla @baumac @slonka @lukidzi
+
+/security-base.json @bartsmykla @baumac @slonka @lukidzi
+
+/security-extended.json @bartsmykla @baumac @slonka @lukidzi
 
 /gateway.json5 @curiositycasualty @Water-Melon @fffonion

@@ -128,23 +128,15 @@
         " actions to use lowercase (e.g., `update`, `pin`, `replace`, `roll back`). Also update",
         " the PR body table to reflect the full name and include a link to the source code"
       ],
-      "matchManagers": ["regex"],
+      "matchManagers": ["custom.regex"],
       "matchPackageNames": ["Kong/public-shared-actions/**"],
       "commitMessageTopic": "{{{packageName}}}",
       "commitMessageLowerCase": "never",
       "commitMessageAction": "bump",
-      "pin": {
-        "commitMessageAction": "pin"
-      },
-      "pinDigest": {
-        "commitMessageAction": "pin"
-      },
-      "replacement": {
-        "commitMessageAction": "replace"
-      },
-      "rollback": {
-        "commitMessageAction": "roll back"
-      },
+      "pin": {"commitMessageAction": "pin"},
+      "pinDigest": {"commitMessageAction": "pin"},
+      "replacement": {"commitMessageAction": "replace"},
+      "rollback": {"commitMessageAction": "roll back"},
       "prBodyDefinitions": {
         "Package": "[{{{packageName}}}]({{{sourceUrl}}}) ([source]({{{sourceUrl}}}/tree/{{#if newVersion}}%40{{{depName}}}%40{{{newVersion}}}{{else}}{{#if newDigest}}{{{newDigest}}}{{else}}main{{/if}}{{/if}}/{{{depName}}}))"
       }
