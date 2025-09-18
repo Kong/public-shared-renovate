@@ -7,7 +7,7 @@
     " versions"
   ],
   "extends": [
-    "helpers:pinGitHubActionDigests",
+    "group:githubArtifactActions",
     "helpers:pinGitHubActionDigestsToSemver",
     "Kong/public-shared-renovate:github-actions-changed-files"
   ],
@@ -80,12 +80,11 @@
         "/(^|/)action\\.ya?ml$/"
       ],
       "matchStrings": [
-        "(?<packageName>Kong\\/public-shared-actions\\/(?:[0-9A-Za-z._-]*\\/)*(?<depName>[^\\s@]+))@(?:(?<currentDigest>[0-9A-Fa-f]{7,40})[\\t ]*#[\\t ]*)?v?(?<currentValue>(?:[0-9]+(?:\\.[0-9]+){0,3}(?:-[0-9A-Za-z.-]+)?|[0-9A-Fa-f]{7,40}))(?<indentation>\\s|$)"
+        "(?<packageName>Kong/public-shared-actions/(?:[0-9A-Za-z._-]*/)*(?<depName>[^\\s@]+))@(?:(?<currentDigest>[0-9A-Fa-f]{7,40})[\\t ]*#[\\t ]*)?v?(?<currentValue>[0-9]*(?:\\.[0-9]+){0,3}(?:-[0-9A-Za-z.-]+)?)(?<indentation>\\s|$)"
       ],
       "datasourceTemplate": "github-tags",
-      "extractVersionTemplate": "^@?(?:[0-9A-Za-z._-]*\\/)*{{{depName}}}[@_](?<version>v?(?:[0-9]+(?:\\.[0-9]+){0,3}(?:-[0-9A-Za-z.-]+)?))$",
-      "autoReplaceStringTemplate": "{{{packageName}}}@{{#if newDigest}}{{{newDigest}}} # {{{prettyNewVersion}}}{{else}}{{{newValue}}}{{/if}}{{{indentation}}}",
-      "versioningTemplate": "semver-coerced"
+      "extractVersionTemplate": "^@?(?:[0-9A-Za-z._-]*/)*{{{depName}}}[@_]v?(?<version>[0-9]+(?:\\.[0-9]+){0,3}(?:-[0-9A-Za-z.-]+)?)$",
+      "autoReplaceStringTemplate": "{{{packageName}}}@{{#if newDigest}}{{{newDigest}}} # v{{/if}}{{{newValue}}}{{{indentation}}}"
     }
   ],
   "packageRules": [
@@ -97,6 +96,21 @@
       "matchPackageNames": ["Kong/public-shared-actions"],
       "matchManagers": ["github-actions"],
       "enabled": false
+    },
+    {
+      "description": [
+        " Group and pin updates for public-shared-actions discovered by this custom manager",
+        " - Grouping switched from depName to packageName, so each PR groups by the full action",
+        "   path",
+        " - pinDigests enabled to always pin sub-action references to a commit SHA for security",
+        "   and stable tracking",
+        " - groupName uses the full packageName to protect against two sub-actions with the same",
+        "   name that lives under different directories"
+      ],
+      "matchManagers": ["custom.regex"],
+      "matchPackageNames": ["Kong/public-shared-actions/**"],
+      "pinDigests": true,
+      "groupName": "{{{packageName}}}"
     },
     {
       "description": [
@@ -112,21 +126,10 @@
     },
     {
       "description": [
-        " Disable digest updates only for actions that are versioned (i.e., have a tag), to avoid",
-        " duplicate PRs-one for the digest and one for the version. Digest updates remain enabled",
-        " for actions pinned solely by digest (e.g., to track master/main), which are not covered",
-        " by our versioning rules"
-      ],
-      "matchCurrentValue": "/^[^.]+\\./",
-      "matchUpdateTypes": "digest",
-      "enabled": false
-    },
-    {
-      "description": [
         " Ensure commit and PR titles use the full package name for better clarity. Prevent",
-        " lowercase conversion of the package name to keep `Kong` correctly capitalized. Set commit",
-        " actions to use lowercase (e.g., `update`, `pin`, `replace`, `roll back`). Also update",
-        " the PR body table to reflect the full name and include a link to the source code"
+        " lowercase conversion of the package name to keep 'Kong' correctly capitalized. Set commit",
+        " actions to use lowercase (e.g., 'update', 'pin', 'replace', 'roll back'). Also update",
+        " the PR body table to reflect the full name"
       ],
       "matchManagers": ["custom.regex"],
       "matchPackageNames": ["Kong/public-shared-actions/**"],
@@ -138,8 +141,36 @@
       "replacement": {"commitMessageAction": "replace"},
       "rollback": {"commitMessageAction": "roll back"},
       "prBodyDefinitions": {
-        "Package": "[{{{packageName}}}]({{{sourceUrl}}}) ([source]({{{sourceUrl}}}/tree/{{#if newVersion}}%40{{{depName}}}%40{{{newVersion}}}{{else}}{{#if newDigest}}{{{newDigest}}}{{else}}main{{/if}}{{/if}}/{{{depName}}}))"
+        "Package": "[{{{packageName}}}]({{{sourceUrl}}}){{#if newName}}{{#unless (equals depName newName)}} → {{{newNameLinked}}}{{/unless}}{{/if}}"
       }
+    },
+    {
+      "description": [
+        " Force-upgrade and pin for Kong/public-shared-actions sub-actions. This rule upgrades",
+        " repositories using versions below 4 (e.g., v1 – v3) to the latest v4+ sub-action tag and",
+        " automatically pins each reference to its commit digest. It is prioritized and always",
+        " re-created until merged, bypassing normal schedules and Renovate rate limits so",
+        " repositories get secure, updatable references immediately.",
+        "",
+        " Why: The monorepo now publishes per-sub-action tags in the form '<sub-action>@<version>'",
+        " (e.g., 'workflow-notification@4.0.1') instead of plain 'vX.Y.Z' tags. Older references",
+        " like '...@v2' cannot be auto-migrated by tag alone. Upgrading to v4+ plus digest pinning",
+        " avoids tag-name mismatches because Renovate tracks updates by commit SHA and also annotates",
+        " the line with a friendly '# vX.Y.Z' comment for humans"
+      ],
+      "matchManagers": ["custom.regex"],
+      "matchPackageNames": ["Kong/public-shared-actions/**"],
+      "matchCurrentValue": "/^v?[0-3](?:\\.[0-9]+){0,2}$/",
+      "extends": [":disableRateLimiting", ":prImmediately"],
+      "recreateWhen": "always",
+      "schedule": ["at any time"],
+      "minimumReleaseAge": null,
+      "updateNotScheduled": true,
+      "dependencyDashboardApproval": false,
+      "prHeader": "> [!CAUTION]\n> This PR upgrades `Kong/public-shared-actions` sub-action to v4+ and pins it to the commit digest. It is prioritized (bypasses schedules/rate limits). Closing this PR will not stop it; Renovate will automatically reopen or recreate it until it is merged.\n\n---",
+      "prBodyNotes": [
+        "---\n> [!NOTE]\n> #### Mandatory upgrade to v4+ with automatic digest pinning for `Kong/public-shared-actions`\n>\n> Renovate is configured to upgrade any `Kong/public-shared-actions` sub-action still on versions below 4 to the latest v4+ version. As part of this upgrade, it will automatically pin each reference to the exact commit digest (and keep that digest refreshed over time).\n>\n> #### Background\n>\n> The `Kong/public-shared-actions` monorepo now publishes per-sub-action tags in the form `<sub-action>@<version>` (for example, `workflow-notification@4.0.1`) instead of plain `vX.Y.Z` tags. Older references like `...@v2` cannot be auto-migrated by tag alone.\n>\n> #### Why tag-only migration is not supported\n>\n> Important: Renovate will not change the tag format for you. Migrating from the older plain `vX.Y.Z` tags to the new per-sub-action tags while keeping tag-only references would require rewriting refs such as `...@v2` to a different tag name like `...@sca@5.1.1`. This contradicts the goal of dependency update automation because it relies on humans to manage tag-name changes and ongoing updates, which our automation is not designed to perform. For this reason, tag-only migration is not supported.\n>\n> Instead, this preset enforces digest pinning. Renovate resolves releases by tag, then writes the reference as the commit SHA for that release with a trailing human-friendly comment (e.g., `...@<sha> # v5.1.1`). Tracking commits rather than tag names keeps updates automated and robust even if tag naming conventions change.\n>\n> #### Security\n>\n> GitHub Actions security guidance recommends pinning third-party actions to a full commit SHA to protect against tag moving and supply-chain attacks.\n>\n> #### References\n>\n> - https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-third-party-actions"
+      ]
     }
   ]
 }
