@@ -21,7 +21,7 @@
         " - Extracts versions in the form 'vX.Y.Z-kong-...' for kuma-maintained builds"
       ],
       "customType": "regex",
-      "fileMatch": ["(^|/)go\\.mod$"],
+      "managerFilePatterns": ["/(^|/)go\\.mod$/"],
       "matchStrings": [
         "(?<packageName>github.com\\/kumahq\\/(?<depName>go-control-plane)) (?<currentValue>[^\\s]+)",
         "(?<packageName>github.com\\/kumahq\\/go-control-plane\\/(?<depName>.+)) (?<currentValue>[^\\s]+)"
