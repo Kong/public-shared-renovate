@@ -1,0 +1,73 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Manage updates for 'github.com/kumahq/go-control-plane' replacements in Go modules. This preset",
+    " adds a custom regex manager and package rules to handle replace directives consistently.",
+    "",
+    " Why this exists",
+    " - Upstream 'github.com/envoyproxy/go-control-plane' v0.12.0 introduced a potential deadlock;",
+    "   this is tracked in: https://github.com/envoyproxy/go-control-plane/issues/875",
+    " - Kuma temporarily relies on the fork 'github.com/kumahq/go-control-plane' and publishes",
+    "   'vX.Y.Z-kong-...' builds. This preset keeps those replace directives consistent and groups",
+    "   related updates (including subpackages) for easier review"
+  ],
+  "customManagers": [
+    {
+      "description": [
+        " Custom regex manager for updating 'github.com/kumahq/go-control-plane' replacements",
+        " in go.mod files.",
+        " - Matches the root module and any subpackages under 'go-control-plane/**'",
+        " - Captures the current value and replaces it with the latest version",
+        " - Extracts versions in the form 'vX.Y.Z-kong-...' for kuma-maintained builds"
+      ],
+      "customType": "regex",
+      "fileMatch": ["(^|/)go\\.mod$"],
+      "matchStrings": [
+        "(?<packageName>github.com\\/kumahq\\/(?<depName>go-control-plane)) (?<currentValue>[^\\s]+)",
+        "(?<packageName>github.com\\/kumahq\\/go-control-plane\\/(?<depName>.+)) (?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "go",
+      "depTypeTemplate": "replace",
+      "extractVersionTemplate": "^(?:{{{depName}}}\\/)?(?<version>v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>kong-.+))",
+      "autoReplaceStringTemplate": "{{{packageName}}} {{{newVersion}}}",
+      "versioningTemplate": "loose"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": [
+        " Disable updates by the default Go module manager for 'github.com/kumahq/go-control-plane'",
+        " entries when they are under a 'replace' directive. This ensures the custom regex manager is",
+        " the single source of truth for these updates"
+      ],
+      "groupName": "github.com/kumahq/go-control-plane*",
+      "matchManagers": ["gomod"],
+      "matchDepNames": ["github.com/kumahq/go-control-plane{/,}**"],
+      "matchDepTypes": ["replace"],
+      "enabled": false
+    },
+    {
+      "description": [
+        " Ensure updates to 'github.com/kumahq/go-control-plane' replacements use the custom",
+        " regex manager. After updating, run 'go mod tidy' and update import paths when required.",
+        " Commit message topic is set to the full package name"
+      ],
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["go"],
+      "matchDepTypes": ["replace"],
+      "matchPackageNames": ["github.com/kumahq/go-control-plane{/,}**"],
+      "commitMessageTopic": "{{{packageName}}}",
+      "postUpdateOptions": ["gomodTidy", "gomodUpdateImportPaths"]
+    },
+    {
+      "description": [
+        " Group updates for 'github.com/envoyproxy/go-control-plane' and the fork",
+        " 'github.com/kumahq/go-control-plane' (including subpackages) into a single PR group"
+      ],
+      "matchDatasources": ["go"],
+      "matchPackageNames": ["github.com/{envoyproxy,kumahq}/go-control-plane{/,}**"],
+      "groupName": "github.com/envoyproxy/go-control-plane*",
+      "groupSlug": "github.com-envoyproxy-go-control-plane"
+    }
+  ]
+}
