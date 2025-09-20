@@ -13,14 +13,19 @@
   ],
   "extends": [
     "config:best-practices",
+    "customManagers:dockerfileVersions",
+    "customManagers:helmChartYamlAppVersions",
+    "customManagers:makefileVersions",
+    "customManagers:tfvarsVersions",
     "schedule:earlyMondays",
     ":automergeDisabled",
+    ":configMigration",
     ":disableRateLimiting",
     ":gitSignOff",
     ":label(dependencies)",
     ":semanticCommitTypeAll(chore)",
-    "Kong/public-shared-renovate:github-actions#1.12.0",
-    "Kong/public-shared-renovate:go#1.12.0"
+    "Kong/public-shared-renovate:github-actions",
+    "Kong/public-shared-renovate:go"
   ],
   "commitMessageAction": "bump",
   "packageRules": [
