@@ -1,0 +1,150 @@
+// code: language=json5
+{
+  /*
+    Renovate (bot) config file.
+    see also: https://docs.renovatebot.com/configuration-options/
+  */
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  // https://docs.renovatebot.com/config-presets/
+  extends: [
+    // https://docs.renovatebot.com/presets-config/#configbest-practices
+    'config:best-practices',
+    // https://docs.renovatebot.com/presets-default/#rebasestaleprs
+    ':rebaseStalePrs',
+  ],
+  configMigration: true,
+  dependencyDashboard: true,
+  baseBranches: [
+    // EE LTSs
+    // see also: https://docs.konghq.com/gateway/latest/support-policy/#main
+    'next/2.8.x.x',
+    'next/3.4.x.x',
+    'next/3.10.x.x',
+    // 'next/3.14.x.x',
+    // 'next/3.18.x.x',
+    // 'next/3.22.x.x',
+    // EE non-LTSs
+    // 'next/3.8.x.x',
+    // 'next/3.9.x.x',
+    '/^next\\/3\\.(?:[7-9]|1[1-9])\\.x\\.x$/',
+    // OSS
+    // '/^release\\/\\d+\\.\\d+\\.x/',
+    // used for testing, can be ignored
+    'enterprise-master',
+    'community-master',
+    // master(s)
+    '$default',
+  ],
+  labels: [
+    'dependencies',
+    'chore',
+    'renovate',
+    'skip-changelog',
+    'skip-pr-template-validation',
+  ],
+  // only useful for limiting managers, not needed otherwise
+  // see also: https://github.com/renovatebot/renovate/discussions/29663
+  enabledManagers: [
+    // 'custom.regex',
+    // 'bazel',
+    'github-actions',
+  ],
+  branchConcurrentLimit: 20,
+  prConcurrentLimit: 20,
+  prHourlyLimit: 20,
+  pruneStaleBranches: true,
+  logLevelRemap: [
+    //
+    // DIY errors
+    //
+    {
+      matchMessage: '/^lookupUpdates error/',
+      newLogLevel: 'debug',
+    },
+    // {
+    //   matchMessage: '/^lookupUpdates error/',
+    //   newLogLevel: 'error',
+    // },
+    {
+      matchMessage: '/^Dependency .+ has unsupported/unversioned value/',
+      newLogLevel: 'warn',
+    },
+    {
+      matchMessage: '/^lookupUpdates/',
+      newLogLevel: 'debug',
+    },
+    // "Value is not updated" or "Digest is not updated" indicates that the
+    // custom manager did a replacement, but can't find the new digest/value in
+    // the file afterwards
+    {
+      matchMessage: '/ is not updated /',
+      newLogLevel: 'error',
+    },
+    {
+      matchMessage: '/^Config validation errors found/',
+      newLogLevel: 'error',
+    },
+
+    // custom manager output (normally trace)
+    {
+      matchMessage: '/HTTP request/',
+      newLogLevel: 'debug',
+    },
+    {
+      matchMessage: '/Skipping bump because newValue is the same/',
+      newLogLevel: 'debug',
+    },
+    {
+      matchMessage: '/^Found no satisfying versions with/',
+      newLogLevel: 'warn',
+    },
+    {
+      matchMessage: '/^Custom manager fetcher/',
+      newLogLevel: 'debug',
+    },
+    {
+      matchMessage: '/^Error while evaluating JSONata expression/',
+      newLogLevel: 'debug',
+    },
+    {
+      matchMessage: '/^Response that has failed validation/',
+      newLogLevel: 'debug',
+    },
+    {
+      matchMessage: '/custom datasource/',
+      newLogLevel: 'debug',
+    },
+    {
+      matchMessage: '/^Error while evaluating/',
+      newLogLevel: 'debug',
+    },
+    // {
+    //   matchMessage: '/^Response has failed validation/',
+    //   newLogLevel: 'debug',
+    // },
+    {
+      matchMessage: '/^Response that has failed validation/',
+      newLogLevel: 'debug',
+    },
+
+    // PR creation
+    {
+      matchMessage: '/^prTitle: /',
+      newLogLevel: 'debug',
+    },
+
+    // shhhhhh
+    {
+      matchMessage: '/^Branch lists/',
+      newLogLevel: 'trace',
+    },
+    {
+      matchMessage: '/^branch\\.isModified\\(\\) = true/',
+      newLogLevel: 'trace',
+    },
+  ],
+  customManagers: [],
+  customDatasources: {},
+  ignoreUnstable: false,
+  packageRules: [],
+}

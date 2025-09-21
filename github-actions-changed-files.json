@@ -1,17 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
-    " Shared preset that blocks automatic updates for 'tj-actions/changed-files' and requires",
-    " manual bumps. We currently do not trust automated updates of this dependency and want a human",
-    " to review, test, and consciously approve each version change. Renovate PRs are disabled",
-    " on purpose; maintainers should update it manually when deemed safe and appropriate",
-    " Context: prior malicious release: https://github.com/advisories/ghsa-mrrh-fwg8-r2c3"
+    " [MOVED] This preset has been relocated to 'security-incidents/github-actions/tj-actions-changed-files.json'",
+    " It is now an alias that extends the new location to preserve backwards compatibility"
   ],
-  "packageRules": [
-    {
-      "matchPackageNames": ["tj-actions/changed-files"],
-      "matchDatasources": ["github-actions"],
-      "enabled": false
-    }
+  "extends": ["Kong/public-shared-renovate//security-incidents/github-actions/tj-actions-changed-files"],
+  "prBodyNotes": [
+    "---\n> [!WARNING]\n> #### Moved preset: `Kong/public-shared-renovate:github-actions-changed-files`\n>\n> This preset has been relocated to `Kong/public-shared-renovate//security-incidents/github-actions/tj-actions-changed-files`. Current preset is a temporary compatibility alias to preserve backwards compatibility\n>\n> #### Action required\n>\n> Update your Renovate config to extend directly from `Kong/public-shared-renovate//security-incidents/github-actions/tj-actions-changed-files`\n>\n> #### Examples\n>\n> Before (any of the following):\n>\n> ```json\n> [\n>   { \"extends\": [\"Kong/public-shared-renovate:github-actions-changed-files\"] },\n>   { \"extends\": [\"Kong/public-shared-renovate:github-actions-changed-files.json\"] },\n>   { \"extends\": [\"local>Kong/public-shared-renovate:github-actions-changed-files\"] },\n>   { \"extends\": [\"github>Kong/public-shared-renovate:github-actions-changed-files\"] }\n> ]\n> ```\n>\n> After:\n>\n> ```json\n> { \"extends\": [\"Kong/public-shared-renovate//security-incidents/github-actions/tj-actions-changed-files\"] }\n> ```\n>\n> #### Timeline\n>\n> This compatibility alias is temporary and is scheduled for removal in **January 2026**\n"
   ]
 }

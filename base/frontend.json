@@ -1,0 +1,242 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":automergeRequireAllStatusChecks",
+    ":automergePatch",
+    ":automergeMinor",
+    "local>Kong/public-shared-renovate:github-actions"
+  ],
+  "dependencyDashboard": true,
+  "rangeStrategy": "bump",
+  "platformAutomerge": true,
+  "npmrcMerge": true,
+  "labels": [
+    "dependencies",
+    "renovate-bot"
+  ],
+  "schedule": [
+    "before 5am every weekday"
+  ],
+  "timezone": "America/New_York",
+  "automergeSchedule": [
+    "every weekday"
+  ],
+  "minimumReleaseAge": "14 days",
+  "updateNotScheduled": false,
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "tj-actions/changed-files",
+        "Kong/kong-api-tests",
+        "the-actions-org/workflow-dispatch"
+      ],
+      "matchDatasources": [
+        "github-actions"
+      ],
+      "enabled": false
+    },
+    {
+      "automerge": true,
+      "groupName": "all non-major dependencies with stable version",
+      "groupSlug": "all-minor-patch",
+      "matchCurrentVersion": "!/^0/",
+      "matchPackageNames": [
+        "*"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "all @kong scoped dependencies",
+      "groupSlug": "all-kong-scoped-deps",
+      "matchPackageNames": [
+        "@kong/**"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "2 hours"
+    },
+    {
+      "automerge": true,
+      "groupName": "all @kong-ui scoped dependencies",
+      "groupSlug": "all-kong-ui-scoped-deps",
+      "matchPackageNames": [
+        "@kong-ui/**"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "2 hours"
+    },
+    {
+      "automerge": true,
+      "groupName": "all @kong-ui-public scoped dependencies",
+      "groupSlug": "all-kong-ui-public-scoped-deps",
+      "matchPackageNames": [
+        "@kong-ui-public/**"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "2 hours"
+    },
+    {
+      "automerge": true,
+      "groupName": "all minor and patch updates for @kong scoped dependencies with unstable version",
+      "groupSlug": "kong-unstable-patch",
+      "matchPackageNames": ["@kong/**"],
+      "matchCurrentVersion": "<1.0.0",
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "all minor and patch updates for @kong-ui scoped dependencies with unstable version",
+      "groupSlug": "kong-unstable-patch",
+      "matchPackageNames": [
+        "@kong-ui/**"
+      ],
+      "matchCurrentVersion": "<1.0.0",
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "all minor and patch updates for @kong-ui-public scoped dependencies with unstable version",
+      "groupSlug": "kong-unstable-patch",
+      "matchPackageNames": [
+        "@kong-ui-public/**"
+      ],
+      "matchCurrentVersion": "<1.0.0",
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "minor and patch updates for konnect analytics dependencies",
+      "groupSlug": "konnect-analytics",
+      "matchPackageNames": [
+        "@kong-ui-public/analytics-*",
+        "@kong-ui-public/dashboard-renderer",
+        "@kong-ui-public/metric-cards",
+        "@kong-ui/konnect-analytics-bridge",
+        "@kong-ui/timeframe-selector"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "2 hours"
+    },
+    {
+      "automerge": true,
+      "groupName": "vue dependencies with stable version",
+      "groupSlug": "vue-minor-patch",
+      "matchCurrentVersion": "!/^0/",
+      "matchPackageNames": [
+        "@vue/test-utils",
+        "@vue/tsconfig",
+        "@vueuse/*",
+        "@vitejs/plugin-vue",
+        "vitest",
+        "@vitest/*",
+        "vite-*",
+        "vite-plugin-vue-devtools",
+        "vue-router",
+        "vue-demi",
+        "vue-tsc",
+        "vue-component-meta",
+        "vue"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "14 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "stylelint dependencies with stable version",
+      "groupSlug": "stylelint-minor-patch",
+      "matchCurrentVersion": "!/^0/",
+      "matchPackageNames": [
+        "stylelint",
+        "stylelint-config-html",
+        "stylelint-config-recommended-scss",
+        "stylelint-config-recommended-vue",
+        "stylelint-order"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "14 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "playwright dependencies with stable version",
+      "groupSlug": "playwright-minor-patch",
+      "matchCurrentVersion": "!/^0/",
+      "matchPackageNames": [
+        "playwright",
+        "playwright-core",
+        "@playwright/*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "14 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "cypress dependencies with stable version",
+      "groupSlug": "cypress-minor-patch",
+      "matchCurrentVersion": "!/^0/",
+      "matchPackageNames": [
+        "cypress",
+        "cypress-*",
+        "@cypress/*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "14 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "all non-major github actions with stable version",
+      "groupSlug": "all-minor-patch-github-actions",
+      "matchCurrentVersion": "!/^v0/",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "automerge": true,
+      "groupName": "eslint",
+      "groupSlug": "eslint",
+      "matchPackageNames": ["/eslint/"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "12 days"
+    },
+    {
+      "groupName": "ignored dependencies",
+      "groupSlug": "all-kong-ui-ignored-dependencies",
+      "matchPackageNames": [
+        "inquirer",
+        "@types/inquirer"
+      ],
+      "enabled": false
+    },
+    {
+      "groupName": "pnpm engines range",
+      "groupSlug": "pnpm-engines",
+      "matchPackageNames": [
+        "pnpm"
+      ],
+      "matchDepTypes": [
+        "engines"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    }
+  ]
+}

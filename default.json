@@ -1,0 +1,67 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Default preset for Kong repositories. A secure, low-noise starting point that works across",
+    " languages and ecosystems without needing to compose multiple presets.",
+    "",
+    " To avoid duplication, detailed behavior and examples live in the repository README:",
+    " - Quick start: ./README.md#quick-start",
+    " - What you get by default: ./README.md#what-you-get-by-default",
+    " - Common variations (labels, cadence, etc.): ./README.md#common-variations",
+    " - Security preset customization examples: ./README.md#security-preset-customization-examples",
+    "",
+    " Usage:",
+    " - { \"extends\": [\"Kong/public-shared-renovate\"] }",
+    "",
+    " Notes:",
+    " - Settings that don't apply to your stack safely no-op",
+    " - You can override any defaults (schedule, labels, automerge, reviewers, etc.) locally"
+  ],
+  "extends": [
+    "config:best-practices",
+    "customManagers:dockerfileVersions",
+    "customManagers:helmChartYamlAppVersions",
+    "customManagers:makefileVersions",
+    "customManagers:tfvarsVersions",
+    "mergeConfidence:all-badges",
+    "schedule:earlyMondays",
+    ":automergeRequireAllStatusChecks",
+    ":automergeStableNonMajor",
+    ":disableRateLimiting",
+    ":gitSignOff",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(chore)",
+    "Kong/public-shared-renovate//base/frontend",
+    "Kong/public-shared-renovate//base/github-actions",
+    "Kong/public-shared-renovate//base/go",
+    "Kong/public-shared-renovate//base/security",
+    "Kong/public-shared-renovate//overrides/labels"
+  ],
+  "automergeStrategy": "squash",
+  "assignAutomerge": true,
+  "reviewersFromCodeOwners": true,
+  "keepUpdatedLabel": "renovate/keep-updated",
+  "minimumReleaseAge": "12 days",
+  "prBodyDefinitions": {"Change": "`{{{displayFrom}}}` → `{{{displayTo}}}`"},
+  "commitMessageLowerCase": "never",
+  "pin": {"commitMessageAction": "pin"},
+  "pinDigest": {"commitMessageAction": "pin"},
+  "replacement": {"commitMessageAction": "replace"},
+  "rollback": {"commitMessageAction": "roll back"},
+  "packageRules": [
+    {
+      "description": [
+        " Set commit message fields at the package-rule level with a catch-all match ('**') rather",
+        " than at the root. Root-level fields can be overridden by more specific sub-configs and",
+        " packageRules from composed presets. By defining commitMessageAction/topic/extra in",
+        " a packageRule that matches every dependency, this baseline is applied uniformly after",
+        " composition, while still allowing even more specific packageRules to override it when needed.",
+        " See: https://docs.renovatebot.com/configuration-options/#packagerules"
+      ],
+      "matchPackageNames": ["**"],
+      "commitMessageAction": "bump",
+      "commitMessageTopic": "{{#if (containsString packageName '/public-shared-actions/')}}{{{packageName}}}{{else}}{{{depName}}}{{/if}}{{#if (and (equals updateType 'digest') (equals currentValue newValue) newValue)}}:{{{newValue}}}{{/if}}",
+      "commitMessageExtra": "{{#if (or (and (or isMajor isMinor isPatch) (or isSingleVersion currentDigestShort)) (and (equals updateType 'digest') currentDigestShort))}}from {{#if (equals updateType 'digest')}}{{{currentDigestShort}}}{{else if isSingleVersion}}{{{replace '^v?' 'v' currentValue}}}{{/if}} {{/if}}to {{#if isPinDigest}}{{{newDigestShort}}}{{else if isMajor}}{{prettyNewMajor}}{{else if isSingleVersion}}{{prettyNewVersion}}{{else if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Renovate configuration for this repository. This file configures Renovate for maintaining",
+    " dependencies in this repo. It is not a reusable preset for other repositories"
+  ],
+  "extends": ["Kong/public-shared-renovate"]
+}

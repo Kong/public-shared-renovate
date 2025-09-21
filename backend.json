@@ -1,43 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
-    " This preset targets backend repositories. It schedules dependency updates for early Monday",
-    " mornings, applies the Renovate best practices and extends shared presets for GitHub Actions and",
-    " Go modules. Automerge is disabled, git sign-off is required, a 'dependencies' label is added",
-    " to PRs, and 'chore' is used as the semantic commit type",
-    "",
-    " PR hourly limits are removed to prevent updates from queueing for a full week. When limits are",
-    " set and more updates than the configured 'prHourlyLimit' are generated during the early-Monday",
-    " window, the rate-limited ones wait until the next scheduled window (the following Monday). If",
-    " teams prefer limits, they can set project-specific values in their local Renovate config"
+    " [DEPRECATED] This preset is deprecated and now acts as a compatibility alias. It simply",
+    " extends the default preset in this repository to preserve backwards compatibility."
   ],
-  "extends": [
-    "config:best-practices",
-    "customManagers:dockerfileVersions",
-    "customManagers:helmChartYamlAppVersions",
-    "customManagers:makefileVersions",
-    "customManagers:tfvarsVersions",
-    "schedule:earlyMondays",
-    ":automergeDisabled",
-    ":configMigration",
-    ":disableRateLimiting",
-    ":gitSignOff",
-    ":label(dependencies)",
-    ":semanticCommitTypeAll(chore)",
-    "Kong/public-shared-renovate:github-actions",
-    "Kong/public-shared-renovate:go"
-  ],
-  "commitMessageAction": "bump",
-  "packageRules": [
-    {
-      "description": [
-        " Standardize commit messages to use 'from ... to ...' notation for version and digest",
-        " changes across all dependencies. This mirrors Dependabot's style so downstream automation",
-        " (e.g., changelog generation) remains compatible"
-      ],
-      "matchPackageNames": ["**"],
-      "commitMessageTopic": "{{#if (containsString packageName '/public-shared-actions/')}}{{{packageName}}}{{else}}{{depName}}{{/if}}{{#if (and (equals updateType 'digest') (equals currentValue newValue) newValue)}}:{{{newValue}}}{{/if}}",
-      "commitMessageExtra": "{{#if (or (and (or isMajor isMinor isPatch) (or (and isSingleVersion currentVersion) currentValue currentDigestShort)) (and (equals updateType 'digest') currentDigestShort))}}from {{#if (equals updateType 'digest')}}{{{currentDigestShort}}}{{else if currentValue}}{{{currentValue}}}{{else}}{{{currentDigestShort}}}{{/if}} {{/if}}to {{#if (or isPinDigest (equals updateType 'digest'))}}{{{newDigestShort}}}{{else if isSingleVersion}}{{newVersion}}{{else if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}"
-    }
+  "extends": ["Kong/public-shared-renovate"],
+  "prBodyNotes": [
+    "---\n> [!WARNING]\n> #### Deprecated preset: `Kong/public-shared-renovate:backend`\n>\n> This preset is now an alias that simply extends `Kong/public-shared-renovate` (the default preset).\n>\n> #### Action required\n>\n> Update your Renovate config to extend directly from `Kong/public-shared-renovate`.\n>\n> #### Examples\n>\n> Before (any of the following):\n>\n> ```json\n> [\n>   { \"extends\": [\"Kong/public-shared-renovate:backend\"] },\n>   { \"extends\": [\"Kong/public-shared-renovate:backend.json\"] },\n>   { \"extends\": [\"local>Kong/public-shared-renovate:backend\"] },\n>   { \"extends\": [\"github>Kong/public-shared-renovate:backend\"] }\n> ]\n> ```\n>\n> After:\n>\n> ```json\n> { \"extends\": [\"Kong/public-shared-renovate\"] }\n> ```\n>\n> #### Timeline\n>\n> This compatibility alias is temporary and is scheduled for removal in **January 2026**"
   ]
 }

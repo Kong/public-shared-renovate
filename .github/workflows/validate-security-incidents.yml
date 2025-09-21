@@ -1,0 +1,85 @@
+name: "Validate security incidents presets"
+
+on:
+  pull_request:
+    paths:
+      - "security-incidents/**"
+      - "base/security.json"
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: "Check security-incidents directory and collect presets"
+        id: check
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ ! -d security-incidents ]; then
+            echo "No security-incidents/ directory present. Skipping validation."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          mapfile -t files < <(find security-incidents -type f \( -name "*.json" -o -name "*.json5" \) | sort)
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No presets found under security-incidents/. Skipping validation."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Found ${#files[@]} incident preset file(s)"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      - name: "Validate base/security.json extends all presets from security-incidents/"
+        if: steps.check.outputs.skip != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Collect all preset files under security-incidents/ (JSON and JSON5)
+          mapfile -t files < <(find security-incidents -type f \( -name "*.json" -o -name "*.json5" \) | sort)
+
+          if [ -f base/security.json ]; then
+            mapfile -t extends < <(jq -r '.extends[]? // empty' base/security.json)
+          else
+            echo "base/security.json not found; treating 'extends' as empty."
+            extends=()
+          fi
+
+          missing=()
+          for f in "${files[@]}"; do
+            rel="${f#./}"
+            # Strip .json or .json5 extension for preset ID
+            if [[ "$rel" == *.json ]]; then
+              rel_no_ext="${rel%.json}"
+            elif [[ "$rel" == *.json5 ]]; then
+              rel_no_ext="${rel%.json5}"
+            else
+              # Skip unexpected file types just in case
+              continue
+            fi
+            id="Kong/public-shared-renovate//${rel_no_ext}"
+            found=0
+            for e in "${extends[@]}"; do
+              if [[ "$e" == "$id" ]]; then
+                found=1
+                break
+              fi
+            done
+            if [[ $found -eq 0 ]]; then
+              missing+=("$id")
+            fi
+          done
+
+          if [[ ${#missing[@]} -gt 0 ]]; then
+            echo "::error title=Missing incident presets in base/security.json::The following presets under security-incidents/ are not extended in base/security.json's 'extends' array:"
+            for m in "${missing[@]}"; do
+              echo " - $m"
+            done
+            exit 1
+          fi
+
+          echo "All security-incidents presets are properly extended in base/security.json."
