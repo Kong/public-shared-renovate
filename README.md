@@ -200,14 +200,14 @@ When defined at the root level, this setting applies to all dependencies and upd
   "minimumReleaseAge": "30 days",
   "packageRules": [
     {
-      "matchPackageNames": ["left-pad"],
+      "matchDepNames": ["left-pad"],
       "minimumReleaseAge": "a billion years"
     }
   ]
 }
 ```
 
-⚠️ **Note:** This setting does not apply to updates triggered by `vulnerabilityReports`. Security-related updates always bypass `minimumReleaseAge` and Renovate will open a PR as soon as a fix is available.
+⚠️ **Note:** This setting does not apply to updates triggered by `vulnerabilityAlerts`. Security-related updates always bypass `minimumReleaseAge` and Renovate will open a PR as soon as a fix is available.
 
 > [!CAUTION]
 > #### Reducing the minimum release age
@@ -215,20 +215,6 @@ When defined at the root level, this setting applies to all dependencies and upd
 > The default value is **12 days**. Lowering it, either globally or within a `packageRule`, must only happen in rare and very specific cases that are reviewed and pre-approved by the security team.
 >
 > This delay protects against supply-chain risks where a new version might later prove malicious or unstable. It gives the ecosystem time to catch issues, publish advisories, and release fixes before updates reach our codebase. Shortening the window weakens this safeguard and raises the risk of introducing compromised or broken dependencies.
-
-## Deprecations and moved presets
-
-Several legacy top-level presets are now compatibility aliases. Prefer the new locations shown below.
-
-- [`backend.json`](./backend.json) - deprecated alias for the default preset. Use [Kong/public-shared-renovate](./default.json)
-- [`go.json`](./go.json) - moved to [Kong/public-shared-renovate//base/go](./base/go.json)
-- [`github-actions.json`](./github-actions.json) - moved to [Kong/public-shared-renovate//base/github-actions](./base/github-actions.json)
-- [`gateway.json5`](./gateway.json5) - moved to [Kong/public-shared-renovate//scoped/kong/gateway](./scoped/kong/gateway.json)
-- [`github-actions-changed-files.json`](./github-actions-changed-files.json) - moved to [Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files](./security/incidents/github-actions/tj-actions-changed-files.json)
-- [`security-base.json`](./security-base.json) - moved to [Kong/public-shared-renovate//security/base](./security/base.json)
-- [`security-extended.json`](./security-extended.json) - deprecated alias that composes the base security preset with security overrides for labels and reviewers
-
-
 
 ## Preset directories overview
 
@@ -258,12 +244,6 @@ Centralize security posture and incident response.
 
 - [security/incidents/](./security/incidents) - Narrowly scoped, temporary presets created during supply-chain or ecosystem incidents. See the contributor guide section *Security incident response presets* for authoring and wiring guidance
 
-
 ## Security incidents
 
-Guidance for creating, wiring, and maintaining security-incident presets is documented in the contributor guide. This includes the full process, directory layout, common patterns, examples, and expectations for deprecation and cleanup.
-
-- Contributor guide: [Security incident response presets](./CONTRIBUTING.md#security-incident-response-presets)
-- Presets directory: [security/incidents/](./security/incidents)
-- Aggregator preset: [security/_incidents.json](./security/_incidents.json)
-- Base preset: [security/base.json](./security/base.json)
+Guidance for creating, wiring, and maintaining security-incident presets is documented in the [contributor guide](./CONTRIBUTING.md#security-incident-response-presets). This includes the full process, directory layout, common patterns, examples, and expectations for deprecation and cleanup.

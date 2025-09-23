@@ -5,17 +5,12 @@
 # Auto-generate the Renovate security incidents aggregator preset
 #
 # Usage
-#   ./sync-security-incidents.sh
+#   ./sync-security-incidents.sh [--aggregator <output_json>]
+#   ./sync-security-incidents.sh --help
 #
 # Behavior
-# - Collect all JSON presets under security/incidents/**
-# - Generate security/_incidents.json with a sorted 'extends' array
-#
-# Safety settings
-# - set -e / exit on first error
-# - set -u / fail on unset vars
-# - set -o pipefail / fail a pipeline if any command fails
-# - IFS=$'\n\t' / split on newline and tab only
+# - Collect all JSON presets under the incidents dir (security/incidents/**)
+# - Generate the aggregator JSON (default security/_incidents.json) with a sorted 'extends' array
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -24,11 +19,96 @@ INCIDENTS_DIR="security/incidents"
 AGGREGATOR_JSON="security/_incidents.json"
 PRESET_PREFIX="Kong/public-shared-renovate//"
 
-# shellcheck source=_common.sh
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
-. "${SCRIPT_DIR}/_common.sh"
+print_usage() {
+  cat <<USAGE
+Usage: $0 [--aggregator <path>] [--help]
 
-# list incident files, nul-delimited, stable sort
+Options:
+  --aggregator <path>  Output aggregator JSON path (default: ${AGGREGATOR_JSON})
+  -h, --help           Show this help and exit
+USAGE
+}
+
+# Ensure the next token exists and isn't another flag
+require_arg() {
+  local opt=$1 val=${2-}
+  [[ -n "$val" && ! "$val" =~ ^- ]] || die "missing value for $opt"
+}
+
+parse_flags() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --aggregator)
+        require_arg "$1" "${2-}"
+        AGGREGATOR_JSON="$2"; shift 2;;
+      -h|--help)
+        print_usage; exit 0;;
+      --)
+        shift; break;;
+      *)
+        die "unknown option: $1";;
+    esac
+  done
+}
+
+# If the message already contains a GitHub annotation prefix (::level::), print as-is.
+# Otherwise, prefix with the requested level
+__emit() {
+  local level=$1
+  shift || true
+  local msg="$*"
+
+  if [[ "$msg" == *"::"* ]]; then
+    printf '%s\n' "$msg"
+  elif [[ -n "$level" ]]; then
+    printf '::%s::%s\n' "$level" "$msg"
+  else
+    printf '%s\n' "$msg"
+  fi
+}
+
+log()    { __emit ""        "$@"; }
+notice() { __emit "notice"  "$@"; }
+debug()  { __emit "debug"   "$@"; }
+warn()   { __emit "warning" "$@"; }
+error()  { __emit "error"   "$@"; }
+die()    { error "$@"; exit 1; }
+
+# Usage: require_tools git jq ...
+require_tools() {
+  local missing=() t
+  for t in "$@"; do
+    command -v "$t" >/dev/null 2>&1 || missing+=("$t")
+  done
+  (( ${#missing[@]} == 0 )) || die "missing required tools: ${missing[*]}"
+}
+
+ensure_repo() {
+  git rev-parse --git-dir >/dev/null 2>&1 || die "not a git repository"
+}
+
+# Strip leading ./ for stable ids
+relpath() {
+  local p=$1
+  case "$p" in
+  ./*) printf '%s\n' "${p#./}" ;;
+  *)   printf '%s\n' "$p" ;;
+  esac
+}
+
+# Remove .json suffix if present
+strip_json_ext() {
+  local p=$1
+  printf '%s\n' "${p%.json}"
+}
+
+# Example: prefix=Kong/public-shared-renovate// rel=security/incidents/foo
+preset_id_from_rel_noext() {
+  local prefix=$1 rel_no_ext=$2
+  printf '%s%s\n' "$prefix" "$rel_no_ext"
+}
+
+# List incident files, nul-delimited, stable sort
 collect_incident_files() {
   local files
   mapfile -d '' -t files < <(
@@ -37,21 +117,21 @@ collect_incident_files() {
   printf '%s\0' "${files[@]}"
 }
 
-# output sorted unique preset ids (one per line)
+# Output sorted unique preset ids (one per line)
 sorted_incident_ids() {
   local -a ids=()
   local f rel rel_no_ext id
   while IFS= read -r -d '' f; do
-    rel=$(common::relpath "$f")
-    rel_no_ext=$(common::strip_json_ext "$rel")
-    id=$(common::preset_id_from_rel_noext "$PRESET_PREFIX" "$rel_no_ext")
+    rel=$(relpath "$f")
+    rel_no_ext=$(strip_json_ext "$rel")
+    id=$(preset_id_from_rel_noext "$PRESET_PREFIX" "$rel_no_ext")
     ids+=("$id")
   done < <(collect_incident_files)
 
   ((${#ids[@]})) && printf '%s\n' "${ids[@]}" | sort -u
 }
 
-# print final JSON to stdout
+# Print final JSON to stdout
 generate_json() {
   local ids extends_json
   ids="$(sorted_incident_ids || true)"
@@ -74,7 +154,7 @@ generate_json() {
     }'
 }
 
-# write only if content changed; return 0 if changed, 1 otherwise
+# Write only if content changed; return 0 if changed, 1 otherwise
 write_if_changed() {
   local tmp
   tmp="$(mktemp)"
@@ -83,20 +163,23 @@ write_if_changed() {
   if [[ ! -f "$AGGREGATOR_JSON" ]] || ! diff -u "$AGGREGATOR_JSON" "$tmp" > /dev/null 2>&1; then
     mkdir -p "$(dirname "$AGGREGATOR_JSON")"
     mv "$tmp" "$AGGREGATOR_JSON"
-    common::log "updated $AGGREGATOR_JSON"
+    log "updated $AGGREGATOR_JSON"
     return 0
   fi
 
   rm -f "$tmp"
-  common::log "no changes in $AGGREGATOR_JSON"
+  log "no changes in $AGGREGATOR_JSON"
   return 1
 }
 
 main() {
-  common::require_tools jq git
+  # Parse CLI flags first to allow overriding defaults
+  parse_flags "$@"
+
+  require_tools jq git
 
   if [[ ! -d $INCIDENTS_DIR ]]; then
-    common::log "no $INCIDENTS_DIR directory, nothing to do"
+    log "no $INCIDENTS_DIR directory, nothing to do"
     exit 0
   fi
 
@@ -104,7 +187,7 @@ main() {
   write_if_changed || true
 }
 
-# allow sourcing in potential tests
+# Allow sourcing
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   main "$@"
 fi

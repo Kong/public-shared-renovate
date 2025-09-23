@@ -28,7 +28,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: "Generate aggregator"
-        run: .github/scripts/sync-security-incidents.sh
+        run: .github/scripts/sync-security-incidents.sh --aggregator "$AGGREGATOR_JSON"
 
       - name: "Determine if the aggregator file changed"
         id: changed
