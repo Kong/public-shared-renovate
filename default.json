@@ -34,7 +34,7 @@
     "Kong/public-shared-renovate//base/frontend",
     "Kong/public-shared-renovate//base/github-actions",
     "Kong/public-shared-renovate//base/go",
-    "Kong/public-shared-renovate//base/security",
+    "Kong/public-shared-renovate//security/base",
     "Kong/public-shared-renovate//overrides/labels"
   ],
   "automergeStrategy": "squash",

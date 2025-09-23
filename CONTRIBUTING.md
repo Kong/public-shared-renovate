@@ -32,11 +32,11 @@ Use this decision aid to place new presets correctly. Each directory serves a di
 - Depends on project-specific conventions (module paths, tags, replace directives, and so on)
 - Would be confusing or risky if applied org-wide
 
-### [`security-incidents/`](security-incidents)
+### [`security/incidents/`](security/incidents)
 
 - Org-wide guardrails that should apply broadly and quickly during incidents
 - Slow or gate updates to a risky dependency, temporarily disable updates, block known-bad versions, or force replacements
-- Each incident preset must be manually wired into `base/security.json` (CI validates wiring)
+- The aggregator preset `security/_incidents.json` is updated automatically by CI; no manual edits are required (CI validates wiring)
 
 ## Common guidelines (apply to all presets)
 
@@ -137,7 +137,7 @@ These guidelines standardize how we author presets and reduce the maintenance bu
 
 - Validate JSON locally (your editor or a linter should catch syntax issues). Presets must be strict JSON
 - Sanity-check with Renovate: reference your new preset in a throwaway repo or a local renovate-config validator/dry-run if available
-- For incident presets, ensure `base/security.json` extends the new preset; CI will fail if wiring is missing
+- For incident presets: no manual changes to the aggregator are needed. CI will update `security/_incidents.json` to include your preset and will fail validation if coverage is missing
 
 ## Security incident response presets
 
@@ -148,21 +148,21 @@ When a supply‑chain incident or other security event requires immediate guardr
 
 ### Process to add a new incident preset
 
-1. Create a new preset JSON file under [`security-incidents/`](security-incidents). Keep it narrowly scoped to the affected dependency/packages
+1. Create a new preset JSON file under [`security/incidents/`](security/incidents). Keep it narrowly scoped to the affected dependency/packages
 2. Add human‑readable context in `description`/`prBodyNotes` so reviewers know why and how to proceed
-3. Edit [base/security.json](base/security.json) and add your new preset to its `extends` array using the full preset ID: `Kong/public-shared-renovate//security-incidents/<subpath-without-.json>`
-4. Open a PR. The CI workflow will verify that [base/security.json](base/security.json) extends all presets in `security-incidents/`
+3. Open a PR. The CI auto-sync workflow will update the aggregator preset [security/_incidents.json](security/_incidents.json) in your PR to include all incident presets (kept in alphabetical order)
+4. CI validation will verify that the aggregator includes every preset under `security/incidents/` and that [security/base.json](security/base.json) composes the aggregator
 
 > [!TIP]
 > 🌟 Keep these presets conservative and review‑friendly — prefer minimal, targeted rules over broad changes
 
 ### Referencing an incident preset directly (rare)
 
-Repositories typically do not consume incident presets directly; they are composed into `base/security.json`, which consumer repositories extend. If you must reference a preset directly (rare):
+Repositories typically do not consume incident presets directly; they are composed via the aggregator `security/_incidents.json` into `security/base.json`, which consumer repositories extend. If you must reference a preset directly (rare):
 
 ```json
 {
-  "extends": ["Kong/public-shared-renovate//security-incidents/<subpath>"]
+  "extends": ["Kong/public-shared-renovate//security/incidents/<subpath>"]
 }
 ```
 
@@ -171,7 +171,7 @@ Repositories typically do not consume incident presets directly; they are compos
 Use this structure so presets are easy to find, review, and compose:
 
 ```
-security-incidents/
+security/incidents/
   github-actions/
     tj-actions-changed-files.json
   npm/
@@ -182,20 +182,20 @@ security-incidents/
 
 #### Guidelines
 
-- **Location**: put every incident preset under `security-incidents/`
+- **Location**: put every incident preset under `security/incidents/`
 - **Nesting by ecosystem**: group under a top‑level directory such as `github-actions/`, `npm/`, `go/`, `docker/`, or `misc/` (create others as needed)
 - **File naming**: use short, descriptive, kebab-case names that reflect the subject and intent, e.g., `tj-actions-changed-files.json`, `npm-leftpad-block.json`
 - **One preset per file**: keep each file narrowly scoped to a single incident or mitigation
 - **Format**: `.json` only with strict JSON syntax (no JSON5, no comments, no trailing commas)
-- **Preset ID shape**: `Kong/public-shared-renovate//<path-without-.json>` (i.e. `Kong/public-shared-renovate//security-incidents/github-actions/tj-actions-changed-files`)
+- **Preset ID shape**: `Kong/public-shared-renovate//<path-without-.json>` (i.e. `Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files`)
 - **Documentation**: include concise `description` and, when applicable, reviewer guidance in `prBodyNotes` so the rationale and next steps are clear
-- **Wiring**: after creating a file, manually add its preset ID to `base/security.json` in the `extends` array (see "Process" above). The CI check will validate this wiring in PRs
+- **Wiring**: no manual wiring required. After you add a file under `security/incidents/`, CI will update the aggregator `security/_incidents.json` in your PR and validate coverage in CI
 
 ### Common patterns
 
 #### Gate risky dependencies with a higher `minimumReleaseAge` and review guardrails
 
-Use this pattern to slow down adoption of a dependency while an incident is investigated or confidence builds. It adds a clear caution label, enforces a `minimumReleaseAge` before PRs are created, and surfaces reviewer guidance via `prBodyNotes` (see [`security-incidents/github-actions/tj-actions-changed-files.json`](security-incidents/github-actions/tj-actions-changed-files.json)).
+Use this pattern to slow down adoption of a dependency while an incident is investigated or confidence builds. It adds a clear caution label, enforces a `minimumReleaseAge` before PRs are created, and surfaces reviewer guidance via `prBodyNotes` (see [`security/incidents/github-actions/tj-actions-changed-files.json`](security/incidents/github-actions/tj-actions-changed-files.json)).
 
 ```json
 {
@@ -339,7 +339,7 @@ Before opening a PR:
 - [ ] `description` explains intent; `prBodyNotes` added if reviewer guidance is needed
 - [ ] File name is short, descriptive, kebab-case
 - [ ] Parameterized presets document arguments with examples
-- [ ] For security incidents: [`base/security.json`](base/security.json) updated to extend the new preset
+- [ ] For security incidents: no manual change to the aggregator required — CI will update [`security/_incidents.json`](security/_incidents.json) in your PR
 - [ ] Backward-compatibility alias added if moving/renaming
 - [ ] Root [README](README.md) updated if you add user-facing capabilities or move presets
 

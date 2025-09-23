@@ -150,7 +150,7 @@ Example configuring manually:
 
 ## Security preset customization examples
 
-These examples show how to adapt the defaults from [base/security.json](./base/security.json) using security overrides: [overrides/security-labels.json](./overrides/security-labels.json) and [overrides/security-reviewers.json](./overrides/security-reviewers.json).
+These examples show how to adapt the defaults from [security/base.json](./security/base.json) using security overrides: [overrides/security-labels.json](./overrides/security-labels.json) and [overrides/security-reviewers.json](./overrides/security-reviewers.json).
 
 ### Remove the default `security` label
 
@@ -225,8 +225,8 @@ Several legacy top-level presets are now compatibility aliases. Prefer the new l
 - [`go.json`](./go.json) - moved to [Kong/public-shared-renovate//base/go](./base/go.json)
 - [`github-actions.json`](./github-actions.json) - moved to [Kong/public-shared-renovate//base/github-actions](./base/github-actions.json)
 - [`gateway.json5`](./gateway.json5) - moved to [Kong/public-shared-renovate//scoped/kong/gateway](./scoped/kong/gateway.json)
-- [`github-actions-changed-files.json`](./github-actions-changed-files.json) - moved to [Kong/public-shared-renovate//security-incidents/github-actions/tj-actions-changed-files](./security-incidents/github-actions/tj-actions-changed-files.json)
-- [`security-base.json`](./security-base.json) - moved to [Kong/public-shared-renovate//base/security](./base/security.json)
+- [`github-actions-changed-files.json`](./github-actions-changed-files.json) - moved to [Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files](./security/incidents/github-actions/tj-actions-changed-files.json)
+- [`security-base.json`](./security-base.json) - moved to [Kong/public-shared-renovate//security/base](./security/base.json)
 - [`security-extended.json`](./security-extended.json) - deprecated alias that composes the base security preset with security overrides for labels and reviewers
 
 ## Security incidents
@@ -234,5 +234,6 @@ Several legacy top-level presets are now compatibility aliases. Prefer the new l
 Guidance for creating, wiring, and maintaining security-incident presets is documented in the contributor guide. This includes the full process, directory layout, common patterns, examples, and expectations for deprecation and cleanup.
 
 - Contributor guide: [Security incident response presets](./CONTRIBUTING.md#security-incident-response-presets)
-- Presets directory: [security-incidents/](./security-incidents)
-- Integration point: [base/security.json](./base/security.json)  
+- Presets directory: [security/incidents/](./security/incidents)
+- Aggregator preset: [security/_incidents.json](./security/_incidents.json)
+- Base preset: [security/base.json](./security/base.json)  

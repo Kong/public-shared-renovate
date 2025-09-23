@@ -15,7 +15,7 @@
   "extends": [
     "security:openssf-scorecard",
     "Kong/public-shared-renovate//overrides/security-labels(security)",
-    "Kong/public-shared-renovate//security-incidents/github-actions/tj-actions-changed-files"
+    "Kong/public-shared-renovate//security/_incidents"
   ],
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
