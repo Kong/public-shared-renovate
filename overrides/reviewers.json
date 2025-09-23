@@ -1,14 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
-    " Override preset to control reviewers requested on Renovate PRs. Accepts up to two optional",
-    " reviewers via preset arguments: {{arg0}} and {{arg1}}. Each argument may be a single user",
-    " (e.g., 'octocat') or a team using the 'team:' prefix (e.g., 'team:security-managers').",
+    " Override preset to control reviewers requested on Renovate PRs. Accepts up to five optional",
+    " reviewers via preset arguments: {{arg0}}, {{arg1}}, {{arg2}}, {{arg3}}, and {{arg4}}. Each",
+    " argument may be a single user (e.g., 'octocat') or a team using the 'team:' prefix",
+    " (e.g., 'team:security-managers').",
     "",
     " Notes:",
     " - Reviewers are requested at PR creation time and are not modified afterward",
     " - When assigning a team, use the 'team:' prefix and only the last part of the team name",
     "   e.g., 'team:foo' for '@organization/foo'"
   ],
-  "reviewers": ["{{arg0}}", "{{arg1}}"]
+  "reviewers": ["{{arg0}}", "{{arg1}}", "{{arg2}}", "{{arg3}}", "{{arg4}}"]
 }

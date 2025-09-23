@@ -2,9 +2,10 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
     " Security-focused reviewers override preset. Requests reviewers for security-related updates",
-    " so Renovate PRs have consistent review coverage. It passes through up to two optional",
-    " reviewers via preset arguments: {{arg0}} and {{arg1}}. Each argument may be a single user",
-    " (e.g., 'octocat') or a team using the 'team:' prefix (e.g., 'team:security-managers')."
+    " so Renovate PRs have consistent review coverage. It passes through up to five optional",
+    " reviewers via preset arguments: {{arg0}}, {{arg1}}, {{arg2}}, {{arg3}}, and {{arg4}}. Each",
+    " argument may be a single user (e.g., 'octocat') or a team using the 'team:' prefix",
+    " (e.g., 'team:security-managers')"
   ],
   "vulnerabilityAlerts": {
     "extends": ["Kong/public-shared-renovate//overrides/reviewers({{{args}}})"]

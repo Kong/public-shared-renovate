@@ -7,10 +7,10 @@
   ],
   "extends": [
     "Kong/public-shared-renovate//base/security",
-    "Kong/public-shared-renovate//overrides/security/labels({{arg0}})",
-    "Kong/public-shared-renovate//overrides/security/reviewers({{arg1}})"
+    "Kong/public-shared-renovate//overrides/security-labels({{arg0}})",
+    "Kong/public-shared-renovate//overrides/security-reviewers({{arg1}})"
   ],
   "prBodyNotes": [
-    "---\n> [!WARNING]\n> #### Deprecated preset: `Kong/public-shared-renovate:security-extended`\n>\n> This preset is now a compatibility alias. It has been replaced by composing the base security preset with security overrides for labels and reviewers.\n>\n> #### Action required\n>\n> Update your Renovate config to extend directly from `Kong/public-shared-renovate//base/security` and the overrides for labels and reviewers.\n>\n> #### Examples\n>\n> Before:\n>\n> ```json\n> { \"extends\": [\"Kong/public-shared-renovate:security-extended(security,team:security-managers)\"] }\n> ```\n>\n> After:\n>\n> ```json\n> { \"extends\": [\n>   \"Kong/public-shared-renovate//base/security\",\n>   \"Kong/public-shared-renovate//overrides/security/labels(security)\",\n>   \"Kong/public-shared-renovate//overrides/security/reviewers(team:security-managers)\"\n> ] }\n> ```\n>\n> #### Timeline\n>\n> This compatibility alias is temporary and is scheduled for removal in **January 2026**\n"
+    "---\n> [!WARNING]\n> #### Deprecated preset: `Kong/public-shared-renovate:security-extended`\n>\n> This preset is now a compatibility alias. It has been replaced by composing the base security preset with security overrides for labels and reviewers.\n>\n> #### Action required\n>\n> Update your Renovate config to extend directly from `Kong/public-shared-renovate//base/security` and the overrides for labels and reviewers.\n>\n> #### Examples\n>\n> Before:\n>\n> ```json\n> { \"extends\": [\"Kong/public-shared-renovate:security-extended(security,team:security-managers)\"] }\n> ```\n>\n> After:\n>\n> ```json\n> { \"extends\": [\n>   \"Kong/public-shared-renovate//base/security\",\n>   \"Kong/public-shared-renovate//overrides/security-labels(security)\",\n>   \"Kong/public-shared-renovate//overrides/security-reviewers(team:security-managers)\"\n> ] }\n> ```\n>\n> #### Timeline\n>\n> This compatibility alias is temporary and is scheduled for removal in **January 2026**\n"
   ]
 }

@@ -42,81 +42,85 @@ Use this decision aid to place new presets correctly. Each directory serves a di
 
 These guidelines standardize how we author presets and reduce the maintenance burden. Please read them before opening a PR.
 
-> [!CAUTION]
-> ### 1. No secrets or encrypted tokens in this public repo
->
-> - **Why**: This repository is public; any credentials here could be exposed
-> - **Do**: Keep all tokens/credentials in private repositories or in Renovate's hosting environment
-> - **Don't**: Embed `npmToken`, `hostRules` with credentials, encrypted blobs, or GitHub App private keys here
+1. **No secrets or encrypted tokens in this public repo**
 
-### 2. One preset per file — keep the scope tight and responsibilities clear
+   - **Rationale**: This repository is public. Any secrets or credentials here would be exposed
+   - **Requirements**: Keep all tokens/credentials in private repositories or in Renovate’s hosting environment
+   - **Pitfalls to avoid**: Do not embed `npmToken`, `hostRules` with credentials, encrypted blobs, or GitHub App private keys
 
-- **Why**: Small, single-purpose presets are easier to reason about, review, and roll back. Broad "kitchen-sink" files create accidental couplings and noisy PRs
-- **Do**: Split unrelated concerns (for example, Go module policy vs. GitHub Actions policy) into separate files
-- **Don't**: Add project-specific logic to broadly shared presets — move it to `scoped/`
+2. **One preset per file — keep the scope tight and responsibilities clear**
 
-### 3. Strict JSON only — do not use JSON5/JSONC
+   - **Rationale**: Small, single-purpose presets are easier to reason about, review, and roll back. Broad files create accidental couplings and noisy PRs
+   - **Requirements**: Split unrelated concerns (e.g. Go module policy vs. GitHub Actions policy) into separate files
+   - **Pitfalls to avoid**: Do not add project-specific logic to broadly shared presets — move it to `scoped/`
 
-- **Why**: Renovate expects strict JSON for presets; strict JSON keeps parsing predictable across tools (Renovate, jq, CI) and produces clean diffs
-- **Do**: Use `.json` with double-quoted keys/strings and no comments or trailing commas
-- **Don't**: Use single quotes, comments, `NaN`/`Infinity`, hex numbers, or unquoted keys. Avoid adding new `.json5` files (a single legacy file exists for compatibility only)
+3. **Strict JSON only — do not use JSON5/JSONC**
 
-### 4. Document intent in `description` and, when helpful, add reviewer guidance in `prBodyNotes`
+   - **Rationale**: Renovate expects strict JSON; strict JSON keeps parsing predictable across tools and produces clean diffs
+   - **Requirements**: Use `.json` with double-quoted keys/strings and no comments or trailing commas
+   - **Pitfalls to avoid**: Do not use single quotes, comments, `NaN`/`Infinity`, hex numbers, or unquoted keys. Do not add new `.json5` files (a single legacy file exists only for compatibility)
 
-- **Why**: Clear context lowers review friction and operational risk
-- **Do**: Use `description` (the array of strings) to explain what the preset does and why. Use `prBodyNotes` for checklists, cautions, or links during incidents
-- **Formatting requirements for `description` lines**:
-  - Keep each string to around 100 characters; hard-wrap longer text into multiple strings. This improves readability in GitHub UIs and keeps diffs tidy
-  - Start every string with a single leading space. This maintains consistent alignment with surrounding JSON, creates a clean paragraph look, and avoids accidental Markdown triggers at column 0 (for example, `#`, `>`, or `-`).
-  - If you need multiple sections/paragraphs, insert an empty string `""` between sections to create a blank line
-- **Example `description` fragment** (note leading spaces and a blank line separator):
+4. **Document intent in `description` and, when helpful, add reviewer guidance in `prBodyNotes`**
 
-  ```json
-  {
-    "description": [
-      " Group non-major updates for Go modules and enable squash automerge on weekdays",
-      " Designed for broad reuse across Go repositories",
-      "",
-      " Applies org-wide defaults; override locally if your project needs a different cadence"
-    ]
-  }
-  ```
+   - **Rationale**: Clear context lowers review friction and reduces operational risk
+   - **Requirements**: Use `description` (the array of strings) to explain what the preset does and why. Use `prBodyNotes` for checklists, cautions, or links during incidents. Keep both free of implementation noise; focus on intent, scope, and reviewer action
+   - **Formatting rules for `description`**:
 
-- **Example `prBodyNotes` (for security incidents)**:
+      - Keep each string around 100 characters; hard-wrap longer text
+      - Start every string with a single leading space for alignment and to avoid Markdown triggers at column 0
+      - Insert an empty string `""` to create blank lines between sections
 
-  ```json
-  {
-    "prBodyNotes": [
-      "---\n> [!CAUTION]\n> Review upstream issue before merging; see the link[...]"
-    ]
-  }
-  ```
+   - **Example `description` fragment**:
 
-### 5. Prefer small, composable rules that are straightforward to review and roll back
+     ```json
+     {
+       "description": [
+         " Group non-major updates for Go modules and enable squash automerge on weekdays",
+         " Designed for broad reuse across Go repositories",
+         "",
+         " Applies org-wide defaults; override locally if your project needs a different cadence"
+       ]
+     }
+     ```
 
-- **Why**: Composition beats duplication. Small pieces can be reused, tested, and reverted independently
-- **Do**: Create `helpers/` for reusable behaviors and `overrides/` for small tweaks; compose them in `base/` as needed
-- **Don't**: Copy-paste large blocks across files — extract and reference a helper or override instead
+   - **Example `prBodyNotes` (for security incidents)**:
 
-### 6. Preset ID shape: `Kong/public-shared-renovate//<path-without-extension>`
+     ```json
+     {
+       "prBodyNotes": [
+         "---\n> [!CAUTION]\n> Review upstream issue before merging; see the link[...]"
+       ]
+     }
+     ```
 
-- **Why**: Extension-less IDs are stable and match Renovate's expectations
-- **Do**: Reference presets like `"Kong/public-shared-renovate//base/go"` (omit `.json`)
-- **Don't**: Include file extensions or local relative paths in `extends`
+5. **Prefer small, composable rules that are straightforward to review and roll back**
 
-### 7. Use short, descriptive, kebab-case file names that reflect subject and intent
+   - **Rationale**: Composition beats duplication. Small pieces can be reused, tested, and reverted independently
+   - **Requirements**: Create `helpers/` for reusable behaviors and `overrides/` for small tweaks; compose them in `base/` as needed
+   - **Pitfalls to avoid**: Do not copy-paste large blocks across files — extract and reference a helper or override instead
 
-- **Why**: Predictable names improve discoverability and grep-ability
-- **Do**: `github-actions.json`, `go.json`, `labels.json`, `tj-actions-changed-files.json`
-- **Don't**: Use vague or overly long names; avoid spaces and CamelCase
+6. **Preset ID shape: `Kong/public-shared-renovate//<path-without-extension>`**
 
-## Preset authoring tips
+   - **Rationale**: Extension-less IDs are stable and match Renovate’s expectations
+   - **Requirements**: Reference presets like `"Kong/public-shared-renovate//base/go"` (omit `.json`)
+   - **Pitfalls to avoid**: Do not include file extensions or local relative paths in `extends`
 
-- Write minimal diffs: keep ordering stable (for example, alphabetize arrays when reasonable) so churn is low
-- Be conservative by default: prefer grouping, `minimumReleaseAge`, or review gates unless there's a clear need for speed
-- Parameterize where appropriate: accept arguments via `({{arg0}},{{arg1}})` rather than creating near-duplicates; forward args with `({{args}})` from wrapper presets
-- Avoid org‑specific assumptions in shared presets: place project/team-specific logic in [`scoped/`](scoped).
-- Cross-link related presets in `description` so reviewers have context
+7. **Use short, descriptive, kebab-case file names that reflect subject and intent**
+
+   - **Rationale**: Predictable names improve discoverability and make grep searches easier
+   - **Requirements**: Use names like `github-actions.json`, `go.json`, `labels.json`, `tj-actions-changed-files.json`
+   - **Pitfalls to avoid**: Do not use vague or overly long names. Avoid spaces and CamelCase
+
+8. **Keep diffs minimal and ordering stable**
+
+   - **Rationale**: Stable ordering reduces churn and keeps reviews focused on intent
+   - **Requirements**: Keep ordering stable; alphabetize arrays when reasonable; avoid incidental reformatting
+   - **Pitfalls to avoid**: Do not make unrelated reordering changes in the same PR
+
+9. **Default to conservative behavior**
+
+   - **Rationale**: Safer defaults reduce org-wide risk
+   - **Requirements**: Prefer grouping, `minimumReleaseAge`, or review gates unless there's a clear, reviewed need for speed
 
 ## Parameterized presets (`{{arg}}`)
 
@@ -125,16 +129,8 @@ These guidelines standardize how we author presets and reduce the maintenance bu
 - Validate empty args: If an arg may be omitted, ensure the resulting JSON still makes sense (for example, `"labels": ["dependencies", "{{arg0}}", "{{arg1}}"]` is acceptable by Renovate even if arg slots are empty strings)
 - Keep argument order intuitive and document it in `description` with examples
 
-## Descriptions and reviewer guidance
-
-- `description`: Provide a succinct, human-oriented explanation; prefer full sentences. Use an array of short strings (each becomes a line)
-- `prBodyNotes`: Use for checklists, cautions, or links that should appear in PR bodies. Useful for incident presets to guide reviewers
-- Keep both free of implementation noise; focus on intent, scope, and how to act
-
 ## Security and privacy
 
-- Never embed secrets (tokens, passwords, private keys, encrypted blobs)
-- Prefer pinning GitHub Actions by commit SHA in consumers; presets here should encourage safe defaults
 - Use labels like `security/caution-advised` in incident presets to surface risk
 
 ## Testing and validation
