@@ -90,7 +90,6 @@ Example:
 }
 ```
 
-
 ### Adjust update cadence (e.g. run daily)
 
 You can change how often Renovate runs by adding a schedule preset. Place it after the shared preset so it takes effect — the order of items in `extends` matters because later entries override earlier ones.
@@ -229,6 +228,37 @@ Several legacy top-level presets are now compatibility aliases. Prefer the new l
 - [`security-base.json`](./security-base.json) - moved to [Kong/public-shared-renovate//security/base](./security/base.json)
 - [`security-extended.json`](./security-extended.json) - deprecated alias that composes the base security preset with security overrides for labels and reviewers
 
+
+
+## Preset directories overview
+
+### Base presets ([`base/`](./base))
+
+Reusable building blocks that define Kong's shared Renovate policy for major ecosystems (Go, GitHub Actions), security posture, and selected domains (frontend). They are designed for broad reuse and are composed into the top-level [default.json](./default.json). Most consumer repositories can simply extend the default preset (`Kong/public-shared-renovate`), which already includes the essential `base/` presets.
+
+### Overrides presets ([`overrides/`](./base))
+
+Small, composable tweaks you can layer onto any consumer repository or higher-level preset. Typical use cases include adding labels, requesting reviewers, or adjusting behavior for a well-defined subset of updates. They live alongside broadly reusable building blocks in [base/](./base) and urgent org-wide mitigations in [security/incidents/](./security/incidents).
+
+### Helpers presets ([`helpers/`](./helpers))
+
+Focused, self-contained building blocks that are useful on their own and as ingredients when composing other presets (e.g., inside `packageRules`). Some helpers include `packageRules` directly and can be extended at the top level of your Renovate config.
+
+### Scoped presets ([`scoped/`](./scoped))
+
+Presets intentionally scoped to a specific product, project, or team. They capture rules that are not generally applicable across Kong's repositories and may encode assumptions unique to that scope (naming, dependency layout, release cadence, migration strategy, etc.).
+
+### Security presets ([`security/`](./security))
+
+Centralize security posture and incident response.
+
+- [security/base.json](./security/base.json) - Base security preset applying security-focused defaults (labels, vulnerability alerts, and treatment of security actions). Most repositories inherit this via the default preset
+
+- [security/_incidents.json](./security/_incidents.json) - Auto-generated aggregator that composes all presets under [security/incidents/](./security/incidents); CI updates it automatically
+
+- [security/incidents/](./security/incidents) - Narrowly scoped, temporary presets created during supply-chain or ecosystem incidents. See the contributor guide section *Security incident response presets* for authoring and wiring guidance
+
+
 ## Security incidents
 
 Guidance for creating, wiring, and maintaining security-incident presets is documented in the contributor guide. This includes the full process, directory layout, common patterns, examples, and expectations for deprecation and cleanup.
@@ -236,4 +266,4 @@ Guidance for creating, wiring, and maintaining security-incident presets is docu
 - Contributor guide: [Security incident response presets](./CONTRIBUTING.md#security-incident-response-presets)
 - Presets directory: [security/incidents/](./security/incidents)
 - Aggregator preset: [security/_incidents.json](./security/_incidents.json)
-- Base preset: [security/base.json](./security/base.json)  
+- Base preset: [security/base.json](./security/base.json)

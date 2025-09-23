@@ -1,0 +1,15 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Disable Renovate updates for a specific GitHub Action. Accepts one package name (owner/name)",
+    " as an argument and creates a rule that matches that action via the github-actions datasource",
+    " and disables updates."
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["{{arg0}}"],
+      "matchDatasources": ["github-actions"],
+      "enabled": false
+    }
+  ]
+}

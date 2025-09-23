@@ -4,40 +4,6 @@ Thank you for helping improve Kong's shared Renovate presets. This guide explain
 
 This document is for contributors authoring or modifying presets in this repository. If you are consuming these presets in your repository, start with the [README](README.md) instead.
 
-## Choosing the right directory
-
-Use this decision aid to place new presets correctly. Each directory serves a different purpose.
-
-### [`base/`](base)
-
-- Broadly reusable behavior that many repositories should share
-- A stable foundation that other presets (including `default.json`) can build on
-- Well-documented policy for a specific ecosystem or domain (for example, Go, GitHub Actions, security)
-
-### [`overrides/`](overrides)
-
-- Minimal, reusable tweaks (for example, add a label or reviewer)
-- Parameterized behaviors callable with arguments (for example, two extra labels)
-- Not incident-specific and not scoped to a single project/team
-
-### [`helpers/`](helpers)
-
-- Standalone behavior you can drop into any config (for example, create PRs immediately)
-- Composable building blocks to reference from `packageRules` or other presets
-- Not specific to one project/team and not an incident response
-
-### [`scoped/`](scoped)
-
-- Targets a single product/repo family or team
-- Depends on project-specific conventions (module paths, tags, replace directives, and so on)
-- Would be confusing or risky if applied org-wide
-
-### [`security/incidents/`](security/incidents)
-
-- Org-wide guardrails that should apply broadly and quickly during incidents
-- Slow or gate updates to a risky dependency, temporarily disable updates, block known-bad versions, or force replacements
-- The aggregator preset `security/_incidents.json` is updated automatically by CI; no manual edits are required (CI validates wiring)
-
 ## Common guidelines (apply to all presets)
 
 These guidelines standardize how we author presets and reduce the maintenance burden. Please read them before opening a PR.
@@ -122,16 +88,39 @@ These guidelines standardize how we author presets and reduce the maintenance bu
    - **Rationale**: Safer defaults reduce org-wide risk
    - **Requirements**: Prefer grouping, `minimumReleaseAge`, or review gates unless there's a clear, reviewed need for speed
 
-## Parameterized presets (`{{arg}}`)
+## Choosing the right directory
 
-- You can create presets that accept up to N arguments via the path suffix syntax: `//overrides/labels(renovate,ci)`
-- Use placeholder tokens `{{arg0}}`, `{{arg1}}`, … inside the preset. Use `{{args}}` to pass through all arguments to a nested preset
-- Validate empty args: If an arg may be omitted, ensure the resulting JSON still makes sense (for example, `"labels": ["dependencies", "{{arg0}}", "{{arg1}}"]` is acceptable by Renovate even if arg slots are empty strings)
-- Keep argument order intuitive and document it in `description` with examples
+Use this decision aid to place new presets correctly. Each directory serves a different purpose.
 
-## Security and privacy
+### [`base/`](base)
 
-- Use labels like `security/caution-advised` in incident presets to surface risk
+- Broadly reusable behavior that many repositories should share
+- A stable foundation that other presets (including `default.json`) can build on
+- Well-documented policy for a specific ecosystem or domain (for example, Go, GitHub Actions, security)
+
+### [`overrides/`](overrides)
+
+- Minimal, reusable tweaks (for example, add a label or reviewer)
+- Parameterized behaviors callable with arguments (for example, two extra labels)
+- Not incident-specific and not scoped to a single project/team
+
+### [`helpers/`](helpers)
+
+- Standalone behavior you can drop into any config (for example, create PRs immediately)
+- Composable building blocks to reference from `packageRules` or other presets
+- Not specific to one project/team and not an incident response
+
+### [`scoped/`](scoped)
+
+- Targets a single product/repo family or team
+- Depends on project-specific conventions (module paths, tags, replace directives, and so on)
+- Would be confusing or risky if applied org-wide
+
+### [`security/incidents/`](security/incidents)
+
+- Org-wide guardrails that should apply broadly and quickly during incidents
+- Slow or gate updates to a risky dependency, temporarily disable updates, block known-bad versions, or force replacements
+- The aggregator preset `security/_incidents.json` is updated automatically by CI; no manual edits are required (CI validates wiring)
 
 ## Testing and validation
 
@@ -171,13 +160,14 @@ Repositories typically do not consume incident presets directly; they are compos
 Use this structure so presets are easy to find, review, and compose:
 
 ```
-security/incidents/
-  github-actions/
-    tj-actions-changed-files.json
-  npm/
-  go/
-  docker/
-  misc/
+security/
+  incidents/
+    github-actions/
+      tj-actions-changed-files.json
+    npm/
+    go/
+    docker/
+    misc/
 ```
 
 #### Guidelines
