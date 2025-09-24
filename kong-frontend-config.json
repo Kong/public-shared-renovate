@@ -1,11 +1,37 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
-    " [MOVED] This preset has been relocated to 'base/frontend.json'. It is now an alias",
-    " that extends the new location to preserve backwards compatibility"
+    " [DEPRECATED] Compatibility preset kept for repositories that still extend",
+    " 'Kong/public-shared-renovate:kong-frontend-config'. It now builds on the org",
+    " default preset and layers a few adjustments so behavior remains close to the",
+    " historical frontend config (timezone, cadence, minor/patch automerge, select",
+    " action disables, and a GitHub Actions grouping rule). Prefer migrating to",
+    " the default preset plus local overrides; see PR note for details"
   ],
-  "extends": ["Kong/public-shared-renovate//base/frontend"],
+  "extends": [
+    "Kong/public-shared-renovate",
+    "Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)",
+    "Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)",
+    "config:recommended",
+    "schedule:automergeWeekdays",
+    "schedule:daily",
+    ":automergeMinor",
+    ":automergePatch",
+    ":automergeRequireAllStatusChecks",
+    ":labels(dependencies,mend-bot)",
+    ":noUnscheduledUpdates",
+    ":timezone(America/New_York)"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["*"],
+      "matchDepTypes": ["action"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^v0/",
+      "groupName": "github actions non-major stable"
+    }
+  ],
   "prBodyNotes": [
-    "---\n> [!WARNING]\n> #### Moved preset: `Kong/public-shared-renovate:kong-frontend-config`\n>\n> Renovate identified that this repository currently references this deprecated/moved preset. To avoid disruptions, this preset now acts as a temporary compatibility alias.\n>\n> It has been relocated to `Kong/public-shared-renovate//base/frontend`.\n>\n> #### Recommended path\n>\n> Use the default preset:\n>\n> ```json\n> { \"extends\": [\"Kong/public-shared-renovate\"] }\n> ```\n>\n> #### Customize or restore behavior\n>\n> If you would like to restore configuration that changed as part of the rethinking and standardizing process, or if you want to adjust settings (for example, the timezone), you can layer overrides on top of the default preset. Example:\n>\n> ```json\n> {\n>   \"extends\": [\n>     \"Kong/public-shared-renovate\",\n>     \"Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)\",\n>     \"Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)\",\n>     \":noUnscheduledUpdates\",\n>     \":timezone(America/New_York)\",\n>     \"schedule:automergeWeekdays\",\n>     \"schedule:daily\"\n>   ],\n>   \"addLabels\": [\"renovate-bot\"]\n> }\n> ```\n>\n> #### Timeline\n>\n> This alias will be removed in **January 2026**.\n"
+    "---\n> [!WARNING]\n> #### Deprecated preset: `Kong/public-shared-renovate:kong-frontend-config`\n>\n> Your config references a deprecated preset. To prevent disruption, this file now extends the org default (`Kong/public-shared-renovate`) and layers a few tweaks so behavior stays close to the historical frontend configuration.\n>\n> #### What's different from the default\n>\n> - Timezone set to `America/New_York`\n> - Runs on a daily schedule and limits updates to scheduled windows (`schedule:daily` + `:noUnscheduledUpdates`)\n> - Automerge enabled for minor and patch updates with required status checks\n> - Adds the `mend-bot` label alongside Renovate's standard dependency labeling\n> - Disables specific actions: `Kong/kong-api-tests` and `the-actions-org/workflow-dispatch`\n> - Extra grouping for GitHub Actions: non-major stable updates grouped under \"github actions non-major stable\"\n>\n> #### Recommended migration\n>\n> Prefer switching to the default preset and applying only the bits you still need locally. Example configuration to replicate this preset's behavior on top of the default:\n>\n> ```json\n> {\n>   \"extends\": [\n>     \"Kong/public-shared-renovate\",\n>     \"schedule:automergeWeekdays\",\n>     \"schedule:daily\",\n>     \":automergeMinor\",\n>     \":automergePatch\",\n>     \":automergeRequireAllStatusChecks\",\n>     \":labels(dependencies,mend-bot)\",\n>     \":noUnscheduledUpdates\",\n>     \":timezone(America/New_York)\"\n>   ],\n>   \"packageRules\": [\n>     {\n>       \"matchPackageNames\": [\"*\"],\n>       \"matchDepTypes\": [\"action\"],\n>       \"matchUpdateTypes\": [\"minor\", \"patch\"],\n>       \"matchCurrentVersion\": \"!/^v0/\",\n>       \"groupName\": \"github actions non-major stable\"\n>     }\n>   ]\n> }\n> ```\n>\n> To disable the same actions locally, add the helpers after the default in your `extends` list:\n>\n> ```json\n> [\n>   \"Kong/public-shared-renovate\",\n>   \"Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)\",\n>   \"Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)\"\n> ]\n> ```\n>\n> #### Timeline\n>\n> This compatibility preset will be removed in **January 2026**. Please migrate to the default preset with local overrides before then.\n"
   ]
 }

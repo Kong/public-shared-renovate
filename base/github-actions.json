@@ -9,7 +9,7 @@
   "extends": [
     "group:githubArtifactActions",
     "helpers:pinGitHubActionDigestsToSemver",
-    "Kong/public-shared-renovate//security-incidents/github-actions/tj-actions-changed-files"
+    "Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files"
   ],
   "customManagers": [
     {
