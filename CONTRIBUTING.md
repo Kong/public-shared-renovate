@@ -135,7 +135,7 @@ Lightweight, reusable adjustments that modify or refine the behavior defined in 
 
 **Examples**
 
-- Adding or changing labels on PRs
+- Adding or changing labels on PRs (always includes the standard 'dependencies' label)
 - Assigning reviewers automatically
 - Adjusting automerge schedules for certain types of updates
 
@@ -199,11 +199,10 @@ A central, long-lived baseline for security-related Renovate configuration. It e
 - Adds a `security` label to PRs in addition to the usual `dependencies` label
 - Enables OSV and GitHub vulnerability alerts
 - Cleans up commit messages by removing the `[SECURITY]` suffix for better changelog integration
-- Automatically includes incident guardrails from [`security/_incidents.json`](./security/_incidents.json)
+- May include incident guardrails from [`security/incidents/`](./security/incidents) as needed
 
 **Examples**
 
-- Ensure that GitHub Actions under `*/public-shared-actions/security-actions/**` are updated immediately
 - Provide consistent labeling for vulnerability PRs
 - Centralize security-related schedules and policies
 
@@ -231,8 +230,8 @@ Short-lived, high-priority presets created in response to active security incide
 
 **Notes**
 
-- Automatically aggregated into `security/_incidents.json` by CI
-- CI validates wiring, so maintainers only add new files here
+- No automatic aggregation; compose incident presets explicitly where needed
+- Maintainers review wiring; there is no automatic aggregation
 - Must always be cleaned up once the incident is resolved
 - High urgency and org-wide scope, but explicitly temporary
 
@@ -240,7 +239,7 @@ Short-lived, high-priority presets created in response to active security incide
 
 - Validate JSON locally (your editor or a linter should catch syntax issues). Presets must be strict JSON
 - Sanity-check with Renovate: reference your new preset in a throwaway repo or a local renovate-config validator/dry-run if available
-- For incident presets: no manual changes to the aggregator are needed. CI will update `security/_incidents.json` to include your preset and will fail validation if coverage is missing
+- For incident presets: ensure your preset is narrowly scoped, documented, and reviewed; maintainers will compose it explicitly where appropriate
 
 ## Security incident response presets
 
@@ -253,15 +252,15 @@ When a supply‑chain incident or other security event requires immediate guardr
 
 1. Create a new preset JSON file under [`security/incidents/`](security/incidents). Keep it narrowly scoped to the affected dependency/packages
 2. Add human‑readable context in `description`/`prBodyNotes` so reviewers know why and how to proceed
-3. Open a PR. The CI auto-sync workflow will update the aggregator preset [security/_incidents.json](security/_incidents.json) in your PR to include all incident presets (kept in alphabetical order)
-4. CI validation will verify that the aggregator includes every preset under `security/incidents/` and that [security/base.json](security/base.json) composes the aggregator
+3. Open PR and tag maintainers. We'll review and determine how and where to compose the preset (for example, via [security/base.json](security/base.json) or a scoped preset)
+4. There is no auto-aggregation; ensure the preset is narrowly scoped and documented. We'll wire it explicitly if needed
 
 > [!TIP]
 > 🌟 Keep these presets conservative and review‑friendly — prefer minimal, targeted rules over broad changes
 
 ### Referencing an incident preset directly (rare)
 
-Repositories typically do not consume incident presets directly; they are composed via the aggregator `security/_incidents.json` into `security/base.json`, which consumer repositories extend. If you must reference a preset directly (rare):
+Repositories typically do not consume incident presets directly; maintainers may compose them into `security/base.json` or a scoped preset as needed. If you must reference a preset directly (rare):
 
 ```json
 {
@@ -293,7 +292,7 @@ security/
 - **Format**: `.json` only with strict JSON syntax (no JSON5, no comments, no trailing commas)
 - **Preset ID shape**: `Kong/public-shared-renovate//<path-without-.json>` (i.e. `Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files`)
 - **Documentation**: include concise `description` and, when applicable, reviewer guidance in `prBodyNotes` so the rationale and next steps are clear
-- **Wiring**: no manual wiring required. After you add a file under `security/incidents/`, CI will update the aggregator `security/_incidents.json` in your PR and validate coverage in CI
+- **Wiring**: there is no automation for composition. Coordinate with maintainers to include the incident preset where appropriate (for example in `security/base.json` or a scoped preset)
 
 ### Common patterns
 
@@ -396,7 +395,7 @@ When relocating a preset, add a small compatibility file at the old path. This f
   - `Kong/public-shared-renovate//base/go`
   - `Kong/public-shared-renovate//overrides/labels`
   - `Kong/public-shared-renovate//helpers/immediately`
-  - `Kong/public-shared-renovate//security-incidents/github-actions/tj-actions-changed-files`
+  - `Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files`
 
 ## PR checklist
 
@@ -407,7 +406,7 @@ Before opening a PR:
 - [ ] `description` explains intent; `prBodyNotes` added if reviewer guidance is needed
 - [ ] File name is short, descriptive, kebab-case
 - [ ] Parameterized presets document arguments with examples
-- [ ] For security incidents: no manual change to the aggregator required — CI will update [`security/_incidents.json`](security/_incidents.json) in your PR
+- [ ] For security incidents: coordinate with maintainers; there is no aggregator automation
 - [ ] Backward-compatibility alias added if moving/renaming
 - [ ] Root [README](README.md) updated if you add user-facing capabilities or move presets
 

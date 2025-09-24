@@ -20,7 +20,7 @@ Use the floating preset so projects automatically pick up changes:
 
 - Renovate does not support digest pinning for presets, so exact tags bring no real security gain
 - Presets are config, not executable code, and are loaded by Renovate at runtime
-- Floating avoids delays and lets security-incidents rules roll out quickly without waiting for a tag bump in every repo
+- Floating avoids delays and lets shared preset improvements roll out quickly without waiting for a tag bump in every repo
 
 ### Pin to a release tag (optional, for holdbacks or downgrades)
 
@@ -38,24 +38,19 @@ If pinned, Renovate will open PRs to bump the preset via the [**renovate-config-
 
 A concise summary of the default preset (see [default.json](./default.json) for full details):
 
-- Weekly update cadence on early Mondays
-- Safe posture for non-major updates with squash automerge when policy allows; automerge is clearly assigned
-- Automerge is gated by required status checks — no merge until required checks pass
-- Signed-off commits with consistent semantic type `chore`
 - Clear PRs and commits: messages show from → to, including short SHAs for digests
 - Merge Confidence badges are shown on PRs for extra signal
-- Sensible labels: every PR includes the standard `dependencies` and `mend-bot` labels; you can layer up to five custom labels via overrides
+- Standard labeling: the 'dependencies' label is added to all Renovate PRs
 - Extra version discovery via custom managers: Dockerfile ARG versions, Helm Chart appVersion, Makefile versions, and Terraform tfvars
 - GitHub Actions kept healthy: grouped sensibly and pinned by commit for security and stability
 - Security posture: vulnerability alerts are enabled and surfaced via the base security preset
-- Throughput without backlogs: default Renovate rate limiting is disabled
-- Reviews: CODEOWNERS reviewers are requested by default
-- Keep-up-to-date on demand: add the `renovate/keep-updated` label to any Renovate PR to keep it rebased with its base branch
 - Fresh releases are gated briefly by default: `minimumReleaseAge` is 12 days (override locally as needed)
 
 ## Common variations
 
 ### Add up to five extra labels to all PRs
+
+The labels override always includes the standard 'dependencies' label and appends up to five optional labels you provide.
 
 ```json
 {
@@ -74,7 +69,6 @@ Use the [`Kong/public-shared-renovate//overrides/reviewers`](./overrides/reviewe
 - Arguments can be either a **user** (e.g. `octocat`) or a **team** using the `team:` prefix
 - When referencing a team, you must [use only the last segment of the GitHub team name](https://docs.renovatebot.com/configuration-options/#reviewers). For example, if the full team name is `@organization/foo`, you must pass `team:foo`
 - Place this override after the default preset in `extends`, as order matters
-- By default, we rely on [`reviewersFromCodeOwners`](https://docs.renovatebot.com/configuration-options/#reviewersfromcodeowners), which assigns reviewers based on `CODEOWNERS` rules. If reviewers are set manually with this override, Renovate will not assign reviewers from `CODEOWNERS` (though repository-level rules may still do so)
 
 > [!IMPORTANT]
 > **Reviewers are added only when the PR is created and are not updated afterward**
@@ -109,7 +103,7 @@ See the options' reference for more: [Renovate configuration options](https://do
 
 ### Change timezone for scheduling
 
-Renovate interprets schedules in a configurable timezone. If no timezone is set in your config, Renovate [defaults to UTC](https://docs.renovatebot.com/key-concepts/scheduling/#default-timezone)). To change the timezone for your consumer repository, extend the builtin timezone preset with an [IANA Time Zone (TZ) identifier](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). Place it after the shared preset in `extends` so it overrides any timezone configured by presets you include.
+Renovate interprets schedules in a configurable timezone. If no timezone is set in your config, Renovate [defaults to UTC](https://docs.renovatebot.com/key-concepts/scheduling/#default-timezone). To change the timezone for your consumer repository, extend the builtin timezone preset with an [IANA Time Zone (TZ) identifier](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). Place it after the shared preset in `extends` so it overrides any timezone configured by presets you include.
 
 Example:
 
@@ -153,11 +147,11 @@ These examples show how to adapt the defaults from [security/base.json](./securi
 
 ### Remove the default `security` label
 
-Use this if your repository already applies its own risk labels or if you want to reduce visual noise from security PRs. This removes only the `security` label added by the shared preset; Renovate will still add the standard `dependencies` and `mend-bot` labels. It applies to security-scoped updates (vulnerability alerts and security-actions rules). Existing PRs keep their labels; new PRs reflect the change.
+Use this if your repository already applies its own risk labels or if you want to reduce visual noise from security PRs. This removes only the `security` label added by the shared preset for vulnerability alerts. Existing PRs keep their labels; new PRs reflect the change.
 
 ```json
 {
-  "ignoredPresets": ["Kong/public-shared-renovate//overrides/security-labels"],
+  "ignorePresets": ["Kong/public-shared-renovate//overrides/security-labels"],
   "extends": ["Kong/public-shared-renovate"]
 }
 ```
@@ -223,7 +217,7 @@ When multiple Renovate presets or rules overlap, Renovate applies settings based
 1. **Later extended presets override earlier ones**
 
    - The order in the `extends` array matters. A preset listed later takes precedence over one listed earlier
-   - Example: if both `base/go` and `overrides/extra-labels` define labels, the labels from `overrides/extra-labels` will be applied if it comes after `base/go` in the list
+   - Example: if both `base/go` and `overrides/labels` define labels, the labels from `overrides/labels` will be applied if it comes after `base/go` in the list
 
 2. **Direct values in a config override inherited presets**
 
@@ -258,7 +252,7 @@ Kong's shared Renovate presets are organized by purpose:
 - [`overrides/`](./overrides) – small reusable tweaks layered on top of `base/` or the default (labels, reviewers, automerge adjustments).
 - [`helpers/`](./helpers) – tiny, standalone utilities usable directly in `renovate.json` or within other presets.
 - [`scoped/`](./scoped) – rules for a specific product, project, or team, not meant for org-wide use.
-- [`security/`](./security) – long-lived security defaults ([`security/base.json`](./security/base.json)) plus short-lived incident guardrails ([`security/incidents/`](./security/incidents), aggregated by CI into [`security/_incidents.json`](./security/_incidents.json)).
+- [`security/`](./security) – long-lived security defaults ([`security/base.json`](./security/base.json)) plus short-lived incident guardrails ([`security/incidents/`](./security/incidents)).
 
 For detailed guidance, see [Choosing the right directory](./CONTRIBUTING.md#choosing-the-right-directory).
 

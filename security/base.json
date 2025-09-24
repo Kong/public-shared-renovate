@@ -1,36 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
-    " Base preset intended to contain all security-related Renovate configurations. It centralizes",
-    " security-focused settings for reuse across presets and projects. When you extend this preset:",
-    " - Security-related updates get a clear 'security' label in addition to 'dependencies'.",
-    " - Vulnerability alerts (including OSV) are enabled, and PR titles avoid the '[SECURITY]'",
-    "   suffix for clean changelogs",
-    " - GitHub Actions under '*/public-shared-actions/security-actions/**' are treated",
-    "   as security-related and raised immediately",
-    "",
-    " For customization examples (e.g., changing/removing the default 'security' label, adding extra",
-    " labels, or tweaking cadence), see ../README.md#security-preset-customization-examples"
+    " Base preset for long-lived security-related Renovate configuration. It centralizes",
+    " security-focused settings for reuse across presets and projects."
   ],
   "extends": [
     "security:openssf-scorecard",
-    "Kong/public-shared-renovate//overrides/security-labels(security)",
-    "Kong/public-shared-renovate//security/_incidents"
+    "Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files"
   ],
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
-    "description": [
-      " Remove the default '[SECURITY]' commit message suffix from security vulnerability PR titles",
-      " to keep them compatible with changelog/release tooling (commitMessageSuffix is set to empty)",
-      " See defaults for other vulnerabilityAlerts fields https://docs.renovatebot.com/configuration-options/#vulnerabilityalerts"
-    ],
-    "enabled": true,
-    "commitMessageSuffix": ""
-  },
-  "packageRules": [
-    {
-      "matchPackageNames": ["*/public-shared-actions/security-actions/**"],
-      "extends": ["Kong/public-shared-renovate//helpers/immediately"]
-    }
-  ]
+    "enabled": true
+  }
 }

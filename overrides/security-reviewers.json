@@ -9,11 +9,5 @@
   ],
   "vulnerabilityAlerts": {
     "extends": ["Kong/public-shared-renovate//overrides/reviewers({{{args}}})"]
-  },
-  "packageRules": [
-    {
-      "matchPackageNames": ["*/public-shared-actions/security-actions/**"],
-      "extends": ["Kong/public-shared-renovate//overrides/reviewers({{{args}}})"]
-    }
-  ]
+  }
 }

@@ -1,23 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
-    " Shared preset that restricts updates for 'tj-actions/changed-files' due to a prior",
-    " supply-chain incident (GHSA-mrrh-fwg8-r2c3). It enforces a minimum release age before",
-    " Renovate can propose an update and add strong review guidance:",
-    " - minimumReleaseAge: 30 days) - only versions that are at least 30 days old are eligible",
-    " When a PR is created, it includes a prominent caution to review changes carefully.",
-    " Maintainers may also choose to bump the action reference manually when deemed safe.",
+    " Shared preset that DISABLES updates for 'tj-actions/changed-files' due to a prior",
+    " supply‑chain incident (GHSA-mrrh-fwg8-r2c3). This is a conservative default pending",
+    " broader discussion and consensus. Repositories may override locally if they wish to",
+    " re‑enable updates after their own review and risk assessment.",
+    "",
     " Context: https://github.com/advisories/ghsa-mrrh-fwg8-r2c3"
   ],
-  "packageRules": [
-    {
-      "matchDepTypes": ["action"],
-      "matchPackageNames": ["tj-actions/changed-files"],
-      "addLabels": ["security/caution-advised"],
-      "minimumReleaseAge": "30 days",
-      "prBodyNotes": [
-        "---\n> [!CAUTION]\n> Security gate for tj-actions/changed-files\n>\n> Why this update is gated\n> - A prior malicious release was published for this action (GHSA-mrrh-fwg8-r2c3).\n>\n> Reviewer checklist\n> 1. Read upstream release notes and changelog for all versions between your current and target versions.\n> 2. Inspect the diff in tj-actions/changed-files for unexpected or risky changes (permissions, scripts, network/file access).\n> 3. Validate workflow usage remains safe: check `uses:`, `with:` inputs, permissions, and any commands the action runs.\n> 4. Confirm the action reference/tag you use aligns with your policy (tag vs. digest) and is trusted.\n>\n> Process\n> - Renovate will propose a PR once the target release is at least 30 days old (per `minimumReleaseAge`) and according to your repository's schedule. No dashboard approval is required.\n> - After verification, merge manually.\n>\n> References\n> - Advisory: [GHSA-mrrh-fwg8-r2c3](https://github.com/advisories/ghsa-mrrh-fwg8-r2c3)\n> - Upstream repo: [tj-actions/changed-files](https://github.com/tj-actions/changed-files)"
-      ]
-    }
-  ]
+  "extends": ["Kong/public-shared-renovate//helpers/disable-action(tj-actions/changed-files)"]
 }

@@ -2,8 +2,8 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
     " Override preset to control labels added to Renovate PRs. Always includes the standard",
-    " 'dependencies' and 'mend-bot' labels and accepts up to five optional additional labels via",
+    " 'dependencies' label and accepts up to five optional additional labels via",
     " preset arguments: {{arg0}}, {{arg1}}, {{arg2}}, {{arg3}}, and {{arg4}}."
   ],
-  "labels": ["dependencies", "mend-bot", "{{arg0}}", "{{arg1}}", "{{arg2}}", "{{arg3}}", "{{arg4}}"]
+  "labels": ["dependencies", "{{arg0}}", "{{arg1}}", "{{arg2}}", "{{arg3}}", "{{arg4}}"]
 }
