@@ -7,14 +7,14 @@
       "rangeStrategy": "bump"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchPackageNames": ["*"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "groupName": "all non-major stable"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchPackageNames": ["@kong{,-ui,-ui-public}/**"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
@@ -23,7 +23,7 @@
       "minimumReleaseAge": "2 hours"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchPackageNames": ["@kong{,-ui,-ui-public}/**"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "/^0/",
@@ -31,7 +31,7 @@
       "groupSlug": "{{{replace '@' (lowercase (lookup (split packageName '/') 0))}}}-non-major-unstable"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchPackageNames": [
         "@kong-ui-public/analytics-*",
         "@kong-ui-public/dashboard-renderer",
@@ -44,53 +44,59 @@
       "minimumReleaseAge": "2 hours"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchPackageNames": [
-        "@vitejs/plugin-vue",
-        "@vitest/*",
-        "@vue/{tsconfig,test-utils}",
-        "@vueuse/*",
-        "vite{st,-*}",
-        "vue{,-router,-demi,-tsc,-component-meta}"
+        "**vite-plugin**",
+        "@vitejs/**",
+        "@vitest/**",
+        "vite",
+        "vitest"
       ],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
+      "groupName": "vite non-major stable"
+    },
+    {
+      "matchDatasources": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "extends": ["monorepo:vue", "monorepo:vueuse"],
       "groupName": "vue non-major stable"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "extends": ["packages:stylelint"],
       "groupName": "stylelint non-major stable"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchPackageNames": ["playwright{,-core}", "@playwright/*"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "groupName": "playwright non-major stable"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchPackageNames": ["cypress{,-*}", "@cypress/*"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "groupName": "cypress non-major stable"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchUpdateTypes": ["minor", "patch"],
       "extends": ["packages:eslint"],
       "groupName": "eslint"
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchPackageNames": ["{@types/,}inquirer"],
       "enabled": false
     },
     {
-      "matchCategories": ["js"],
+      "matchDatasources": ["npm"],
       "matchPackageNames": ["pnpm"],
       "matchDepTypes": ["engines"],
       "matchUpdateTypes": ["minor", "patch"],
