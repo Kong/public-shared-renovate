@@ -18,9 +18,9 @@ Use the floating preset so projects automatically pick up changes:
 
 #### Why floating version is recommended
 
-* Renovate does not support digest pinning for presets, so exact tags bring no real security gain
-* Presets are config, not executable code, and are loaded by Renovate at runtime
-* Floating avoids delays and lets security-incidents rules roll out quickly without waiting for a tag bump in every repo
+- Renovate does not support digest pinning for presets, so exact tags bring no real security gain
+- Presets are config, not executable code, and are loaded by Renovate at runtime
+- Floating avoids delays and lets security-incidents rules roll out quickly without waiting for a tag bump in every repo
 
 ### Pin to a release tag (optional, for holdbacks or downgrades)
 
@@ -38,20 +38,20 @@ If pinned, Renovate will open PRs to bump the preset via the [**renovate-config-
 
 A concise summary of the default preset (see [default.json](./default.json) for full details):
 
-* Weekly update cadence on early Mondays
-* Safe posture for non-major updates with squash automerge when policy allows; automerge is clearly assigned
-* Automerge is gated by required status checks — no merge until required checks pass
-* Signed-off commits with consistent semantic type `chore`
-* Clear PRs and commits: messages show from → to, including short SHAs for digests
-* Merge Confidence badges are shown on PRs for extra signal
-* Sensible labels: every PR includes the standard `dependencies` and `mend-bot` labels; you can layer up to five custom labels via overrides
-* Extra version discovery via custom managers: Dockerfile ARG versions, Helm Chart appVersion, Makefile versions, and Terraform tfvars
-* GitHub Actions kept healthy: grouped sensibly and pinned by commit for security and stability
-* Security posture: vulnerability alerts are enabled and surfaced via the base security preset
-* Throughput without backlogs: default Renovate rate limiting is disabled
-* Reviews: CODEOWNERS reviewers are requested by default
-* Keep-up-to-date on demand: add the `renovate/keep-updated` label to any Renovate PR to keep it rebased with its base branch
-* Fresh releases are gated briefly by default: `minimumReleaseAge` is 12 days (override locally as needed)
+- Weekly update cadence on early Mondays
+- Safe posture for non-major updates with squash automerge when policy allows; automerge is clearly assigned
+- Automerge is gated by required status checks — no merge until required checks pass
+- Signed-off commits with consistent semantic type `chore`
+- Clear PRs and commits: messages show from → to, including short SHAs for digests
+- Merge Confidence badges are shown on PRs for extra signal
+- Sensible labels: every PR includes the standard `dependencies` and `mend-bot` labels; you can layer up to five custom labels via overrides
+- Extra version discovery via custom managers: Dockerfile ARG versions, Helm Chart appVersion, Makefile versions, and Terraform tfvars
+- GitHub Actions kept healthy: grouped sensibly and pinned by commit for security and stability
+- Security posture: vulnerability alerts are enabled and surfaced via the base security preset
+- Throughput without backlogs: default Renovate rate limiting is disabled
+- Reviews: CODEOWNERS reviewers are requested by default
+- Keep-up-to-date on demand: add the `renovate/keep-updated` label to any Renovate PR to keep it rebased with its base branch
+- Fresh releases are gated briefly by default: `minimumReleaseAge` is 12 days (override locally as needed)
 
 ## Common variations
 
@@ -70,11 +70,11 @@ A concise summary of the default preset (see [default.json](./default.json) for 
 
 Use the [`Kong/public-shared-renovate//overrides/reviewers`](./overrides/reviewers.json) preset to automatically request specific users or teams on Renovate PRs.
 
-* Accepts up to five reviewers as arguments
-* Arguments can be either a **user** (e.g. `octocat`) or a **team** using the `team:` prefix
-* When referencing a team, you must [use only the last segment of the GitHub team name](https://docs.renovatebot.com/configuration-options/#reviewers). For example, if the full team name is `@organization/foo`, you must pass `team:foo`
-* Place this override after the default preset in `extends`, as order matters
-* By default, we rely on [`reviewersFromCodeOwners`](https://docs.renovatebot.com/configuration-options/#reviewersfromcodeowners), which assigns reviewers based on `CODEOWNERS` rules. If reviewers are set manually with this override, Renovate will not assign reviewers from `CODEOWNERS` (though repository-level rules may still do so)
+- Accepts up to five reviewers as arguments
+- Arguments can be either a **user** (e.g. `octocat`) or a **team** using the `team:` prefix
+- When referencing a team, you must [use only the last segment of the GitHub team name](https://docs.renovatebot.com/configuration-options/#reviewers). For example, if the full team name is `@organization/foo`, you must pass `team:foo`
+- Place this override after the default preset in `extends`, as order matters
+- By default, we rely on [`reviewersFromCodeOwners`](https://docs.renovatebot.com/configuration-options/#reviewersfromcodeowners), which assigns reviewers based on `CODEOWNERS` rules. If reviewers are set manually with this override, Renovate will not assign reviewers from `CODEOWNERS` (though repository-level rules may still do so)
 
 > [!IMPORTANT]
 > **Reviewers are added only when the PR is created and are not updated afterward**
@@ -222,31 +222,31 @@ When multiple Renovate presets or rules overlap, Renovate applies settings based
 
 1. **Later extended presets override earlier ones**
 
-   * The order in the `extends` array matters. A preset listed later takes precedence over one listed earlier
-   * Example: if both `base/go` and `overrides/extra-labels` define labels, the labels from `overrides/extra-labels` will be applied if it comes after `base/go` in the list
+   - The order in the `extends` array matters. A preset listed later takes precedence over one listed earlier
+   - Example: if both `base/go` and `overrides/extra-labels` define labels, the labels from `overrides/extra-labels` will be applied if it comes after `base/go` in the list
 
 2. **Direct values in a config override inherited presets**
 
-   * Any setting defined directly in a repo's `renovate.json` (or equivalent) always overrides values inherited from presets
-   * Example: if a preset sets `automerge: false` but the repo's `renovate.json` sets `automerge: true`, the direct value wins
+   - Any setting defined directly in a repo's `renovate.json` (or equivalent) always overrides values inherited from presets
+   - Example: if a preset sets `automerge: false` but the repo's `renovate.json` sets `automerge: true`, the direct value wins
 
 3. **`packageRules` targeting specific dependencies or versions override direct values**
 
-   * `packageRules` act as more granular overrides for individual dependencies, package managers, or version ranges
-   * Example: a repo may set `automerge: true` globally, but add a `packageRule` for `golang` that sets `automerge: false`. Renovate will follow the more specific rule
+   - `packageRules` act as more granular overrides for individual dependencies, package managers, or version ranges
+   - Example: a repo may set `automerge: true` globally, but add a `packageRule` for `golang` that sets `automerge: false`. Renovate will follow the more specific rule
 
 4. **If multiple `packageRules` match, the later one wins**
 
-   * The order of rules in the array matters. When multiple rules match the same dependency or update, Renovate applies the last matching rule
-   * Example: one `packageRule` may schedule updates daily, while a later one may schedule them weekly. Renovate will use the weekly schedule
+   - The order of rules in the array matters. When multiple rules match the same dependency or update, Renovate applies the last matching rule
+   - Example: one `packageRule` may schedule updates daily, while a later one may schedule them weekly. Renovate will use the weekly schedule
 
 ### Practical implication
 
 Because of this precedence model:
 
-* Presets in `overrides/` must be extended **after** the default (`Kong/public-shared-renovate`) to take effect
-* Helpers are only applied when explicitly added and follow the same rules as other presets
-* Scoped or security presets can override base behavior if extended later in the chain
+- Presets in `overrides/` must be extended **after** the default (`Kong/public-shared-renovate`) to take effect
+- Helpers are only applied when explicitly added and follow the same rules as other presets
+- Scoped or security presets can override base behavior if extended later in the chain
 
 This order of precedence ensures predictability: start with the org-wide defaults, apply scoped or override presets as needed, and finally tune behavior with direct config, and `packageRules`.
 
@@ -254,11 +254,11 @@ This order of precedence ensures predictability: start with the org-wide default
 
 Kong's shared Renovate presets are organized by purpose:
 
-* [`base/`](./base) – reusable building blocks for org-wide policy (Go, GitHub Actions, security, frontend), composed into the top-level [default](./default.json). Most repos just extend the default (`Kong/public-shared-renovate`).
-* [`overrides/`](./overrides) – small reusable tweaks layered on top of `base/` or the default (labels, reviewers, automerge adjustments).
-* [`helpers/`](./helpers) – tiny, standalone utilities usable directly in `renovate.json` or within other presets.
-* [`scoped/`](./scoped) – rules for a specific product, project, or team, not meant for org-wide use.
-* [`security/`](./security) – long-lived security defaults ([`security/base.json`](./security/base.json)) plus short-lived incident guardrails ([`security/incidents/`](./security/incidents), aggregated by CI into [`security/_incidents.json`](./security/_incidents.json)).
+- [`base/`](./base) – reusable building blocks for org-wide policy (Go, GitHub Actions, security, frontend), composed into the top-level [default](./default.json). Most repos just extend the default (`Kong/public-shared-renovate`).
+- [`overrides/`](./overrides) – small reusable tweaks layered on top of `base/` or the default (labels, reviewers, automerge adjustments).
+- [`helpers/`](./helpers) – tiny, standalone utilities usable directly in `renovate.json` or within other presets.
+- [`scoped/`](./scoped) – rules for a specific product, project, or team, not meant for org-wide use.
+- [`security/`](./security) – long-lived security defaults ([`security/base.json`](./security/base.json)) plus short-lived incident guardrails ([`security/incidents/`](./security/incidents), aggregated by CI into [`security/_incidents.json`](./security/_incidents.json)).
 
 For detailed guidance, see [Choosing the right directory](./CONTRIBUTING.md#choosing-the-right-directory).
 
