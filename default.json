@@ -20,6 +20,7 @@
   "extends": [
     "config:best-practices",
     "customManagers:dockerfileVersions",
+    "customManagers:githubActionsVersions",
     "customManagers:helmChartYamlAppVersions",
     "customManagers:makefileVersions",
     "customManagers:tfvarsVersions",
@@ -32,6 +33,5 @@
     "Kong/public-shared-renovate//security/base",
     "Kong/public-shared-renovate//overrides/labels"
   ],
-  "minimumReleaseAge": "12 days",
-  "prBodyDefinitions": {"Change": "`{{{displayFrom}}}` → `{{{displayTo}}}`"}
+  "minimumReleaseAge": "12 days"
 }

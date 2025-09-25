@@ -9,29 +9,40 @@
     " the default preset plus local overrides; see PR note for details"
   ],
   "extends": [
-    "Kong/public-shared-renovate",
-    "Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)",
-    "Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)",
     "config:recommended",
     "schedule:automergeWeekdays",
     "schedule:daily",
     ":automergeMinor",
     ":automergePatch",
     ":automergeRequireAllStatusChecks",
+    ":gitSignOff",
     ":labels(dependencies,mend-bot)",
     ":noUnscheduledUpdates",
-    ":timezone(America/New_York)"
+    ":semanticCommits",
+    ":timezone(America/New_York)",
+    "Kong/public-shared-renovate//base/frontend",
+    "Kong/public-shared-renovate//base/github-actions",
+    "Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)",
+    "Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)",
+    "Kong/public-shared-renovate//security/base"
   ],
   "packageRules": [
     {
-      "matchPackageNames": ["*"],
-      "matchDepTypes": ["action"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": [
+        "*"
+      ],
+      "matchDepTypes": [
+        "action"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "matchCurrentVersion": "!/^v0/",
-      "groupName": "github actions non-major stable"
+      "groupName": "non-major github actions with stable versions"
     }
   ],
   "prBodyNotes": [
-    "---\n> [!WARNING]\n> #### Deprecated preset: `Kong/public-shared-renovate:kong-frontend-config`\n>\n> Your config references a deprecated preset. To prevent disruption, this file now extends the org default (`Kong/public-shared-renovate`) and layers a few tweaks so behavior stays close to the historical frontend configuration.\n>\n> #### What's different from the default\n>\n> - Timezone set to `America/New_York`\n> - Runs on a daily schedule and limits updates to scheduled windows (`schedule:daily` + `:noUnscheduledUpdates`)\n> - Automerge enabled for minor and patch updates with required status checks\n> - Adds the `mend-bot` label alongside Renovate's standard dependency labeling\n> - Disables specific actions: `Kong/kong-api-tests` and `the-actions-org/workflow-dispatch`\n> - Extra grouping for GitHub Actions: non-major stable updates grouped under \"github actions non-major stable\"\n>\n> #### Recommended migration\n>\n> Prefer switching to the default preset and applying only the bits you still need locally. Example configuration to replicate this preset's behavior on top of the default:\n>\n> ```json\n> {\n>   \"extends\": [\n>     \"Kong/public-shared-renovate\",\n>     \"schedule:automergeWeekdays\",\n>     \"schedule:daily\",\n>     \":automergeMinor\",\n>     \":automergePatch\",\n>     \":automergeRequireAllStatusChecks\",\n>     \":labels(dependencies,mend-bot)\",\n>     \":noUnscheduledUpdates\",\n>     \":timezone(America/New_York)\"\n>   ],\n>   \"packageRules\": [\n>     {\n>       \"matchPackageNames\": [\"*\"],\n>       \"matchDepTypes\": [\"action\"],\n>       \"matchUpdateTypes\": [\"minor\", \"patch\"],\n>       \"matchCurrentVersion\": \"!/^v0/\",\n>       \"groupName\": \"github actions non-major stable\"\n>     }\n>   ]\n> }\n> ```\n>\n> To disable the same actions locally, add the helpers after the default in your `extends` list:\n>\n> ```json\n> [\n>   \"Kong/public-shared-renovate\",\n>   \"Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)\",\n>   \"Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)\"\n> ]\n> ```\n>\n> #### Timeline\n>\n> This compatibility preset will be removed in **January 2026**. Please migrate to the default preset with local overrides before then.\n"
+    "---\n> [!WARNING]\n> #### Deprecated preset: `Kong/public-shared-renovate:kong-frontend-config`\n>\n> Your config references a deprecated preset. To prevent disruption, this file now composes the org default building blocks and layers a few tweaks so behavior stays close to the historical frontend configuration.\n>\n> #### What’s different from the default\n>\n> - Weekday automerge cadence and daily run windows (`schedule:automergeWeekdays` + `schedule:daily` + `:noUnscheduledUpdates`)\n> - Automerge enabled for minor and patch updates with required status checks\n> - Adds the `mend-bot` label alongside Renovate’s standard dependency labeling\n> - Timezone set to `America/New_York`\n> - Disables specific actions: `Kong/kong-api-tests` and `the-actions-org/workflow-dispatch`\n> - Extra grouping for GitHub Actions: non-major stable updates grouped under \"non-major github actions with stable versions\"\n>\n> #### Recommended migration\n>\n> Prefer switching to the default preset and applying only the bits you still need locally. Example configuration to replicate this preset’s behavior on top of the default:\n>\n> ```json\n> {\n>   \"extends\": [\n>     \"Kong/public-shared-renovate\",\n>     \"schedule:automergeWeekdays\",\n>     \"schedule:daily\",\n>     \":automergeMinor\",\n>     \":automergePatch\",\n>     \":automergeRequireAllStatusChecks\",\n>     \":labels(dependencies,mend-bot)\",\n>     \":noUnscheduledUpdates\",\n>     \":timezone(America/New_York)\"\n>   ],\n>   \"packageRules\": [\n>     {\n>       \"matchPackageNames\": [\"*\"],\n>       \"matchDepTypes\": [\"action\"],\n>       \"matchUpdateTypes\": [\"minor\", \"patch\"],\n>       \"matchCurrentVersion\": \"!/^v0/\",\n>       \"groupName\": \"non-major github actions with stable versions\"\n>     }\n>   ]\n> }\n> ```\n>\n> To disable the same actions locally, add the helpers after the default in your `extends` list:\n>\n> ```json\n> [\n>   \"Kong/public-shared-renovate\",\n>   \"Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)\",\n>   \"Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)\"\n> ]\n> ```\n>\n> #### Timeline\n>\n> This compatibility preset will be removed in **January 2026**. Please migrate to the default preset with local overrides before then.\n"
   ]
 }

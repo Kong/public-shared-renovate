@@ -8,6 +8,6 @@
     " (e.g., 'team:security-managers')"
   ],
   "vulnerabilityAlerts": {
-    "extends": ["Kong/public-shared-renovate//overrides/reviewers({{{args}}})"]
+    "extends": ["Kong/public-shared-renovate//overrides/reviewers({{args}})"]
   }
 }

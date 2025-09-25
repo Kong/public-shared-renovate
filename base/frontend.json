@@ -7,31 +7,32 @@
       "rangeStrategy": "bump"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchPackageNames": ["*"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
-      "groupName": "all non-major stable"
+      "groupName": "all non-major dependencies with stable versions",
+      "groupSlug": "all-stable"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchPackageNames": ["@kong{,-ui,-ui-public}/**"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
-      "groupName": "{{{lookup (split packageName '/') 0}}} non-major stable",
-      "groupSlug": "{{{replace '@' (lowercase (lookup (split packageName '/') 0))}}}-non-major-stable",
+      "groupName": "non-major {{{lookup (split packageName '/') 0}}} dependencies with stable versions",
+      "groupSlug": "{{{replace '@' '' (lookup (split packageName '/') 0)}}}-stable",
       "minimumReleaseAge": "2 hours"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchPackageNames": ["@kong{,-ui,-ui-public}/**"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "/^0/",
-      "groupName": "{{{lookup (split packageName '/') 0}}} non-major unstable",
-      "groupSlug": "{{{replace '@' (lowercase (lookup (split packageName '/') 0))}}}-non-major-unstable"
+      "groupName": "non-major {{{lookup (split packageName '/') 0}}} dependencies with unstable versions",
+      "groupSlug": "{{{replace '@' '' (lookup (split packageName '/') 0)}}}-unstable"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchPackageNames": [
         "@kong-ui-public/analytics-*",
         "@kong-ui-public/dashboard-renderer",
@@ -40,63 +41,75 @@
         "@kong-ui/timeframe-selector"
       ],
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "konnect analytics non-major",
+      "groupName": "non-major konnect analytics dependencies",
+      "groupSlug": "konnect-analytics",
       "minimumReleaseAge": "2 hours"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchPackageNames": [
         "**vite-plugin**",
-        "@vitejs/**",
-        "@vitest/**",
-        "vite",
-        "vitest"
+        "@vite{js,st}/**",
+        "vite{,st}"
       ],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
-      "groupName": "vite non-major stable"
+      "groupName": "non-major vite dependencies with stable versions",
+      "groupSlug": "vite-stable"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
-      "extends": ["monorepo:vue", "monorepo:vueuse"],
-      "groupName": "vue non-major stable"
+      "matchPackageNames": ["/vue/"],
+      "matchSourceUrls": [
+        "https://github.com/vuejs/vue",
+        "https://github.com/vuejs/core",
+        "https://github.com/vuejs/vue-cli",
+        "https://github.com/vueuse/vueuse",
+        "https://github.com/vuejs/vuepress"
+      ],
+      "groupName": "non-major vue dependencies with stable versions",
+      "groupSlug": "vue-stable"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "extends": ["packages:stylelint"],
-      "groupName": "stylelint non-major stable"
+      "groupName": "non-major stylelint dependencies with stable versions",
+      "groupSlug": "stylelint-stable"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchPackageNames": ["playwright{,-core}", "@playwright/*"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
-      "groupName": "playwright non-major stable"
+      "groupName": "non-major playwright dependencies with stable versions",
+      "groupSlug": "playwright-stable"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchPackageNames": ["cypress{,-*}", "@cypress/*"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
-      "groupName": "cypress non-major stable"
+      "groupName": "non-major cypress dependencies with stable versions",
+      "groupSlug": "cypress-stable"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
+      "matchPackageNames": ["/eslint/"],
       "matchUpdateTypes": ["minor", "patch"],
-      "extends": ["packages:eslint"],
-      "groupName": "eslint"
+      "groupName": "non-major eslint dependencies",
+      "groupSlug": "eslint"
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchPackageNames": ["{@types/,}inquirer"],
       "enabled": false
     },
     {
-      "matchDatasources": ["npm"],
+      "matchCategories": ["js"],
       "matchPackageNames": ["pnpm"],
       "matchDepTypes": ["engines"],
       "matchUpdateTypes": ["minor", "patch"],

@@ -5,7 +5,6 @@
     " security-focused settings for reuse across presets and projects."
   ],
   "extends": [
-    "security:openssf-scorecard",
     "Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files"
   ],
   "osvVulnerabilityAlerts": true,

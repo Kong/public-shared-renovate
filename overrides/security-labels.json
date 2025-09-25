@@ -7,6 +7,6 @@
     " labels preset always includes the standard 'dependencies' label"
   ],
   "vulnerabilityAlerts": {
-    "extends": ["Kong/public-shared-renovate//overrides/labels({{{args}}})"]
+    "extends": ["Kong/public-shared-renovate//overrides/labels({{args}})"]
   }
 }
