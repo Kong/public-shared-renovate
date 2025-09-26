@@ -1,242 +1,48 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " [DEPRECATED] Compatibility preset kept for repositories that still extend",
+    " 'Kong/public-shared-renovate:kong-frontend-config'. It now builds on the org",
+    " default preset and layers a few adjustments so behavior remains close to the",
+    " historical frontend config (timezone, cadence, minor/patch automerge, select",
+    " action disables, and a GitHub Actions grouping rule). Prefer migrating to",
+    " the default preset plus local overrides; see PR note for details"
+  ],
   "extends": [
     "config:recommended",
-    ":semanticCommits",
-    ":automergeRequireAllStatusChecks",
-    ":automergePatch",
+    "schedule:automergeWeekdays",
+    "schedule:daily",
     ":automergeMinor",
-    "local>Kong/public-shared-renovate:github-actions"
+    ":automergePatch",
+    ":automergeRequireAllStatusChecks",
+    ":gitSignOff",
+    ":labels(dependencies,mend-bot)",
+    ":noUnscheduledUpdates",
+    ":semanticCommits",
+    ":timezone(America/New_York)",
+    "Kong/public-shared-renovate//base/frontend",
+    "Kong/public-shared-renovate//base/github-actions",
+    "Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)",
+    "Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)",
+    "Kong/public-shared-renovate//security/base"
   ],
-  "dependencyDashboard": true,
-  "rangeStrategy": "bump",
-  "platformAutomerge": true,
-  "npmrcMerge": true,
-  "labels": [
-    "dependencies",
-    "renovate-bot"
-  ],
-  "schedule": [
-    "before 5am every weekday"
-  ],
-  "timezone": "America/New_York",
-  "automergeSchedule": [
-    "every weekday"
-  ],
-  "minimumReleaseAge": "14 days",
-  "updateNotScheduled": false,
   "packageRules": [
     {
       "matchPackageNames": [
-        "tj-actions/changed-files",
-        "Kong/kong-api-tests",
-        "the-actions-org/workflow-dispatch"
-      ],
-      "matchDatasources": [
-        "github-actions"
-      ],
-      "enabled": false
-    },
-    {
-      "automerge": true,
-      "groupName": "all non-major dependencies with stable version",
-      "groupSlug": "all-minor-patch",
-      "matchCurrentVersion": "!/^0/",
-      "matchPackageNames": [
         "*"
       ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "12 days"
-    },
-    {
-      "automerge": true,
-      "groupName": "all @kong scoped dependencies",
-      "groupSlug": "all-kong-scoped-deps",
-      "matchPackageNames": [
-        "@kong/**"
-      ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "2 hours"
-    },
-    {
-      "automerge": true,
-      "groupName": "all @kong-ui scoped dependencies",
-      "groupSlug": "all-kong-ui-scoped-deps",
-      "matchPackageNames": [
-        "@kong-ui/**"
-      ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "2 hours"
-    },
-    {
-      "automerge": true,
-      "groupName": "all @kong-ui-public scoped dependencies",
-      "groupSlug": "all-kong-ui-public-scoped-deps",
-      "matchPackageNames": [
-        "@kong-ui-public/**"
-      ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "2 hours"
-    },
-    {
-      "automerge": true,
-      "groupName": "all minor and patch updates for @kong scoped dependencies with unstable version",
-      "groupSlug": "kong-unstable-patch",
-      "matchPackageNames": ["@kong/**"],
-      "matchCurrentVersion": "<1.0.0",
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "12 days"
-    },
-    {
-      "automerge": true,
-      "groupName": "all minor and patch updates for @kong-ui scoped dependencies with unstable version",
-      "groupSlug": "kong-unstable-patch",
-      "matchPackageNames": [
-        "@kong-ui/**"
-      ],
-      "matchCurrentVersion": "<1.0.0",
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "12 days"
-    },
-    {
-      "automerge": true,
-      "groupName": "all minor and patch updates for @kong-ui-public scoped dependencies with unstable version",
-      "groupSlug": "kong-unstable-patch",
-      "matchPackageNames": [
-        "@kong-ui-public/**"
-      ],
-      "matchCurrentVersion": "<1.0.0",
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "12 days"
-    },
-    {
-      "automerge": true,
-      "groupName": "minor and patch updates for konnect analytics dependencies",
-      "groupSlug": "konnect-analytics",
-      "matchPackageNames": [
-        "@kong-ui-public/analytics-*",
-        "@kong-ui-public/dashboard-renderer",
-        "@kong-ui-public/metric-cards",
-        "@kong-ui/konnect-analytics-bridge",
-        "@kong-ui/timeframe-selector"
-      ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "2 hours"
-    },
-    {
-      "automerge": true,
-      "groupName": "vue dependencies with stable version",
-      "groupSlug": "vue-minor-patch",
-      "matchCurrentVersion": "!/^0/",
-      "matchPackageNames": [
-        "@vue/test-utils",
-        "@vue/tsconfig",
-        "@vueuse/*",
-        "@vitejs/plugin-vue",
-        "vitest",
-        "@vitest/*",
-        "vite-*",
-        "vite-plugin-vue-devtools",
-        "vue-router",
-        "vue-demi",
-        "vue-tsc",
-        "vue-component-meta",
-        "vue"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "minimumReleaseAge": "14 days"
-    },
-    {
-      "automerge": true,
-      "groupName": "stylelint dependencies with stable version",
-      "groupSlug": "stylelint-minor-patch",
-      "matchCurrentVersion": "!/^0/",
-      "matchPackageNames": [
-        "stylelint",
-        "stylelint-config-html",
-        "stylelint-config-recommended-scss",
-        "stylelint-config-recommended-vue",
-        "stylelint-order"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "minimumReleaseAge": "14 days"
-    },
-    {
-      "automerge": true,
-      "groupName": "playwright dependencies with stable version",
-      "groupSlug": "playwright-minor-patch",
-      "matchCurrentVersion": "!/^0/",
-      "matchPackageNames": [
-        "playwright",
-        "playwright-core",
-        "@playwright/*"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "minimumReleaseAge": "14 days"
-    },
-    {
-      "automerge": true,
-      "groupName": "cypress dependencies with stable version",
-      "groupSlug": "cypress-minor-patch",
-      "matchCurrentVersion": "!/^0/",
-      "matchPackageNames": [
-        "cypress",
-        "cypress-*",
-        "@cypress/*"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "minimumReleaseAge": "14 days"
-    },
-    {
-      "automerge": true,
-      "groupName": "all non-major github actions with stable version",
-      "groupSlug": "all-minor-patch-github-actions",
-      "matchCurrentVersion": "!/^v0/",
-      "matchManagers": ["github-actions"],
-      "matchPackageNames": ["*"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "12 days"
-    },
-    {
-      "automerge": true,
-      "groupName": "eslint",
-      "groupSlug": "eslint",
-      "matchPackageNames": ["/eslint/"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "12 days"
-    },
-    {
-      "groupName": "ignored dependencies",
-      "groupSlug": "all-kong-ui-ignored-dependencies",
-      "matchPackageNames": [
-        "inquirer",
-        "@types/inquirer"
-      ],
-      "enabled": false
-    },
-    {
-      "groupName": "pnpm engines range",
-      "groupSlug": "pnpm-engines",
-      "matchPackageNames": [
-        "pnpm"
-      ],
       "matchDepTypes": [
-        "engines"
+        "action"
       ],
-      "matchUpdateTypes": ["minor", "patch"],
-      "enabled": false
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^v0/",
+      "groupName": "non-major github actions with stable versions"
     }
+  ],
+  "prBodyNotes": [
+    "---\n> [!WARNING]\n> #### Deprecated preset: `Kong/public-shared-renovate:kong-frontend-config`\n>\n> Your config references a deprecated preset. To prevent disruption, this file now composes the org default building blocks and layers a few tweaks so behavior stays close to the historical frontend configuration.\n>\n> #### What’s different from the default\n>\n> - Weekday automerge cadence and daily run windows (`schedule:automergeWeekdays` + `schedule:daily` + `:noUnscheduledUpdates`)\n> - Automerge enabled for minor and patch updates with required status checks\n> - Adds the `mend-bot` label alongside Renovate’s standard dependency labeling\n> - Timezone set to `America/New_York`\n> - Disables specific actions: `Kong/kong-api-tests` and `the-actions-org/workflow-dispatch`\n> - Extra grouping for GitHub Actions: non-major stable updates grouped under \"non-major github actions with stable versions\"\n>\n> #### Recommended migration\n>\n> Prefer switching to the default preset and applying only the bits you still need locally. Example configuration to replicate this preset’s behavior on top of the default:\n>\n> ```json\n> {\n>   \"extends\": [\n>     \"Kong/public-shared-renovate\",\n>     \"schedule:automergeWeekdays\",\n>     \"schedule:daily\",\n>     \":automergeMinor\",\n>     \":automergePatch\",\n>     \":automergeRequireAllStatusChecks\",\n>     \":labels(dependencies,mend-bot)\",\n>     \":noUnscheduledUpdates\",\n>     \":timezone(America/New_York)\"\n>   ],\n>   \"packageRules\": [\n>     {\n>       \"matchPackageNames\": [\"*\"],\n>       \"matchDepTypes\": [\"action\"],\n>       \"matchUpdateTypes\": [\"minor\", \"patch\"],\n>       \"matchCurrentVersion\": \"!/^v0/\",\n>       \"groupName\": \"non-major github actions with stable versions\"\n>     }\n>   ]\n> }\n> ```\n>\n> To disable the same actions locally, add the helpers after the default in your `extends` list:\n>\n> ```json\n> [\n>   \"Kong/public-shared-renovate\",\n>   \"Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)\",\n>   \"Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)\"\n> ]\n> ```\n>\n> #### Timeline\n>\n> This compatibility preset will be removed in **January 2026**. Please migrate to the default preset with local overrides before then.\n"
   ]
 }

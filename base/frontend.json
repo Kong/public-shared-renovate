@@ -1,0 +1,119 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "npmrcMerge": true,
+  "packageRules": [
+    {
+      "matchCategories": ["js"],
+      "rangeStrategy": "bump"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": ["*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "all non-major dependencies with stable versions",
+      "groupSlug": "all-stable"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": ["@kong{,-ui,-ui-public}/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "non-major {{{lookup (split packageName '/') 0}}} dependencies with stable versions",
+      "groupSlug": "{{{replace '@' '' (lookup (split packageName '/') 0)}}}-stable",
+      "minimumReleaseAge": "2 hours"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": ["@kong{,-ui,-ui-public}/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "/^0/",
+      "groupName": "non-major {{{lookup (split packageName '/') 0}}} dependencies with unstable versions",
+      "groupSlug": "{{{replace '@' '' (lookup (split packageName '/') 0)}}}-unstable"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": [
+        "@kong-ui-public/analytics-*",
+        "@kong-ui-public/dashboard-renderer",
+        "@kong-ui-public/metric-cards",
+        "@kong-ui/konnect-analytics-bridge",
+        "@kong-ui/timeframe-selector"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "non-major konnect analytics dependencies",
+      "groupSlug": "konnect-analytics",
+      "minimumReleaseAge": "2 hours"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": [
+        "**vite-plugin**",
+        "@vite{js,st}/**",
+        "vite{,st}"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "non-major vite dependencies with stable versions",
+      "groupSlug": "vite-stable"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "matchPackageNames": ["/vue/"],
+      "matchSourceUrls": [
+        "https://github.com/vuejs/vue",
+        "https://github.com/vuejs/core",
+        "https://github.com/vuejs/vue-cli",
+        "https://github.com/vueuse/vueuse",
+        "https://github.com/vuejs/vuepress"
+      ],
+      "groupName": "non-major vue dependencies with stable versions",
+      "groupSlug": "vue-stable"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "extends": ["packages:stylelint"],
+      "groupName": "non-major stylelint dependencies with stable versions",
+      "groupSlug": "stylelint-stable"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": ["playwright{,-core}", "@playwright/*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "non-major playwright dependencies with stable versions",
+      "groupSlug": "playwright-stable"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": ["cypress{,-*}", "@cypress/*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "non-major cypress dependencies with stable versions",
+      "groupSlug": "cypress-stable"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": ["/eslint/"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "non-major eslint dependencies",
+      "groupSlug": "eslint"
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": ["{@types/,}inquirer"],
+      "enabled": false
+    },
+    {
+      "matchCategories": ["js"],
+      "matchPackageNames": ["pnpm"],
+      "matchDepTypes": ["engines"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    }
+  ]
+}

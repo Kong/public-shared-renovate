@@ -1,0 +1,78 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Kong Gateway base preset for Renovate. Builds on Renovate best practices and keeps PRs fresh",
+    " by extending 'config:best-practices' and ':rebaseStalePrs'. Enables config migration and the",
+    " dependency dashboard for visibility (see https://docs.renovatebot.com/config-presets/).",
+    "",
+    " Target branches include Gateway Enterprise LTS lines and active non‑LTS via pattern matching,",
+    " plus master branches and the repo default. Reference: Kong Gateway support policy",
+    " https://docs.konghq.com/gateway/latest/support-policy/#main",
+    " - EE LTS: next/2.8.x.x, next/3.4.x.x, next/3.10.x.x",
+    " - EE non‑LTS (pattern): /^next\\/3\\.(?:[7-9]|1[1-9])\\.x\\.x$/",
+    " - Masters and default: enterprise-master, community-master, $default",
+    "",
+    " Labels added to all Renovate PRs: dependencies, chore, renovate, skip-changelog,",
+    " skip-pr-template-validation.",
+    "",
+    " Managers: limited to GitHub Actions (only useful when you want to restrict managers).",
+    " See discussion: https://github.com/renovatebot/renovate/discussions/29663",
+    "",
+    " Throughput guardrails: concurrent branches/PRs/hourly limits set to 20; stale branches are",
+    " pruned automatically.",
+    "",
+    " Log level remap tuning to reduce noise and surface issues:",
+    " - DIY errors: demote repeated lookup/errors to debug or warn",
+    " - '... is not updated ...': escalate to error",
+    " - Config validation errors: error",
+    " - Custom manager output: rise to debug/warn for easier troubleshooting",
+    " - PR creation titles: debug",
+    " - Misc noisy traces (branch lists, 'isModified'): keep at trace",
+    "",
+    " No custom managers/datasources are defined here; ignoreUnstable=false; packageRules reserved"
+  ],
+  "extends": [
+    "config:best-practices",
+    ":rebaseStalePrs"
+  ],
+  "baseBranches": [
+    "$default",
+    "next/2.8.x.x",
+    "next/3.4.x.x",
+    "next/3.10.x.x",
+    "/^next\\/3\\.(?:[7-9]|1[1-9])\\.x\\.x$/",
+    "enterprise-master",
+    "community-master"
+  ],
+  "enabledManagers": [
+    "github-actions"
+  ],
+  "labels": [
+    "dependencies",
+    "chore",
+    "renovate",
+    "skip-changelog",
+    "skip-pr-template-validation"
+  ],
+  "ignoreUnstable": false,
+  "pruneStaleBranches": true,
+  "logLevelRemap": [
+    { "newLogLevel": "warn", "matchMessage": "/^Dependency .+ has unsupported/unversioned value/" },
+    { "newLogLevel": "warn", "matchMessage": "/^Found no satisfying versions with/" },
+    { "newLogLevel": "debug", "matchMessage": "/^lookupUpdates error/" },
+    { "newLogLevel": "debug", "matchMessage": "/^lookupUpdates/" },
+    { "newLogLevel": "error", "matchMessage": "/ is not updated /" },
+    { "newLogLevel": "error", "matchMessage": "/^Config validation errors found/" },
+    { "newLogLevel": "debug", "matchMessage": "/HTTP request/" },
+    { "newLogLevel": "debug", "matchMessage": "/Skipping bump because newValue is the same/" },
+    { "newLogLevel": "debug", "matchMessage": "/^Custom manager fetcher/" },
+    { "newLogLevel": "debug", "matchMessage": "/^Error while evaluating JSONata expression/" },
+    { "newLogLevel": "debug", "matchMessage": "/^Response that has failed validation/" },
+    { "newLogLevel": "debug", "matchMessage": "/custom datasource/" },
+    { "newLogLevel": "debug", "matchMessage": "/^Error while evaluating/" },
+    { "newLogLevel": "debug", "matchMessage": "/^Response that has failed validation/" },
+    { "newLogLevel": "debug", "matchMessage": "/^prTitle: /" },
+    { "newLogLevel": "trace", "matchMessage": "/^Branch lists/" },
+    { "newLogLevel": "trace", "matchMessage": "/^branch\\.isModified\\(\\) = true/" }
+  ]
+}

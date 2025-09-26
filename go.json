@@ -1,39 +1,11 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
-    " Base Go preset intended to be extended by more complete presets. It provides the common,",
-    " suggested, and scoped Renovate configuration for Go-based projects. Use this as the foundation",
-    " for Go repositories; higher-level presets can add scheduling, labels, reviewers, automerge",
-    " policies, or repository-specific rules on top"
+    " [MOVED] This preset has been relocated to 'base/go.json'. It is now an alias that extends",
+    " the new location to preserve backwards compatibility"
   ],
-  "extends": [
-    "group:goOpenapi",
-    "group:kubernetes",
-    "group:pulumi",
-    "group:aws-sdk-goMonorepo",
-    "group:aws-sdk-go-v2Monorepo",
-    "group:opentelemetry-goMonorepo",
-    "group:opentelemetry-go-contribMonorepo",
-    "group:testcontainers-goMonorepo"
-  ],
-  "postUpdateOptions": [
-    "gomodTidy",
-    "gomodUpdateImportPaths"
-  ],
-  "packageRules": [
-    {
-      "matchDatasources": ["go"],
-      "matchPackageNames": ["google.golang.org/genproto/googleapis/**"],
-      "groupName": "google.golang.org/genproto/googleapis/*",
-      "groupSlug": "genproto-googleapis"
-    },
-    {
-      "description": [
-        "Group all golangci-lint updates into a single PR. Matches both golangci/golangci-lint and",
-        "golangci-lint package names. Useful when version bumps are managed by different Renovate",
-        "managers across multiple places (e.g. Go modules, Makefiles, GitHub Actions, Mise)"
-      ],
-      "matchDepNames": ["^(?:golangci/)?golangci-lint"],
-      "groupName": "golangci-lint"
-    }
+  "extends": ["Kong/public-shared-renovate//base/go"],
+  "prBodyNotes": [
+    "---\n> [!WARNING]\n> #### Moved preset: `Kong/public-shared-renovate:go`\n>\n> Your config references a deprecated preset. To prevent disruption, this file temporarily aliases to `Kong/public-shared-renovate//base/go`.\n>\n> #### Action required\n>\n> Update your Renovate config to extend directly from `Kong/public-shared-renovate//base/go`\n>\n> #### Examples\n>\n> Before (any of the following):\n>\n> ```json\n> { \"extends\": [\"Kong/public-shared-renovate:go\"] }\n> { \"extends\": [\"Kong/public-shared-renovate:go.json\"] }\n> { \"extends\": [\"local>Kong/public-shared-renovate:go\"] }\n> { \"extends\": [\"github>Kong/public-shared-renovate:go\"] }\n> ```\n>\n> After:\n>\n> ```json\n> { \"extends\": [\"Kong/public-shared-renovate//base/go\"] }\n> ```\n>\n> #### Timeline\n>\n> This alias will be removed in **January 2026**."
   ]
 }

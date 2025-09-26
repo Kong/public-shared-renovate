@@ -1,41 +1,16 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": [
-    " Parameterized security preset for Renovate that builds on the shared base preset",
-    " It enables and standardizes vulnerability alert PRs via 'security-base' and additionally:",
-    " - Adds a label to each security PR using the first preset argument (arg0)",
-    " - Requests a review via 'additionalReviewers' using the second preset argument (arg1)",
-    "",
-    " It also augments the base behavior that treats updates to GitHub Actions under",
-    " 'Kong/public-shared-actions/security/**' as security-related. This preset adds the same",
-    " label (arg0) and reviewer (arg1) to those PRs",
-    "",
-    " Arguments",
-    " - arg0: A single GitHub label to apply to all security PRs (e.g., 'security')",
-    " - arg1: A single user or team name to request as a reviewer (e.g., 'bob' or 'team:foo')",
-    "   [WARNING]: If assigning a team as reviewer, use the 'team:' prefix and only the last part",
-    "              of the team name e.g., 'team:foo' for '@organization/foo'",
-    "   [NOTE]: Reviewers are only added at PR creation time and are not modified afterward",
-    "",
-    " More information",
-    " - Preset parameters: https://docs.renovatebot.com/config-presets/#preset-parameters",
-    " - Reviewers: https://docs.renovatebot.com/configuration-options/#reviewers",
-    "",
-    " Example of usage (without JSON quoting):",
-    " {",
-    "   extends: [Kong/public-shared-renovate:security-extended(security,team:security-managers)]",
-    " }"
+    " [DEPRECATED] This preset is now a compatibility alias. It no longer carries its own logic",
+    " and instead composes the base security preset and two security overrides (labels and reviewers)",
+    " to preserve backwards compatibility"
   ],
-  "extends": ["Kong/public-shared-renovate:security-base"],
-  "vulnerabilityAlerts": {
-    "addLabels": ["{{arg0}}"],
-    "additionalReviewers": ["{{arg1}}"]
-  },
-  "packageRules": [
-    {
-      "matchPackageNames": ["Kong/public-shared-actions/security/**"],
-      "addLabels": ["{{arg0}}"],
-      "additionalReviewers": ["{{arg1}}"]
-    }
+  "extends": [
+    "Kong/public-shared-renovate//security/base",
+    "Kong/public-shared-renovate//overrides/security-labels({{arg0}})",
+    "Kong/public-shared-renovate//overrides/security-reviewers({{arg1}})"
+  ],
+  "prBodyNotes": [
+    "---\n> [!WARNING]\n> #### Deprecated preset: `Kong/public-shared-renovate:security-extended`\n>\n> Your config references a deprecated preset. To prevent disruption, this file temporarily acts as a compatibility alias.\n>\n> It has been replaced by composing the base security preset with security overrides for labels and reviewers.\n>\n> #### Action required\n>\n> Update your Renovate config to extend directly from `Kong/public-shared-renovate//security/base` and the overrides for labels and reviewers.\n>\n> #### Examples\n>\n> Before:\n>\n> ```json\n> { \"extends\": [\"Kong/public-shared-renovate:security-extended(security,team:security-managers)\"] }\n> ```\n>\n> After:\n>\n> ```json\n> {\n>   \"extends\": [\n>     \"Kong/public-shared-renovate//security/base\",\n>     \"Kong/public-shared-renovate//overrides/security-labels(security)\",\n>     \"Kong/public-shared-renovate//overrides/security-reviewers(team:security-managers)\"\n>   ]\n> }\n> ```\n>\n> #### Timeline\n>\n> This alias will be removed in **January 2026**.\n"
   ]
 }

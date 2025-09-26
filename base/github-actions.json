@@ -1,0 +1,161 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " This preset provides a shared configuration for updating GitHub Actions. It adds a custom",
+    " manager to handle action dependencies in selected repositories and includes general policy",
+    " rules (such as digest pinning behavior). It also extends presets that map digests to semver",
+    " versions"
+  ],
+  "extends": [
+    "group:githubArtifactActions",
+    "helpers:pinGitHubActionDigestsToSemver",
+    "Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files"
+  ],
+  "customManagers": [
+    {
+      "description": [
+        " Custom regex manager for sub-actions under '*/public-shared-actions/**'. It operates",
+        " in workflow/action YAML files such as:",
+        " - .github/workflows/*.yml",
+        " - workflow-templates/**",
+        " - action.yml",
+        "",
+        " What it matches",
+        " - Fully qualified action paths with any number of nested subpaths ending in '@<ref>'",
+        " - <ref> may be either:",
+        "   • a semver-like tag: 'v1.2.3', '1.2.3', '0.1.2-rc.1' (1-3 numeric sections plus optional",
+        "     prerelease/build, optional leading 'v')",
+        "   • a commit SHA (7-40 hex chars) used as a digest; an optional inline version comment",
+        "     after '#' is allowed (e.g., '# v1.2.3', '#1.2.3')",
+        "",
+        " Important notes",
+        " - The owner before '/public-shared-actions' can be any organization/user. The canonical",
+        "   target is 'Kong/public-shared-actions', but similarly named repos may also match",
+        " - Version patterns are limited to 1-3 numeric sections (e.g., 1, 1.2, 1.2.3). Four-section",
+        "   versions like '1.2.3.4' are not matched",
+        "",
+        " Examples (valid matches)",
+        " - Kong/public-shared-actions/security-actions/sca@1.2.3",
+        " - Kong/public-shared-actions/security-actions/sca@v1.2.3-rc.1",
+        " - Kong/public-shared-actions/a/b/c/sca@0928c369d5227de0ca35643d0e86949114384bd2",
+        " - Kong/public-shared-actions/sca@0928c369d # v1.2.3",
+        "",
+        " Examples (invalid)",
+        " - foo/public-shared-actions/security-actions/sca@1.2.3.4",
+        " - Kong/public-shared-actions/security-actions/sca@1.2.3_abcd",
+        " - Kong/public-shared-actions/security-actions/sca@b1.2.3",
+        " - Kong/public-shared-actions/a/b/c/d/e/f/g/1h/sca@0928c",
+        " - Kong/public-shared-actions/sca@0928c369d5227de0ca35643d0e86949114384bd2##1.2.3",
+        "",
+        " How updates are calculated",
+        " - 'datasourceTemplate': 'github-tags' - Renovate queries tags and sorts them using",
+        "   'semver-coerced'. For the canonical case this resolves tags from 'Kong/public-shared-actions'",
+        " - 'extractVersionTemplate': extracts the semantic version from tags like 'sca@1.2.3',",
+        "   'sca_v1.2.3', or 'v1.2.3'",
+        " - 'autoReplaceStringTemplate': keeps the full '{{{packageName}}}' and rewrites '@<ref>' to:",
+        "   • '@<newDigest> # v<newVersion>' when pinning by commit",
+        "   • '@<newVersion>' when using tag-only references"
+      ],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$/",
+        "/(^|/)action\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "(?<packageName>[0-9A-Za-z.-]+/public-shared-actions/(?:[0-9A-Za-z.-]*/)*(?<depName>[^\\s@]+))@(?:(?<currentDigest>[0-9A-Fa-f]{7,40})[\\t ]*#[\\t ]*)?v?(?<currentValue>[0-9]*(?:\\.[0-9]+){0,2}(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z-]+)?)(?<indentation>\\s|$)"
+      ],
+      "extractVersionTemplate": "^@?(?:[0-9A-Za-z.-]*/)*{{{depName}}}[@_]v?(?<version>[0-9]+(?:\\.[0-9]+){0,2}(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z-]+)?)$",
+      "autoReplaceStringTemplate": "{{{packageName}}}@{{#if newDigest}}{{{newDigest}}} # v{{/if}}{{{newValue}}}{{{indentation}}}",
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver-coerced"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": [
+        " Adds a PR NOTE when this preset matches '*/public-shared-actions{,/}**' in repositories",
+        " that are not the canonical owner of the monorepo. Purpose: help users quickly recognize",
+        " accidental matches (for example, when they maintain their own repository also named",
+        " 'public-shared-actions'), verify the source of the change, and opt out or override locally",
+        " if needed"
+      ],
+      "matchManagers": ["custom.regex", "github-actions"],
+      "matchPackageNames": ["*/public-shared-actions{,/}**"],
+      "matchRepositories": ["!/^[0-9A-z.-]*(?:Kong|kumahq)[0-9A-z.-]*\\/.*$/i"],
+      "prBodyNotes": [
+        "---\n> [!NOTE]\n> #### Heads-up for repos named \"public-shared-actions\"\n>\n> This preset matches any action path like `*/public-shared-actions/**` and treats it like the Kong/public-shared-actions monorepo (assumes nested sub-actions and a specific tag format). If your organization also has a repository named \"public-shared-actions\", this PR may have been opened unintentionally against that name\n>\n> #### How to tell\n>\n> If the Package link/path shows `yourOrg/public-shared-actions/...` (not `Kong/public-shared-actions/...`), it's likely unintended\n>\n> #### What to do\n>\n> Easiest: opt out of this preset:\n>\n> ```json\n> { \"ignorePresets\": [\"Kong/public-shared-renovate//base/github-actions\"] }\n> ```\n> Or override locally to disable the custom manager for your own repo named \"public-shared-actions\"\n"
+      ]
+    },
+    {
+      "description": [
+        " Group and pin updates for public-shared-actions discovered by this custom manager",
+        " - Grouping switched from depName to packageName, so each PR groups by the full action",
+        "   path",
+        " - pinDigests enabled to always pin sub-action references to a commit SHA for security",
+        "   and stable tracking",
+        " - groupName uses the full packageName to protect against two sub-actions with the same",
+        "   name that lives under different directories to be grouped together",
+        " - prBodyDefinitions: reconfigures the Package column in the commitBodyTable to display",
+        "   packageName (e.g., 'Kong/public-shared-actions/...') instead of the short depName;",
+        "   otherwise it mimics Renovate's default Package definition (including the standard",
+        "   rename hint when a dependency is renamed)"
+      ],
+      "matchManagers": ["custom.regex"],
+      "matchPackageNames": ["*/public-shared-actions/**"],
+      "pinDigests": true,
+      "groupName": "{{{packageName}}}",
+      "groupSlug": "{{{packageName}}}",
+      "prBodyDefinitions": {
+        "Package": "[{{{packageName}}}]({{{sourceUrl}}}) {{#if (equals platform 'github')}}([source](https://redirect.github.com/{{{sourceRepo}}}/tree/HEAD/{{{replace '[0-9A-Za-z.-]+/public-shared-actions/' '' packageName}}})){{/if}}{{#if newName}}{{#unless (equals depName newName)}} → {{{newNameLinked}}}{{/unless}}{{/if}}"
+      }
+    },
+    {
+      "description": [
+        " Manage public-shared-actions updates using the custom manager, so disable the default",
+        " GitHub Actions manager for these"
+      ],
+      "matchPackageNames": ["*/public-shared-actions"],
+      "matchManagers": ["github-actions"],
+      "enabled": false
+    },
+    {
+      "description": [
+        " Do not pin SLSA-GitHub-Generator by digest. The project publishes versioned tags and",
+        " explicitly recommends disabling digest pinning for Renovate so updates track tags only.",
+        " Pinning to a commit SHA can break provenance and reusability expectations of the generator",
+        " and will fight with the upstream release /tag workflow",
+        " More info: https://github.com/slsa-framework/slsa-github-generator/blob/main/RENOVATE.md"
+      ],
+      "matchDepTypes": ["action"],
+      "matchPackageNames": ["slsa-framework/slsa-github-generator"],
+      "pinDigests": false
+    },
+    {
+      "description": [
+        " Force-upgrade and pin for */public-shared-actions sub-actions. This rule upgrades",
+        " repositories using versions below 4 (e.g., v1 - v3) to the latest v4+ sub-action tag and",
+        " automatically pins each reference to its commit digest. It is prioritized and always",
+        " re-created until merged, bypassing normal schedules and Renovate rate limits so",
+        " repositories get secure, updatable references immediately.",
+        "",
+        " Why: The monorepo now publishes per-sub-action tags in the form '<sub-action>@<version>'",
+        " (e.g., 'workflow-notification@4.0.1') instead of plain 'vX.Y.Z' tags. Older references",
+        " like '...@v2' cannot be auto-migrated by tag alone. Upgrading to v4+ plus digest pinning",
+        " avoids tag-name mismatches because Renovate tracks updates by commit SHA and also annotates",
+        " the line with a friendly '# vX.Y.Z' comment for humans"
+      ],
+      "matchManagers": ["custom.regex"],
+      "matchPackageNames": ["*/public-shared-actions/**"],
+      "matchCurrentValue": "/^v?[0-3](?:\\.[0-9]+){0,2}$/",
+      "extends": [":disableRateLimiting", ":prImmediately"],
+      "recreateWhen": "always",
+      "schedule": ["at any time"],
+      "minimumReleaseAge": "0",
+      "updateNotScheduled": true,
+      "dependencyDashboardApproval": false,
+      "prBodyNotes": [
+        "---\n> [!CAUTION]\n> This PR upgrades `{{{sourceRepo}}}` sub-action to v4+ and pins it to the commit digest. It is prioritized (bypasses schedules/rate limits).\n>\n> **Closing this PR will not stop it; Renovate will automatically reopen or recreate it until it is merged.**\n>\n> ---\n>\n> #### Mandatory upgrade to v4+ with automatic digest pinning for `{{{sourceRepo}}}`\n>\n> Renovate is configured to upgrade any `{{{sourceRepo}}}` sub-action still on versions below 4 to the latest v4+ version. As part of this upgrade, it will automatically pin each reference to the exact commit digest (and keep that digest refreshed over time).\n>\n> #### Background\n>\n> The `{{{sourceRepo}}}` monorepo now publishes per-sub-action tags in the form `<sub-action>@<version>` (for example, `workflow-notification@4.0.1`) instead of plain `vX.Y.Z` tags. Older references like `...@v2` cannot be auto-migrated by tag alone.\n>\n> #### Why tag-only migration is not supported\n>\n> Important: Renovate will not change the tag format for you. Migrating from the older plain `vX.Y.Z` tags to the new per-sub-action tags while keeping tag-only references would require rewriting refs such as `...@v2` to a different tag name like `...@sca@5.1.1`. This contradicts the goal of dependency update automation because it relies on humans to manage tag-name changes and ongoing updates, which our automation is not designed to perform. For this reason, tag-only migration is not supported.\n>\n> Instead, this preset enforces digest pinning. Renovate resolves releases by tag, then writes the reference as the commit SHA for that release with a trailing human-friendly comment (e.g., `...@<sha> # v5.1.1`). Tracking commits rather than tag names keeps updates automated and robust even if tag naming conventions change.\n>\n> #### Security\n>\n> GitHub Actions security guidance recommends pinning third-party actions to a full commit SHA to protect against tag moving and supply-chain attacks.\n>\n> #### References\n>\n> - https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-third-party-actions"
+      ]
+    }
+  ]
+}

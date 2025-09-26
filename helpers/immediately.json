@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Override to bypass scheduling and create PRs immediately across the board.",
+    " Applies to all updates wherever this preset is extended."
+  ],
+  "enabled": true,
+  "dependencyDashboardApproval": false,
+  "minimumReleaseAge": "0",
+  "prCreation": "immediate",
+  "schedule": ["at any time"]
+}

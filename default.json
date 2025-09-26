@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Default preset for Kong repositories. A secure, low-noise starting point that works across",
+    " languages and ecosystems without needing to compose multiple presets.",
+    "",
+    " To avoid duplication, detailed behavior and examples live in the repository README:",
+    " - Quick start: ./README.md#quick-start",
+    " - What you get by default: ./README.md#what-you-get-by-default",
+    " - Common variations (labels, cadence, etc.): ./README.md#common-variations",
+    " - Security preset customization examples: ./README.md#security-preset-customization-examples",
+    "",
+    " Usage:",
+    " - { \"extends\": [\"Kong/public-shared-renovate\"] }",
+    "",
+    " Notes:",
+    " - Settings that don't apply to your stack safely no-op",
+    " - You can override any defaults (schedule, labels, automerge, reviewers, etc.) locally"
+  ],
+  "extends": [
+    "config:best-practices",
+    "customManagers:dockerfileVersions",
+    "customManagers:githubActionsVersions",
+    "customManagers:helmChartYamlAppVersions",
+    "customManagers:makefileVersions",
+    "customManagers:tfvarsVersions",
+    "mergeConfidence:all-badges",
+    ":gitSignOff",
+    ":semanticCommits",
+    "Kong/public-shared-renovate//base/frontend",
+    "Kong/public-shared-renovate//base/github-actions",
+    "Kong/public-shared-renovate//base/go",
+    "Kong/public-shared-renovate//security/base",
+    "Kong/public-shared-renovate//overrides/labels"
+  ],
+  "minimumReleaseAge": "12 days"
+}

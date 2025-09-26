@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Shared preset that DISABLES updates for 'tj-actions/changed-files' due to a prior",
+    " supply‑chain incident (GHSA-mrrh-fwg8-r2c3). This is a conservative default pending",
+    " broader discussion and consensus. Repositories may override locally if they wish to",
+    " re‑enable updates after their own review and risk assessment.",
+    "",
+    " Context: https://github.com/advisories/ghsa-mrrh-fwg8-r2c3"
+  ],
+  "extends": ["Kong/public-shared-renovate//helpers/disable-action(tj-actions/changed-files)"]
+}

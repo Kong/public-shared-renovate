@@ -8,6 +8,8 @@
 
 /kong-frontend-config.json @baumac @adamdehaven @ValeryG
 
+/base/frontend.json @baumac @adamdehaven @ValeryG
+
 /github-actions.json @bartsmykla @baumac @slonka @lukidzi
 
 /github-actions-changed-files.json  @bartsmykla @baumac @slonka @lukidzi
@@ -16,12 +18,14 @@
 
 /go.json @bartsmykla @baumac @slonka @lukidzi
 
+/base/go.json @bartsmykla @baumac @slonka @lukidzi
+
 /makefile.json @bartsmykla @baumac @slonka @lukidzi
 
 /security-base.json @bartsmykla @baumac @slonka @lukidzi
 
 /security-extended.json @bartsmykla @baumac @slonka @lukidzi
 
-/gateway.json5 @curiositycasualty @Water-Melon @fffonion
+/scoped/kong/gateway.json @curiositycasualty @Water-Melon @fffonion
 
-/modules/kuma @bartsmykla @slonka @lukidzi
+/scoped/kuma @bartsmykla @slonka @lukidzi

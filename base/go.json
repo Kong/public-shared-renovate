@@ -1,0 +1,39 @@
+{
+  "description": [
+    " Base Go preset intended to be extended by more complete presets. It provides the common,",
+    " suggested, and scoped Renovate configuration for Go-based projects. Use this as the foundation",
+    " for Go repositories; higher-level presets can add scheduling, labels, reviewers, automerge",
+    " policies, or repository-specific rules on top"
+  ],
+  "extends": [
+    "group:goOpenapi",
+    "group:kubernetes",
+    "group:pulumi",
+    "group:aws-sdk-goMonorepo",
+    "group:aws-sdk-go-v2Monorepo",
+    "group:opentelemetry-goMonorepo",
+    "group:opentelemetry-go-contribMonorepo",
+    "group:testcontainers-goMonorepo"
+  ],
+  "postUpdateOptions": [
+    "gomodTidy",
+    "gomodUpdateImportPaths"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["go"],
+      "matchPackageNames": ["google.golang.org/genproto/googleapis/**"],
+      "groupName": "google.golang.org/genproto/googleapis/*",
+      "groupSlug": "genproto-googleapis"
+    },
+    {
+      "description": [
+        "Group all golangci-lint updates into a single PR. Matches both golangci/golangci-lint and",
+        "golangci-lint package names. Useful when version bumps are managed by different Renovate",
+        "managers across multiple places (e.g. Go modules, Makefiles, GitHub Actions, Mise)"
+      ],
+      "matchDepNames": ["/^(?:golangci\\/)?golangci-lint/"],
+      "groupName": "golangci-lint"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Base preset for long-lived security-related Renovate configuration. It centralizes",
+    " security-focused settings for reuse across presets and projects."
+  ],
+  "extends": [
+    "Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files"
+  ],
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "enabled": true
+  }
+}
