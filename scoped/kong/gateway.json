@@ -8,6 +8,7 @@
     " https://docs.konghq.com/gateway/latest/support-policy/#main"
   ],
   "extends": [
+    "Kong/public-shared-renovate//base/github-actions",
     "Kong/public-shared-renovate//overrides/labels(mend,renovate)",
     "Kong/public-shared-renovate//overrides/security-labels(security)"
   ],
