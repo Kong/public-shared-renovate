@@ -1,0 +1,27 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Standard commit message format for Kuma repositories",
+    "",
+    " ⚠️ Ordering limitation: `matchDepNames` only works inside packageRules, and presets may be",
+    " overridden by later rules. To ensure consistency, each repo must define its own final",
+    " catch-all rule.",
+    "",
+    " Consumer action: in your repo's renovate.json, add a last packageRule with matchDepNames: '*'",
+    " that sets commitMessageAction/topic/extra and commitMessageLowerCase. This guarantees",
+    " your rule applies after all composed presets.",
+    "",
+    " Rendering notes:",
+    " - For '*/public-shared-actions/**' the topic shows the full packageName",
+    " - For other deps, the topic uses depName without 'go:.../' or 'aqua:.../' prefixes",
+    " - commitMessageExtra renders a friendly 'from X to Y' string for version/digest bumps"
+  ],
+  "commitMessageAction": "bump",
+  "commitMessageLowerCase": "never",
+  "commitMessageTopic": "{{#if (containsString packageName '/public-shared-actions/')}}{{{packageName}}}{{else}}{{{replace '^(?:go|aqua):[^\\/]*?\\/' '' depName}}}{{/if}}{{#if (and (equals updateType 'digest') (equals currentValue newValue))}}:{{newValue}}{{/if}}",
+  "commitMessageExtra": "{{#if (or (and (or isMajor isMinor isPatch) (or isSingleVersion currentDigestShort)) (and (equals updateType 'digest') currentDigestShort))}}from {{#if (equals updateType 'digest')}}{{currentDigestShort}}{{else if (containsString currentVersion 'v0.0.0-')}}{{replace '^v0.0.0-[0-9]+-(?<digest>[0-9a-z]{7}).*$' '$<digest>' currentVersion}}{{else if isSingleVersion}}{{replace '^v?' '' currentVersion}}{{else if currentDigestShort}}{{#unless currentVersion}}currentDigestShort{{/unless}}{{/if}} {{/if}}to {{#if isPinDigest}}{{newDigestShort}}{{else if (containsString newVersion 'v0.0.0-')}}{{replace '^v0.0.0-[0-9]+-(?<digest>[0-9a-z]{7}).*$' '$<digest>' newVersion}}{{else if isSingleVersion}}{{replace '^v?' '' newVersion}}{{else if newDigestShort}}{{#unless newVersion}}{{newDigestShort}}{{/unless}}{{else}}{{newValue}}{{/if}}",
+  "pin": {"commitMessageAction": "pin"},
+  "pinDigest": {"commitMessageAction": "pin"},
+  "replacement": {"commitMessageAction": "replace"},
+  "rollback": {"commitMessageAction": "roll back"}
+}
