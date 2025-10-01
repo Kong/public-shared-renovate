@@ -51,7 +51,6 @@
     { "matchMessage": "/^Response that has failed validation/", "newLogLevel": "debug" },
     { "matchMessage": "/custom datasource/", "newLogLevel": "debug" },
     { "matchMessage": "/^Error while evaluating/", "newLogLevel": "debug" },
-    { "matchMessage": "/^Response that has failed validation/", "newLogLevel": "debug" },
     { "matchMessage": "/^prTitle: /", "newLogLevel": "debug" },
     { "matchMessage": "/^Branch lists/", "newLogLevel": "trace" },
     { "matchMessage": "/^branch\\.isModified\\(\\) = true/", "newLogLevel": "trace" }
