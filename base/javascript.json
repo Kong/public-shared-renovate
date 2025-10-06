@@ -8,6 +8,7 @@
   ],
   "extends": [
     "config:recommended",
+    ":npm",
     "group:linters",
     "group:nodeJs",
     "group:postcss",
@@ -24,7 +25,8 @@
     ":semanticCommits",
     ":semanticPrefixFixDepsChoreOthers",
     ":automergeRequireAllStatusChecks",
-    ":gitSignOff"
+    ":gitSignOff",
+    ":widenPeerDependencies"
   ],
   "npmrcMerge": true,
   "packageRules": [
