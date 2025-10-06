@@ -20,7 +20,7 @@
     ":noUnscheduledUpdates",
     ":semanticCommits",
     ":timezone(America/New_York)",
-    "Kong/public-shared-renovate//base/frontend",
+    "Kong/public-shared-renovate//base/javascript",
     "Kong/public-shared-renovate//base/github-actions",
     "Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)",
     "Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)",

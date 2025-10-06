@@ -27,7 +27,7 @@
     "mergeConfidence:all-badges",
     ":gitSignOff",
     ":semanticCommits",
-    "Kong/public-shared-renovate//base/frontend",
+    "Kong/public-shared-renovate//base/javascript",
     "Kong/public-shared-renovate//base/github-actions",
     "Kong/public-shared-renovate//base/go",
     "Kong/public-shared-renovate//security/base",
