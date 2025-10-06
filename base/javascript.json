@@ -7,7 +7,7 @@
     " add scheduling, labels, reviewers, automerge policies, or repository-specific rules on top"
   ],
   "extends": [
-    "config:recommended",
+    "config:best-practices",
     ":npm",
     "group:linters",
     "group:nodeJs",

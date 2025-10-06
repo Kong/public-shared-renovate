@@ -9,22 +9,7 @@
     " the default preset plus local overrides; see PR note for details"
   ],
   "extends": [
-    "config:recommended",
-    "schedule:automergeWeekdays",
-    "schedule:daily",
-    ":automergeMinor",
-    ":automergePatch",
-    ":automergeRequireAllStatusChecks",
-    ":gitSignOff",
-    ":labels(dependencies,mend-bot)",
-    ":noUnscheduledUpdates",
-    ":semanticCommits",
-    ":timezone(America/New_York)",
-    "Kong/public-shared-renovate//base/javascript",
-    "Kong/public-shared-renovate//base/github-actions",
-    "Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)",
-    "Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)",
-    "Kong/public-shared-renovate//security/base"
+    "Kong/public-shared-renovate//scoped/frontend/base"
   ],
   "packageRules": [
     {
