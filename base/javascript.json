@@ -22,7 +22,9 @@
     "group:vueMonorepo",
     "group:vueuseMonorepo",
     ":semanticCommits",
-    ":semanticPrefixFixDepsChoreOthers"
+    ":semanticPrefixFixDepsChoreOthers",
+    ":automergeRequireAllStatusChecks",
+    ":gitSignOff"
   ],
   "npmrcMerge": true,
   "packageRules": [
