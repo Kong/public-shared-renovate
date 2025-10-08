@@ -1,0 +1,129 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Kong frontend repository base preset for Renovate. All frontend TypeScript, ",
+    " Javascript, Vue, React, Vite, and related repositories should extend this config. "
+  ],
+  "extends": [
+    "Kong/public-shared-renovate//base/javascript",
+    "Kong/public-shared-renovate//base/github-actions",
+    "Kong/public-shared-renovate//helpers/disable-action(Kong/kong-api-tests)",
+    "Kong/public-shared-renovate//helpers/disable-action(the-actions-org/workflow-dispatch)",
+    "Kong/public-shared-renovate//security/base",
+    ":automergeMinor",
+    ":automergePatch",
+    ":labels(dependencies,mend-bot)",
+    ":noUnscheduledUpdates",
+    ":timezone(America/New_York)",
+    "schedule:automergeWeekdays",
+    "schedule:daily"
+  ],
+  "packageRules": [
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchPackageNames": [
+        "@kong{,-ui,-ui-public}/**"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "non-major {{{lookup (split packageName '/') 0}}} dependencies with stable versions",
+      "groupSlug": "{{{replace '@' '' (lookup (split packageName '/') 0)}}}-stable",
+      "minimumReleaseAge": "2 hours"
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchPackageNames": [
+        "@kong{,-ui,-ui-public}/**"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "/^0/",
+      "groupName": "non-major {{{lookup (split packageName '/') 0}}} dependencies with unstable versions",
+      "groupSlug": "{{{replace '@' '' (lookup (split packageName '/') 0)}}}-unstable"
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchPackageNames": [
+        "@kong-ui-public/analytics-*",
+        "@kong-ui-public/dashboard-renderer",
+        "@kong-ui-public/metric-cards",
+        "@kong-ui/konnect-analytics-bridge",
+        "@kong-ui/timeframe-selector"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "non-major konnect analytics dependencies",
+      "groupSlug": "konnect-analytics",
+      "minimumReleaseAge": "2 hours"
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "extends": [
+        "packages:stylelint"
+      ],
+      "groupName": "non-major stylelint dependencies with stable versions",
+      "groupSlug": "stylelint-stable"
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchPackageNames": [
+        "cypress{,-*}",
+        "@cypress/*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "non-major cypress dependencies with stable versions",
+      "groupSlug": "cypress-stable"
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchPackageNames": [
+        "{@types/,}inquirer"
+      ],
+      "enabled": false
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchPackageNames": [
+        "pnpm"
+      ],
+      "matchDepTypes": [
+        "engines"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "enabled": false
+    }
+  ]
+}

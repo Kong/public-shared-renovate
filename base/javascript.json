@@ -1,0 +1,55 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " This preset provides a shared configuration for updating JavaScript dependencies.",
+    " It provides the common, suggested, and scoped Renovate configuration for JavaScript-based",
+    " projects. Use this as the foundation for JavaScript repositories; higher-level presets can",
+    " add scheduling, labels, reviewers, automerge policies, or repository-specific rules on top"
+  ],
+  "extends": [
+    "config:best-practices",
+    ":npm",
+    "group:linters",
+    "group:nodeJs",
+    "group:postcss",
+    "group:react",
+    "group:vite",
+    "group:commitlintMonorepo",
+    "group:eslintMonorepo",
+    "group:eslint-stylisticMonorepo",
+    "group:playwrightMonorepo",
+    "group:typescript-eslintMonorepo",
+    "group:vitestMonorepo",
+    "group:vueMonorepo",
+    "group:vueuseMonorepo",
+    ":semanticCommits",
+    ":semanticPrefixFixDepsChoreOthers",
+    ":automergeRequireAllStatusChecks",
+    ":gitSignOff",
+    ":widenPeerDependencies"
+  ],
+  "npmrcMerge": true,
+  "packageRules": [
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "rangeStrategy": "bump"
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchPackageNames": [
+        "*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "all non-major dependencies with stable versions",
+      "groupSlug": "all-stable"
+    }
+  ]
+}

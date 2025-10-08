@@ -248,7 +248,7 @@ This order of precedence ensures predictability: start with the org-wide default
 
 Kong's shared Renovate presets are organized by purpose:
 
-- [`base/`](./base) – reusable building blocks for org-wide policy (Go, GitHub Actions, security, frontend), composed into the top-level [default](./default.json). Most repos just extend the default (`Kong/public-shared-renovate`).
+- [`base/`](./base) – reusable building blocks, typically defined by package manager ecosystem, for org-wide policy (Go, GitHub Actions, JavaScript, etc.), composed into the top-level [default](./default.json). Most repos just extend the default (`Kong/public-shared-renovate`).
 - [`overrides/`](./overrides) – small reusable tweaks layered on top of `base/` or the default (labels, reviewers, automerge adjustments).
 - [`helpers/`](./helpers) – tiny, standalone utilities usable directly in `renovate.json` or within other presets.
 - [`scoped/`](./scoped) – rules for a specific product, project, or team, not meant for org-wide use.
