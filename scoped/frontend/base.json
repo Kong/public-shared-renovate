@@ -12,7 +12,7 @@
     "Kong/public-shared-renovate//security/base",
     ":automergeMinor",
     ":automergePatch",
-    ":labels(dependencies,mend-bot)",
+    ":labels(dependencies,renovate-bot)",
     ":noUnscheduledUpdates",
     ":timezone(America/New_York)",
     "schedule:automergeWeekdays",
