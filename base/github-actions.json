@@ -11,6 +11,7 @@
     "helpers:pinGitHubActionDigestsToSemver",
     "Kong/public-shared-renovate//security/incidents/github-actions/tj-actions-changed-files"
   ],
+  "minimumReleaseAge": "12 days",
   "customManagers": [
     {
       "description": [
