@@ -15,6 +15,7 @@
     "group:opentelemetry-go-contribMonorepo",
     "group:testcontainers-goMonorepo"
   ],
+  "minimumReleaseAge": "12 days",
   "postUpdateOptions": [
     "gomodTidy",
     "gomodUpdateImportPaths"

@@ -28,6 +28,7 @@
     ":gitSignOff",
     ":widenPeerDependencies"
   ],
+  "minimumReleaseAge": "12 days",
   "npmrcMerge": true,
   "packageRules": [
     {
