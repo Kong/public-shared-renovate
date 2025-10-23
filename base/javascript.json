@@ -41,6 +41,15 @@
       "matchCategories": [
         "js"
       ],
+      "matchDepTypes": [
+        "engines"
+      ],
+      "rangeStrategy": "auto"
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
       "matchPackageNames": [
         "*"
       ],
