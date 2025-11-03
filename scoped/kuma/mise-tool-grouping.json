@@ -1,0 +1,51 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    " Group mise-managed tools that also appear in other dependency sources (go.mod, GitHub",
+    " Actions, Makefiles, etc.) so updates land in a single PR across all managers.",
+    "",
+    " Why this exists",
+    " - Tools like ginkgo, golangci-lint, and helm are often defined in multiple places:",
+    "   • mise.toml for local development",
+    "   • go.mod as Go modules",
+    "   • Makefiles with version variables",
+    "   • GitHub Actions workflows",
+    " - Without grouping, Renovate creates separate PRs per manager, causing:",
+    "   • Version drift across sources",
+    "   • Extra review overhead",
+    "   • Potential CI failures from mismatched versions",
+    "",
+    " This preset groups these tools by their GitHub source repository, ensuring all references",
+    " update together in a single PR"
+  ],
+  "packageRules": [
+    {
+      "description": [
+        " Group dependency bumps from selected GitHub sources into a single PR across managers",
+        " (e.g., mise and gomod) to avoid separate PRs per manager.",
+        "",
+        " Tools grouped by source:",
+        " - ginkgo: appears as 'ginkgo' in mise.toml and 'github.com/onsi/ginkgo/v2' in go.mod",
+        " - golangci-lint: appears as 'golangci-lint' in mise.toml, 'golangci/golangci-lint' or",
+        "   'github.com/golangci/golangci-lint' across various managers",
+        " - helm: appears as 'helm' in mise.toml and referenced in Makefiles and workflows",
+        "",
+        " The groupName is dynamically extracted from the sourceUrl, creating groups named",
+        " 'ginkgo', 'golangci-lint', and 'helm' respectively"
+      ],
+      "matchSourceUrls": ["https://github.com/{onsi/ginkgo,golangci/golangci-lint,helm/helm}"],
+      "groupName": "{{{replace 'https://github\\.com/[a-z-]+/' '' sourceUrl}}}"
+    },
+    {
+      "description": [
+        " Group kubectl updates across mise, Kubernetes manifests, Docker images, and Makefiles.",
+        " Unlike the tools above, kubectl cannot use matchSourceUrls because it doesn't have a",
+        " single GitHub source repository. Instead, match by depName patterns:",
+        " - 'kubectl' in mise.toml",
+        " - 'registry.k8s.io/kubectl' in container images"
+      ],
+      "matchDepNames": ["{registry.k8s.io/,}kubectl"],
+      "groupName": "kubectl"
+    }
+  ]
+}
