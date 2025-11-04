@@ -105,6 +105,23 @@
         "js"
       ],
       "matchPackageNames": [
+        "nuxt{,-*}",
+        "@nuxt/*",
+        "@nuxtjs/*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "non-major nuxt dependencies with stable versions",
+      "groupSlug": "nuxt-stable"
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchPackageNames": [
         "{@types/,}inquirer"
       ],
       "enabled": false
