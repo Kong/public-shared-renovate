@@ -141,6 +141,12 @@
         "patch"
       ],
       "enabled": false
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "GitHub Actions"
     }
   ]
 }
