@@ -35,7 +35,10 @@
       "matchCategories": [
         "js"
       ],
-      "rangeStrategy": "bump"
+      "matchPackageNames": [
+        "*"
+      ],
+      "rangeStrategy": "auto"
     },
     {
       "matchCategories": [
