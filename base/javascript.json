@@ -38,7 +38,7 @@
       "matchPackageNames": [
         "*"
       ],
-      "rangeStrategy": "auto"
+      "rangeStrategy": "bump"
     },
     {
       "matchCategories": [
