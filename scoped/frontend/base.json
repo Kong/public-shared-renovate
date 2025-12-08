@@ -89,6 +89,22 @@
         "js"
       ],
       "matchPackageNames": [
+        "playwright{,-*}",
+        "@playwright/*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "non-major playwright dependencies with stable versions",
+      "groupSlug": "playwright-stable"
+    },
+    {
+      "matchCategories": [
+        "js"
+      ],
+      "matchPackageNames": [
         "cypress{,-*}",
         "@cypress/*"
       ],
