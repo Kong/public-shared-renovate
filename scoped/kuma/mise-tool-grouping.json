@@ -46,14 +46,6 @@
       ],
       "matchDepNames": ["{registry.k8s.io/,}kubectl"],
       "groupName": "kubectl"
-    },
-    {
-      "description": [
-        "Group Go language version updates into a single PR across all managers (gomod, mise,",
-        "Makefile, etc.) so mise.toml and go.mod stay in sync"
-      ],
-      "matchDatasources": ["golang-version"],
-      "groupName": "go"
     }
   ]
 }
