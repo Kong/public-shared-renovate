@@ -28,9 +28,15 @@
     ":gitSignOff",
     ":widenPeerDependencies"
   ],
-  "minimumReleaseAge": "12 days",
   "npmrcMerge": true,
   "packageRules": [
+    {
+      "internalChecksFilter": "strict",
+      "matchDatasources": [
+        "npm"
+      ],
+      "minimumReleaseAge": "12 days"
+    },
     {
       "matchCategories": [
         "js"
