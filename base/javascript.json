@@ -51,7 +51,8 @@
         "js"
       ],
       "matchDepTypes": [
-        "engines"
+        "engines",
+        "peerDependencies"
       ],
       "rangeStrategy": "auto"
     },
