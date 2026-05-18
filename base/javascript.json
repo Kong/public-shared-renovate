@@ -44,6 +44,9 @@
       "matchPackageNames": [
         "*"
       ],
+      "matchDepTypes": [
+        "!peerDependencies"
+      ],
       "rangeStrategy": "bump"
     },
     {
@@ -51,8 +54,7 @@
         "js"
       ],
       "matchDepTypes": [
-        "engines",
-        "peerDependencies"
+        "engines"
       ],
       "rangeStrategy": "auto"
     },
