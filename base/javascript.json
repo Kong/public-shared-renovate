@@ -44,6 +44,9 @@
       "matchPackageNames": [
         "*"
       ],
+      "matchDepTypes": [
+        "!peerDependencies"
+      ],
       "rangeStrategy": "bump"
     },
     {
