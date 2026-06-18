@@ -69,6 +69,12 @@
       "matchCurrentVersion": "!/^0/",
       "groupName": "all non-major dependencies with stable versions",
       "groupSlug": "all-stable"
+    },
+    {
+      "matchDepTypes": [
+        "peerDependencies"
+      ],
+      "rangeStrategy": "widen"
     }
   ]
 }
