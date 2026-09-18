@@ -1,0 +1,15 @@
+{
+  "description": [
+    " Base Rust preset, covering both 'cargo' and 'rust-toolchain' managers"
+  ],
+  "packageRules": [
+    {
+      "description": [
+        " Undo :pinDevDependencies preset (part of 'config:best-practices') for cargo dev-dependencies"
+      ],
+      "matchManagers": ["cargo"],
+      "matchDepTypes": ["dev-dependencies"],
+      "rangeStrategy": "auto"
+    }
+  ]
+}
