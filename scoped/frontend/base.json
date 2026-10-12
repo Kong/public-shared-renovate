@@ -143,6 +143,13 @@
       "enabled": false
     },
     {
+      "description": "pnpm overrides are manual security pins; do not auto-bump",
+      "matchDepTypes": [
+        "pnpm-workspace.overrides"
+      ],
+      "enabled": false
+    },
+    {
       "matchCategories": [
         "js"
       ],
