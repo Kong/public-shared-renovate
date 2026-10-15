@@ -15,6 +15,41 @@
   "customManagers": [
     {
       "description": [
+        " Support numeric version comments for Kong/shared-actions."
+      ],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$/",
+        "/(^|/)action\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "[\"']?(?<depName>Kong/shared-actions/actions/(?:(?<scope>docker|cdn)/|(?:[0-9A-Za-z.-]+/)*)(?<actionName>[0-9A-Za-z.-]+))@(?:(?<currentDigest>[0-9A-Fa-f]{40})[\"']?[\\t ]*#[\\t ]*)?v?(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?)[\"']?(?<indentation>\\s|$)"
+      ],
+      "packageNameTemplate": "Kong/shared-actions",
+      "extractVersionTemplate": "^{{#if scope}}@{{{scope}}}/{{/if}}{{{actionName}}}_(?<version>[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?)$",
+      "autoReplaceStringTemplate": "{{{depName}}}@{{#if newDigest}}{{{newDigest}}} # v{{/if}}{{{newValue}}}{{{indentation}}}",
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver"
+    },
+    {
+      "description": [
+        " Support full package tag comments for Kong/shared-actions."
+      ],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)(workflow-templates|\\.(?:github|gitea|forgejo)/(?:workflows|actions))/.+\\.ya?ml$/",
+        "/(^|/)action\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "[\"']?(?<depName>Kong/shared-actions/actions/[0-9A-Za-z._/-]+)@(?:(?<currentDigest>[0-9A-Fa-f]{40})[\"']?[\\t ]*#[\\t ]*)?(?<currentValue>@?[0-9A-Za-z._/-]+_[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?)[\"']?(?<indentation>\\s|$)"
+      ],
+      "packageNameTemplate": "Kong/shared-actions",
+      "autoReplaceStringTemplate": "{{{depName}}}@{{#if newDigest}}{{{newDigest}}} # {{/if}}{{{newValue}}}{{{indentation}}}",
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "regex:^(?<compatibility>.+)_(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:-(?<prerelease>[0-9A-Za-z.-]+))?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    {
+      "description": [
         " Custom regex manager for sub-actions under '*/public-shared-actions/**'. It operates",
         " in workflow/action YAML files such as:",
         " - .github/workflows/*.yml",
@@ -72,6 +107,32 @@
     }
   ],
   "packageRules": [
+    {
+      "description": [
+        " Pin and group each Kong/shared-actions action independently using the custom managers."
+      ],
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchPackageNames": [
+        "Kong/shared-actions"
+      ],
+      "pinDigests": true,
+      "groupName": "{{{depName}}}",
+      "groupSlug": "{{{depName}}}"
+    },
+    {
+      "description": [
+        " The custom managers own Kong/shared-actions versions; avoid duplicate updates."
+      ],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchPackageNames": [
+        "Kong/shared-actions"
+      ],
+      "enabled": false
+    },
     {
       "description": [
         " Adds a PR NOTE when this preset matches '*/public-shared-actions{,/}**' in repositories",
